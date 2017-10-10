@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dreamer.domain.mall.goods">
+	<class name="com.dreamer.domain.mall.delivery.DeliveryNote" table="delivery_note">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<version generated="never" name="version" type="java.lang.Integer">
+			<column name="version">
+				<comment>数据版本号</comment>
+			</column>
+		</version>
+		<property generated="never" lazy="false" name="orderNo"
+			type="java.lang.String">
+			<column length="64" name="order_no" not-null="false">
+				<comment>单据号</comment>
+			</column>
+		</property>
+		<!--<many-to-one class="com.dreamer.domain.user.User" fetch="select"-->
+			<!--name="userByConsignee" not-found="ignore">-->
+			<!--<column name="consignee" not-null="false">-->
+				<!--<comment>收货人</comment>-->
+			<!--</column>-->
+		<!--</many-to-one>-->
+		<many-to-one class="com.dreamer.domain.user.User" fetch="select"
+			name="fromAgent" not-found="ignore">
+			<column name="from_agent">
+				<comment>订单操作员</comment>
+			</column>
+		</many-to-one>
+
+		<many-to-one class="com.dreamer.domain.user.User" fetch="select" name="applyAgent" not-found="ignore">
+			<column name="apply_agent">
+				<comment>发货申请人</comment>
+			</column>
+		</many-to-one>
+
+        <many-to-one class="com.dreamer.domain.user.User" fetch="select"
+                     name="toAgent" not-found="ignore">
+            <column name="to_agent">
+                <comment>发货接收人</comment>
+            </column>
+        </many-to-one>
+
+        <many-to-one name="address" class="com.dreamer.domain.user.AddressClone" fetch="select" not-found="ignore">
+            <column name="address">
+                <comment>收货地址</comment>
+            </column>
+        </many-to-one>
+
+
+
+		<property generated="never" lazy="false" name="remark"
+			type="java.lang.String">
+			<column length="256" name="remark">
+				<comment>备注信息</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="status">
+			<column length="32" name="status" not-null="true">
+				<comment>发货状态</comment>
+			</column>
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">com.dreamer.domain.mall.delivery.DeliveryStatus</param>
+				<param name="type">12</param>
+				<param name="useNamed">true</param>
+			</type>
+		</property>
+		<property generated="never" lazy="false" name="applyOrigin">
+			<column name="origin" not-null="true">
+				<comment>请求来源</comment>
+			</column>
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">com.dreamer.domain.mall.delivery.DeliveryApplyOrigin</param>
+				<param name="type">4</param>
+				<param name="useNamed">false</param>
+			</type>
+		</property>
+		<property generated="never" lazy="false" name="logisticsCode"
+			type="java.lang.String">
+			<column length="64" name="logistics_code">
+				<comment>物流编号</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="logisticsFee"
+			type="java.lang.Double">
+			<column name="logistics_fee" precision="6">
+				<comment>物流费用</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="logistics"
+			type="java.lang.String">
+			<column length="64" name="logistics">
+				<comment>物流公司</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="printStatus"
+			type="java.lang.Boolean">
+			<column name="print_status">
+				<comment>打印状态 0-未打印 1-已打印</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="updateTime"
+			type="java.sql.Timestamp">
+			<column length="19" name="update_time">
+				<comment>更新时间戳</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="applyTime"
+			type="java.sql.Timestamp">
+			<column length="19" name="apply_time">
+				<comment>发货申请时间</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="deliveryTime"
+			type="java.sql.Timestamp">
+			<column length="19" name="delivery_time">
+				<comment>发货时间</comment>
+			</column>
+		</property>
+
+		<set batch-size="5" cascade="all,delete-orphan" inverse="true"
+			name="deliveryItems" sort="unsorted">
+			<key>
+				<column name="delivery_note">
+					<comment>所属的发货申请单</comment>
+				</column>
+			</key>
+			<one-to-many class="com.dreamer.domain.mall.delivery.DeliveryItem" />
+		</set>
+	</class>
+</hibernate-mapping>

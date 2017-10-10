@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dreamer.domain.pmall.goods">
+    <class name="GoodsStandard" table="goods_standard" dynamic-insert="true" dynamic-update="true">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="native"/>
+        </id>
+        <version generated="never" name="version" type="java.lang.Integer">
+            <column name="version">
+                <comment>数据版本号</comment>
+            </column>
+        </version>
+        <property name="name" type="java.lang.String">
+            <column name="name">
+                <comment>规格名字</comment>
+            </column>
+        </property>
+
+        <property name="price" type="java.lang.Double">
+            <column name="price">
+                <comment>产品价格</comment>
+            </column>
+        </property>
+
+        <property name="stock" type="java.lang.Integer">
+            <column name="stock">
+                <comment>库存</comment>
+            </column>
+        </property>
+		
+    </class>
+</hibernate-mapping>

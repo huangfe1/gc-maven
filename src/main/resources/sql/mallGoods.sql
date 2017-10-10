@@ -1,0 +1,1 @@
+alter table `mall_goods` add sc_type integer default 0;

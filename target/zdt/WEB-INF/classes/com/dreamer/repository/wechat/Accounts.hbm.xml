@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dreamer.domain.wechat">
+	<class name="com.dreamer.domain.wechat.WxConfig" table="wx_config">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<column name="name">
+				<comment>配置公众号名称</comment>
+			</column>
+		</property>
+
+        <property name="baseConfig" type="java.lang.Boolean">
+            <column name="baseConfig">
+                <comment>是否是基础公众号</comment>
+            </column>
+        </property>
+
+        <property name="payConfig" type="java.lang.Boolean">
+            <column name="payConfig">
+                <comment>是否是支付公众号</comment>
+            </column>
+        </property>
+
+		<property name="open" type="java.lang.Boolean">
+			<column name="open" default="true">
+				<comment>是否打开</comment>
+			</column>
+		</property>
+
+		<property name="wxid" type="java.lang.String">
+			<column name="wxid">
+				<comment>公众号微信号</comment>
+			</column>
+		</property>
+
+		<property name="appid" type="java.lang.String">
+			<column name="appid">
+				<comment>appid</comment>
+			</column>
+		</property>
+
+		<property name="secret" type="java.lang.String">
+			<column name="secret">
+				<comment>秘钥</comment>
+			</column>
+		</property>
+
+		<property name="mchID" type="java.lang.String">
+			<column name="mchID">
+				<comment>商户号</comment>
+			</column>
+		</property>
+		<property name="key" type="java.lang.String">
+			<column name="secrect_key">
+				<comment>支付秘钥</comment>
+			</column>
+		</property>
+
+		<property name="noticeUrl" type="java.lang.String">
+			<column name="noticeUrl">
+				<comment>通知地址</comment>
+			</column>
+		</property>
+
+		<property name="spbill_create_ip">
+			<column name="spbill_create_ip"  >
+				<comment>客户端ID</comment>
+			</column>
+
+		</property>
+
+
+
+	</class>
+</hibernate-mapping>

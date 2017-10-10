@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Maven: cn.hf.web:otter:1.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/cn/hf/web/otter/1.0/otter-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/cn/hf/web/otter/1.0/otter-1.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/cn/hf/web/otter/1.0/otter-1.0-sources.jar!/" />
+      <root url="file://$MAVEN_REPOSITORY$/cn/hf/web/otter/1.0" />
+      <root url="file://$MAVEN_REPOSITORY$/cn/hf/web/otter" />
+    </SOURCES>
+  </library>
+</component>

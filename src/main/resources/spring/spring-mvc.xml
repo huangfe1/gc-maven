@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--1：开启springMVC的注解模式-->
+    <!--简化配置：
+        （1）自动注册DefaultAnnotationHandleMapping，AnnotationMethodHandlerMappingAdapter
+        （2）提供了一系列的功能：数据绑定，数字和日期的format @NumberFormat，@DataTimeFormat，xml json读写支持
+    -->
+    <context:annotation-config/>
+    <context:component-scan base-package="com.dreamer.view.**"/>
+    <mvc:annotation-driven/>
+    <!--静态资源处理方式-->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>  <!--或者用servlet默认处理 <mvc:default-servlet-handler/>-->
+    <!--视图解析-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!--<bean id="multipartResolver"-->
+          <!--class="org.springframework.web.multipart.support.StandardServletMultipartResolver">-->
+    <!--</bean>-->
+    <!--这条配置允许上传文件、与含有文件的表单数据上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
+
+
+</beans>

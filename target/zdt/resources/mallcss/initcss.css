@@ -1,0 +1,15 @@
+ul, li, dl, dt, dd, p, h1, h2, h3, h4, h5, form, img, div {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* border: 0 none; */
+}
+
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div, dl, dt, dd {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    line-height: 1em;
+    font-size: 1em;
+}
+

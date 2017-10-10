@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="8dac6609-2af6-4d71-9a54-d2736e5d6fcc" name="新服务器" url="http://ht.hzc365.com">
+        <fileTransfer host="ht.hzc365.com" port="22000" rootFolder="/www/java/zdt" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22000" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="7c53226d-507a-412d-bd0c-3e3cd34e78b1" name="图片库" url="http://122.114.59.54">
+        <fileTransfer host="122.114.59.54" port="22000" rootFolder="/www/data/zdt/resources" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22000" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

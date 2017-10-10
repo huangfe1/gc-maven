@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dreamer.domain.pmall.order">
+	<class name="OrderItem" table="order_item" >
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+
+        <set name="standards">
+            <key><column name="item"></column></key>
+            <many-to-many column="standard" class="com.dreamer.domain.pmall.goods.GoodsStandard"/>
+        </set>
+
+
+        <property name="quantity" type="java.lang.Integer">
+            <column name="quantity">
+                <comment>数量</comment>
+            </column>
+        </property>
+
+        <property name="price" type="java.lang.Double">
+            <column name="price">
+                <comment>价格</comment>
+            </column>
+        </property>
+
+        <many-to-one name="pmallGoods" class="com.dreamer.domain.pmall.goods.PmallGoods">
+            <column name="goods">
+                <comment>产品</comment>
+            </column>
+        </many-to-one>
+
+		<many-to-one name="pmallOrder"   class="Order" >
+            <column name="order_id">
+                <comment>订单Id</comment>
+            </column>
+        </many-to-one>
+	</class>
+</hibernate-mapping>

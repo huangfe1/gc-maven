@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dreamer.domain.user">
+    <class name="AccountsRecord" table="account_record">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="native"></generator>
+        </id>
+        <version name="version" type="java.lang.Integer">
+            <column name="version">
+                <comment>数据版本号</comment>
+            </column>
+        </version>
+        <many-to-one name="agent" class="com.dreamer.domain.user.User" fetch="select" not-found="ignore">
+            <column name="agent" not-null="true">
+                <comment>属于的记录</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="causedAgent" class="com.dreamer.domain.user.User" fetch="select" not-found="ignore">
+            <column name="caused_agent" not-null="true">
+                <comment>因为谁产生的</comment>
+            </column>
+        </many-to-one>
+        <property name="orderIndex" type="java.lang.Integer" not-null="false">
+            <column name="orderIndex">
+                <comment>订单顺序</comment>
+            </column>
+        </property>
+        <property name="updateTime" type="java.util.Date">
+            <column name="updateTime" length="19">
+                <comment>产生时间</comment>
+            </column>
+        </property>
+
+        <property name="info" type="java.lang.String">
+            <column name="info" length="256">
+                <comment>备注信息</comment>
+            </column>
+        </property>
+
+        <property name="amount" type="java.lang.Double">
+            <column name="amount" precision="10" not-null="true">
+                <comment>数量</comment>
+            </column>
+        </property>
+
+        <property name="nowAmount" type="java.lang.Double">
+            <column name="now_amount" precision="10" not-null="true">
+                <comment>当前余额</comment>
+            </column>
+        </property>
+
+        <property name="addSub" type="java.lang.Integer">
+            <column name="add_sub" precision="10" not-null="true">
+                <comment>进出</comment>
+            </column>
+        </property>
+
+        <!--账户类型-->
+        <property name="accountsType" lazy="false">
+            <column name="type" not-null="false" default="0" >
+                <comment>账户类型</comment>
+            </column>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.dreamer.domain.user.enums.AccountsType</param>
+                <param name="type">4</param>
+                <param name="useNamed">false</param>
+            </type>
+        </property>
+
+    </class>
+</hibernate-mapping>

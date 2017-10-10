@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %5p %c{1}:%L %m%n</pattern>
+        </encoder>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>/logs/zdt.log</file>
+        <!--<file>/Users/huangfei/Desktop/MyLog.log</file>-->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %5p %c{1}:%L %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--<logger name="com.dreamer" level="TRACE"/>-->
+    <!--<logger name="com.dreamer" level="DEBUG"/>-->
+
+    <!--<root level="trace">-->
+        <!--<appender-ref ref="STDOUT" />-->
+        <!--&lt;!&ndash;<appender-ref ref="FILE" />&ndash;&gt;-->
+    <!--</root>-->
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+
+
+</configuration>

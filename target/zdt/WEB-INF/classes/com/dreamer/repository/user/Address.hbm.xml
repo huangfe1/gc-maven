@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dreamer.domain.user">
+	<class name="Address" table="address" discriminator-value="-1">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="native" />
+		</id>
+		<discriminator column="identity" force="false" insert="true" not-null="true"/>
+		<many-to-one name="agent" class="com.dreamer.domain.user.User"
+					 fetch="select" not-found="ignore" not-null="false">
+			<column name="agent" >
+				<comment>记录属于的代理</comment>
+			</column>
+		</many-to-one>
+		<property name="province" type="java.lang.String" lazy="false" >
+			<column name="province">
+				<comment>省</comment>
+			</column>
+		</property>
+		<property name="city" type="java.lang.String" lazy="false" >
+			<column name="city">
+				<comment>市</comment>
+			</column>
+		</property>
+		<property name="county" type="java.lang.String" lazy="false">
+			<column name="county">
+				<comment>县</comment>
+			</column>
+		</property>
+		<property name="address" type="java.lang.String" lazy="false">
+			<column name="address">
+				<comment>详细地址</comment>
+			</column>
+		</property>
+		<property name="post_code" type="java.lang.String" lazy="false">
+			<column name="post_code">
+				<comment>邮政编码</comment>
+			</column>
+		</property>
+		<property name="consignee" type="java.lang.String" lazy="false">
+			<column name="consignee" >
+				<comment>收货人</comment>
+			</column>
+		</property>
+		<property name="consigneeCode" type="java.lang.String" lazy="false">
+			<column name="consigneeCode" >
+				<comment>收货人</comment>
+			</column>
+		</property>
+		<property name="mobile" type="java.lang.String" lazy="false">
+			<column name="mobile">
+				<comment>收货人电话</comment>
+			</column>
+		</property>
+
+		<subclass name="AddressClone" discriminator-value="0">
+			<many-to-one not-null="false" class="com.dreamer.domain.user.Address" fetch="select"
+						 lazy="proxy" name="addressMy" not-found="ignore">
+				<column name="address_my" not-null="false">
+					<comment>所属我的哪个地址</comment>
+				</column>
+			</many-to-one>
+		</subclass>
+
+		<subclass name="AddressMy"  discriminator-value="1">
+		</subclass>
+
+	</class>
+</hibernate-mapping>

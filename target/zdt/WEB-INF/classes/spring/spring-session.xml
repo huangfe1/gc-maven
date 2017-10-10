@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:annotation-config/>
+
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
+
+
+    <bean class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory">
+        <property name="port" value="6379"/>
+        <!--<property name="port" value="7200"/>-->
+        <!--<property name="timeout" value="0"/>-->
+    </bean>
+
+    <!--JedisPoolConfig-->
+    <bean name="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="200"/>
+        <property name="maxIdle" value="5"/>
+        <property name="maxWaitMillis" value="100000"/>
+        <property name="testOnBorrow" value="true"/>
+    </bean>
+    <!--redis-->
+    <bean name="redisDao"  class="com.dreamer.repository.redis.RedisDao">
+        <constructor-arg index="0" value="localhost"/>
+        <constructor-arg index="1" value="6379"/>
+        <!--<constructor-arg name="port" value="7200"/>-->
+        <constructor-arg index="2" ref="jedisPoolConfig"/>
+    </bean>
+
+</beans>

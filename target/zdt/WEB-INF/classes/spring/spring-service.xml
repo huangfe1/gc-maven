@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+       default-lazy-init="false" default-autowire="byName">
+    <!--主要要设置default-autowire="byName"  不然会dao中会抛出没有sessionfactory-->
+    <context:component-scan
+            base-package="com.dreamer.*.**"/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+    <!--<bean id="wxProp" class="org.springframework.beans.factory.config.PropertiesFactoryBean">-->
+        <!--<property name="locations">&lt;!&ndash; 这里是PropertiesFactoryBean类，它也有个locations属性，也是接收一个数组，跟上面一样&ndash;&gt;-->
+            <!--<array>-->
+                <!--<value>classpath:zdtchat.properties</value>-->
+            <!--</array>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--注入微信Dispach参数-->
+    <bean name="wxDispatcher" class="com.wxjssdk.message.dispatcher.WxDispatcher">
+        <property name="eventDispatcher" ref="eventDispatcher"/>
+    </bean>
+
+    <bean name="eventDispatcher" class="com.wxjssdk.message.dispatcher.EventDispatcher">
+        <property name="eventHandler" ref="subscribeHandler"/>
+    </bean>
+
+
+    <!--配置获取token任务-->
+    <bean id="job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="tokenTimer"/>
+        <property name="targetMethod" value="doIt"/>
+    </bean>
+
+    <!--配置触发器-->
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <!-- see the example of method invoking job above -->
+        <property name="jobDetail" ref="job"/>
+        <!-- 10 seconds -->
+        <property name="startDelay" value="1000"/>
+        <!-- repeat every 50 seconds -->
+        <property name="repeatInterval" value="6000000"/>
+    </bean>
+
+    <!--启动监听-->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no"><!--加入autowire="no 不然报错-->
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger"/>
+                <!--<ref bean="simpleTrigger1"/>-->
+            </list>
+        </property>
+    </bean>
+
+</beans>

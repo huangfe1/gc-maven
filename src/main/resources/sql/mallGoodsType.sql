@@ -1,0 +1,1 @@
+alter TABLE  mall_goods_type add sc_type INTEGER DEFAULT 0;
