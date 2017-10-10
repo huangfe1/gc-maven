@@ -6,7 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32b3edf8-f0f8-4de0-9675-e59ecc5a4b01" name="Default" comment="" />
+    <list default="true" id="32b3edf8-f0f8-4de0-9675-e59ecc5a4b01" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/jdbc.properties" afterPath="$PROJECT_DIR$/src/main/resources/jdbc.properties" />
+    </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,7 +42,18 @@
     <favorites_list name="hzc-maven" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="jdbc.properties" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -143,7 +157,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/dreamer/view/pmall/PmallShopCartQueryController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dreamer/view/goods/StockBlotterController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dreamer/service/aliNotice/NoticeHandle.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/jdbc.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/dreamer/domain/wechat/WxConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dreamer/service/wxchat/SubscribeHandler.java" />
         <option value="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" />
@@ -184,6 +197,7 @@
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/mobile/wallet.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/dreamer/service/mobile/AuthorizationLetterHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dreamer/service/mobile/impl/AgentHandlerImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/jdbc.properties" />
       </list>
     </option>
   </component>
@@ -1150,7 +1164,7 @@
       <workItem from="1506412976628" duration="7200000" />
       <workItem from="1506572518100" duration="871000" />
       <workItem from="1506596108488" duration="1278000" />
-      <workItem from="1507598094318" duration="778000" />
+      <workItem from="1507598094318" duration="1555000" />
     </task>
     <servers />
   </component>
@@ -1187,7 +1201,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1265844000" />
+    <option name="totallyTimeSpent" value="1266621000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1313,13 +1327,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/mobile/login.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2078">
-          <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/resources/images/logo.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -1666,6 +1673,14 @@
             <element signature="e#13226#13227#0" expanded="true" />
             <element signature="e#13267#13268#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/jdbc.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
