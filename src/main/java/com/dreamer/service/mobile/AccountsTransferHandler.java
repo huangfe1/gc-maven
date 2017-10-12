@@ -16,4 +16,11 @@ public interface AccountsTransferHandler extends BaseHandler<AccountsTransfer>{
     List<AccountsTransfer> findAccountsTransfer(SearchParameter<AccountsTransfer> parameter,User user);
 
     String recharge(String body);//充值
+
+    void withDraw(Integer uid,Double amount,Integer cid);//提现
+
+    void refuseWithdraw(Integer aid);//拒绝提现
+
+    void confirmWithdraw(Integer aid);//同意提现
+
 }

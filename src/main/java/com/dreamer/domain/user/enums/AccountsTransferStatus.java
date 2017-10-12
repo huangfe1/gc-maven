@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum AccountsTransferStatus implements Serializable{
 
-    TRANSFER(0, "主动转出"), PAY(1, "充值成功"), ERROR(2, "失败"), NEW(3, "未支付");
+    TRANSFER(0, "主动转出"), PAY(1, "充值成功"), ERROR(2, "失败"), NEW(3, "未支付"),WITHDRAW(4,"提现申请"),REMITTED(5,"已经打款"),REFUSE(6,"拒绝提现");
 
     private Integer state;
 

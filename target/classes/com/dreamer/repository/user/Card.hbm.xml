@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dreamer.domain.user">
+    <class name="Card" table="card">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="native"/>
+        </id>
+
+
+
+        <many-to-one name="agent" class="User">
+            <column name="agent">
+                <comment>拥有人</comment>
+            </column>
+        </many-to-one>
+
+        <property name="name" type="java.lang.String">
+            <column name="name">
+                <comment>开户人姓名</comment>
+            </column>
+        </property>
+
+        <property name="bank" type="java.lang.String">
+            <column name="bank">
+                <comment>开户银行</comment>
+            </column>
+        </property>
+
+        <property name="branch" type="java.lang.String">
+            <column name="branch">
+                <comment>开户支行</comment>
+            </column>
+        </property>
+
+        <property name="number" type="java.lang.String">
+            <column name="number">
+                <comment>开户人卡号</comment>
+            </column>
+        </property>
+
+
+    </class>
+</hibernate-mapping>

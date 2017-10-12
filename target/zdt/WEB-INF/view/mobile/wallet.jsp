@@ -180,9 +180,14 @@
                 <h4> 代理商城</h4>
             </div>
 
-            <div class="item" id="yhsc">
-                <img src="${ctx}/resources/mallimages/yhsc.png" alt="">
-                <h4> 优惠商城</h4>
+            <%--<div class="item" id="yhsc">--%>
+                <%--<img src="${ctx}/resources/mallimages/yhsc.png" alt="">--%>
+                <%--<h4> 优惠商城</h4>--%>
+            <%--</div>   --%>
+
+            <div class="item" id="tx">
+                <img src="${ctx}/resources/mallimages/tx.png" alt="">
+                <h4> 提现</h4>
             </div>
 
             <div class="item" id="zhcz">
@@ -261,6 +266,11 @@
             url+="?stateType=2";
             window.location.href=url;
         });
+
+        $("#tx").click(function () {
+            url = "<c:url value='/mobile/withdraw.html'/>";
+            window.location.href=url;
+        })
 
         //代理商城
         $("#dlsc").click(function () {

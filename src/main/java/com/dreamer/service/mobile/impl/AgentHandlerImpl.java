@@ -11,6 +11,7 @@ import com.dreamer.repository.mobile.AgentDao;
 import com.dreamer.service.mobile.*;
 import com.dreamer.service.user.agentCode.AgentCodeGenerator;
 import com.wxjssdk.util.DateUtil;
+import javafx.application.Application;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -340,6 +341,21 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         return list.get(0);
     }
 
+
+    @Override
+    @Transactional
+    public void changePaw(Integer uid, String oldP, String newP, String conP) {
+        Agent agent = get(uid);
+        if(!oldP.trim().equals(agent.getPassword())){
+            throw new ApplicationException("原始密码不正确");
+        }
+
+        if(!newP.trim().equals(conP.trim())){
+            throw new ApplicationException("两次密码不匹配");
+        }
+        agent.setPassword(newP);
+        agentDao.merge(agent);
+    }
 
     /**
      * 代理商城是否可以返利

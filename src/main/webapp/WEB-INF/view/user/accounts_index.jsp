@@ -129,8 +129,17 @@
                                 <td>(${l.type.stateInfo})${l.remark}</td>
                                 <td>${l.updateTime}</td>
                                 <td>${l.transferTime}</td>
-                                <td>${l.status.stateInfo}</td>
+                                <c:if test="${l.status.state==4}">
+                                    <td><a class="btn btn-success default ajaxLink editBtn"
+                                           href="<c:url value='/mobile/withdraw/confirm.json?aid=${l.id}' /> "><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>同意打款</a>
+                                        <a class="ajaxLink btn btn-danger default"
+                                           href="<c:url value='/mobile/withdraw/refuse.json?aid=${l.id}' /> "><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>拒绝打款</a>
+                                    </td>
+                                </c:if>
 
+                                <c:if test="${l.status.state!=4}">
+                                    <td>${l.status.stateInfo}</td>
+                                </c:if>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -186,6 +195,7 @@
     $(function () {
 
         $("#dataList a.ajaxLink").click(function (e) {
+
             e.preventDefault();
             e.stopPropagation();
             var method = "GET";
@@ -195,7 +205,7 @@
                 }
                 method = "DELETE";
             }
-            if (!window.confirm("是否确定充值/删除,是否继续?")) {
+            if (!window.confirm("是否确定打款/拒绝,是否继续?")) {
                 return false;
             }
             $.ajax({
@@ -203,15 +213,18 @@
                     if (xhr.status >= 200 && xhr.status < 300) {
 //                        var m=$.parseJSON(xhr.responseText);
                         var m = xhr.responseText;
+                        console.log(m);
                         if (m.indexOf("error") != -1) {
-                            $("#messageBody").empty().html("操作失败" + m).addClass("text-danger");
-                            $("#myModal").modal({backdrop: "static", show: true});
-                            alert(m);
+                            $("#alertMessageBody").empty().html("操作失败" + m).addClass("text-danger");
+                            $("#myAlertModal").modal({backdrop: "static", show: true});
                         } else {
-                            $("#messageBody").empty().html("操作成功");
-                            $("#myModal").modal({backdrop: "static", show: true});
-                            $("#search").click();
-                        }
+                            $("#alertMessageBody").empty().html("操作成功");
+//                            alert( $("#messageBody").html());
+                            $("#myAlertModal").modal({backdrop: "static", show: true});
+                            setTimeout(function () {
+                                $("#search").click();
+                            },1000);
+                            }
 
                     } else {
                         $("#messageBody").empty().html("操作失败").addClass("text-danger");

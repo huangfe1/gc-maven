@@ -35,6 +35,8 @@ public interface AgentHandler extends BaseHandler<Agent> {
 
     boolean canReward(Agent agent);
 
+    void changePaw(Integer uid,String oldP,String newP,String conP);
+
     boolean canPmallReward(Agent agent);
 
     Agent findByAgentCodeOrId(String refCode);

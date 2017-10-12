@@ -342,13 +342,21 @@
         <%--</div>--%>
     </div>
 
-    <div class="label" id="zx" style="margin-bottom: 6em">
-        <div class="img">
-            <img src="${ctx}/resources/mallimages/wxsz.png" alt="">
+    <%--<div class="label" id="zx" style="margin-bottom: 6em">--%>
+        <%--<div class="img">--%>
+            <%--<img src="${ctx}/resources/mallimages/wxsz.png" alt="">--%>
+        <%--</div>--%>
+        <%--<span>注销</span>--%>
+        <%--<!--钱包-->--%>
+    <%--</div>--%>
+
+        <div class="label" id="zx" style="margin-bottom: 6em">
+            <div class="img">
+                <img src="${ctx}/resources/mallimages/wxsz.png" alt="">
+            </div>
+            <span>设置</span>
+            <!--钱包-->
         </div>
-        <span>注销</span>
-        <!--钱包-->
-    </div>
 
 
     <div class="qr">
@@ -399,9 +407,9 @@
 
         //注销按钮
         $("#zx").click(function () {
-            if (confirm("将取消当前账号与微信的绑定，是否继续！")) {
-                window.location.href = "<c:url value='/mobile/out.html'/>";
-            }
+//            if (confirm("将取消当前账号与微信的绑定，是否继续！")) {
+                window.location.href = "<c:url value='/mobile/set.html'/>";
+//            }
         })
 
 

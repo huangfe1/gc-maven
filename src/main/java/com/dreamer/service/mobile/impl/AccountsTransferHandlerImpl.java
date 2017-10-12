@@ -1,14 +1,12 @@
 package com.dreamer.service.mobile.impl;
 
-import com.dreamer.domain.user.AccountsRecord;
-import com.dreamer.domain.user.AccountsTransfer;
-import com.dreamer.domain.user.Agent;
-import com.dreamer.domain.user.User;
+import com.dreamer.domain.user.*;
 import com.dreamer.domain.user.enums.AccountsTransferStatus;
 import com.dreamer.domain.user.enums.AccountsType;
 import com.dreamer.repository.mobile.AccountsRecordDao;
 import com.dreamer.repository.mobile.AccountsTransferDao;
 import com.dreamer.repository.mobile.AgentDao;
+import com.dreamer.repository.mobile.CardDao;
 import com.dreamer.service.mobile.*;
 import com.dreamer.util.CommonUtil;
 import com.wxjssdk.util.XmlUtil;
@@ -112,6 +110,53 @@ public class AccountsTransferHandlerImpl extends BaseHandlerImpl<AccountsTransfe
         String result = XmlUtil.mapToXml(map);
         return result;
     }
+
+    @Override
+    @Transactional
+    public void withDraw(Integer uid, Double amount, Integer cid) {
+        Agent agent = agentDao.get(uid);
+        Card card = cardDao.get(cid);
+        if(!card.getAgent().getId().equals(uid)){
+            throw new ApplicationException("银行卡不存在!联系管理员");
+        }
+        String info = card.toString();
+        String remark = "提现-"+info;
+        MutedUser mutedUser = muteUserHandler.getMuteUser();
+        AccountsTransfer accountsTransfer = new AccountsTransfer(mutedUser, agent, remark, amount, AccountsType.VOUCHER, new Date());
+        accountsTransfer.setOut_trade_no(CommonUtil.createNo());//创建订单号 提交
+        //转账业务 生成记录
+        List<AccountsRecord> records = transfer(accountsTransfer);
+        accountsTransfer.setStatus(AccountsTransferStatus.WITHDRAW);//提现申请
+        //保存转账订单
+        accountsTransferDao.merge(accountsTransfer);
+        //保存记录
+        accountsRecordDao.saveList(records);
+        //金额变动通知--通知失败 不会回滚 因为我捕获了异常 异步处理
+        noticeHandler.noticeAccountRecords(records);
+    }
+
+
+    //拒绝转货
+    @Override
+    @Transactional
+    public void refuseWithdraw(Integer aid) {
+        AccountsTransfer accountsTransfer = accountsTransferDao.get(aid);
+        accountsTransfer.setStatus(AccountsTransferStatus.REFUSE);
+        transferAccounts(accountsTransfer.getToAgent().getId(),accountsTransfer.getFromAgent().getId(),AccountsType.VOUCHER.getState(),accountsTransfer.getAmount(),"退回-提现被拒绝ID:"+accountsTransfer.getId());
+        merge(accountsTransfer);
+    }
+
+    //同意提现
+    @Override
+    @Transactional
+    public void confirmWithdraw(Integer aid) {
+        AccountsTransfer accountsTransfer = accountsTransferDao.get(aid);
+        accountsTransfer.setStatus(AccountsTransferStatus.REMITTED);
+        merge(accountsTransfer);
+    }
+
+    @Autowired
+    private CardDao cardDao;
 
     @Autowired
     private AgentDao agentDao;

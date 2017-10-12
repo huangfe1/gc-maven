@@ -292,6 +292,29 @@ public class MobileController {
         return "/mobile/my";
     }
 
+    @RequestMapping("/mobile/changePaw.html")
+    public String changePaw() {
+        return "/mobile/paw";
+    }
+
+
+    @RequestMapping("/mobile/set.html")
+    public String mall_set() {
+        return "/mobile/set";
+    }
+
+    @RequestMapping("/mobile/changePaw.json")
+    @ResponseBody
+    public Message changePaw(HttpServletRequest request, String oldP, String newP, String conP) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            agentHandler.changePaw(user.getId(), oldP, newP, conP);
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            return Message.createFailedMessage(e.getMessage());
+        }
+    }
+
 
     //分享
     @RequestMapping("/mobile/find.html")
@@ -404,7 +427,7 @@ public class MobileController {
 
         //如果启动单独支付  先去获取openid
         WxConfig payConfig = wxConfigFactory.getPayConfig();
-        if(payConfig.getOpen()){//如果支付配置是打开的，就启用支付配置
+        if (payConfig.getOpen()) {//如果支付配置是打开的，就启用支付配置
             String redirectUrl = ServletUriComponentsBuilder.fromContextPath(request).path("/mobile/accounts/callBack/recharge.html").build().toString();
             String url = JSAPI.createGetCodeUrl(payConfig.getAppid(), redirectUrl, "snsapi_base", "");
             return "redirect:" + url;
@@ -417,19 +440,103 @@ public class MobileController {
         return "mobile/accounts/recharge";
     }
 
+
+    //去提现页面
+    @RequestMapping("/mobile/withdraw.html")
+    public String withdraw(HttpServletRequest request, Model model) {
+        User user = (User) WebUtil.getCurrentUser(request);
+        List<Card> cards = cardHandler.getList("agent.id", user.getId());
+        if (cards != null && !cards.isEmpty()) {
+            model.addAttribute("card", cards.get(0));
+        }
+        Agent agent = agentHandler.get(user.getId());
+        model.addAttribute("balance", agent.getAccounts().getVoucherBalance());
+        return "/mobile/withdraw";
+    }
+
+    //提现业务
+    @RequestMapping("/mobile/withdraw.json")
+    @ResponseBody
+    public Message withdraw(Double amount, Integer cid, HttpServletRequest request) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            accountsTransferHandler.withDraw(user.getId(), amount, cid);//提现
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            return Message.createFailedMessage(e.getMessage());
+        }
+    }
+
+
+    //拒绝提现业务
+    @RequestMapping("/mobile/withdraw/refuse.json")
+    @ResponseBody
+    public Message refuseWithdraw(Integer aid) {
+        try {
+            accountsTransferHandler.refuseWithdraw(aid);
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            return Message.createFailedMessage(e.getMessage());
+        }
+    }
+
+    //拒绝提现业务
+    @RequestMapping("/mobile/withdraw/confirm.json")
+    @ResponseBody
+    public Message confirmWithdraw(Integer aid) {
+        try {
+            accountsTransferHandler.confirmWithdraw(aid);
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            return Message.createFailedMessage(e.getMessage());
+        }
+    }
+
+    //银行卡列表
+    @RequestMapping("/mobile/cards.html")
+    public String cardList(HttpServletRequest request, Model model) {
+        User user = (User) WebUtil.getCurrentUser(request);
+        List<Card> cards = cardHandler.getList("agent.id", user.getId());
+        model.addAttribute("cards", cards);
+        return "/mobile/cards";
+    }
+
+
+    @RequestMapping("/mobile/addCard.html")
+    public String addCard(){
+        return "/mobile/addCard";
+    }
+
+    @RequestMapping("/mobile/addCard.json")
+    @ResponseBody
+    public Message addCard(Card card,HttpServletRequest request) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            Agent agent = agentHandler.get(user.getId());
+            card.setName(user.getRealName());
+            card.setAgent(agent);
+            cardHandler.merge(card);
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            return Message.createFailedMessage(e.getMessage());
+        }
+
+    }
+
+
     //开启了单独支付去获取支付openid然后去充值页面
     @RequestMapping("/mobile/accounts/callBack/recharge.html")
-    public String callBack_recharge(Model model,String code,HttpServletRequest request) {
+    public String callBack_recharge(Model model, String code, HttpServletRequest request) {
         //通过code获取openid
         WxConfig payConfig = wxConfigFactory.getPayConfig();
-        SdkResult sdkResult = JSAPI.getTokenAndOpenId(payConfig.getAppid(),payConfig.getSecret(),code);
-        if(!sdkResult.isSuccess()){
-            model.addAttribute("message",sdkResult.getError());
+        SdkResult sdkResult = JSAPI.getTokenAndOpenId(payConfig.getAppid(), payConfig.getSecret(), code);
+        if (!sdkResult.isSuccess()) {
+            model.addAttribute("message", sdkResult.getError());
             return "mobile/error";
         }
         JSONObject jsonObject = (JSONObject) sdkResult.getData();
-        String openid  = jsonObject.getString("openid");
-        model.addAttribute("openid",openid);
+        String openid = jsonObject.getString("openid");
+        model.addAttribute("openid", openid);
         //没有启动单独支付  直接去支付页面
         User user = (User) WebUtil.getCurrentUser(request);
         Agent agent = agentHandler.get(user.getId());
@@ -442,7 +549,7 @@ public class MobileController {
     //手机端充值业务统一下单 提交订单
     @RequestMapping("/mobile/accounts/commitRecharge.json")
     @ResponseBody
-    public Message commit_recharge(Double amount, HttpServletRequest request,@RequestParam(required = false) String openid) {
+    public Message commit_recharge(Double amount, HttpServletRequest request, @RequestParam(required = false) String openid) {
         User user = (User) WebUtil.getCurrentUser(request);
         Agent agent = agentHandler.get(user.getId());
         //单号
@@ -460,12 +567,12 @@ public class MobileController {
             String oid = agent.getWxOpenid();
             //如果payConfig存在 则用payConfig收款
             WxConfig payConfig = wxConfigFactory.getPayConfig();
-            if(payConfig.getOpen()&&openid!=null&&!openid.equals("")){
-                wxConfig=payConfig;
-                oid=openid;
+            if (payConfig.getOpen() && openid != null && !openid.equals("")) {
+                wxConfig = payConfig;
+                oid = openid;
             }
             //改变通知地址
-            String jsapiparam = payHandler.toWxPay(wxConfig, oid, orderNo, amount,WxConfig.RECHARGE_NOTICE_URL);
+            String jsapiparam = payHandler.toWxPay(wxConfig, oid, orderNo, amount, WxConfig.RECHARGE_NOTICE_URL);
             Message message = Message.createSuccessMessage();
             message.setData(jsapiparam);//返回支付需要参数
             return message;
@@ -687,7 +794,7 @@ public class MobileController {
     private PayHandler payHandler;
 
     @Autowired
-    private AccountsHandler accountsHandler;
+    private CardHandler cardHandler;
 
 //    @Autowired
 //    private WxConfigFactory wxConfigFactory;
