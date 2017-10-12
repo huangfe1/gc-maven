@@ -172,8 +172,20 @@ public class GoodsAccountHandlerImpl extends BaseHandlerImpl<GoodsAccount> imple
         return  goodsAccountDao.getList(map);
     }
 
+
+
     @Autowired
     private GoodsAccountDao goodsAccountDao;
+
+    public GoodsAccountDao getGoodsAccountDao() {
+        return goodsAccountDao;
+    }
+
+    @Autowired
+    public void setGoodsAccountDao(GoodsAccountDao goodsAccountDao) {
+        setBaseDao(goodsAccountDao);
+        this.goodsAccountDao = goodsAccountDao;
+    }
 
     @Autowired
     private GoodsDao goodsDao;

@@ -79,7 +79,7 @@
 										<tr>
 											<th>产品名称</th>
 											<th>库存</th>
-											<th>累计转货量</th>
+											<%--<th>累计转货量</th>--%>
 											<th>所处等级</th>
 										</tr>
 									</thead>
@@ -89,7 +89,7 @@
 											<tr>
 												<td>${accounts.goods.name}</td>
 												<td>${accounts.currentBalance}</td>
-												<td>${accounts.cumulative}</td>
+												<%--<td>${accounts.cumulative}</td>--%>
 												<!-- <td>${accounts.agentLevel.name}</td> -->
 												<td><select class="form-control priceLevel" <c:if test="${user.agent}"> readonly="readonly"
 												 disabled="disabled"</c:if>

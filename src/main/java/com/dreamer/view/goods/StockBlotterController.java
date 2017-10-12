@@ -35,11 +35,13 @@ public class StockBlotterController {
                 goodsHandler.addBalance(stock.getGoods().getId(),stock.getChange());
                 goodsHandler.addStock(stock.getGoods().getId(),stock.getChange());
                 goodsAccountHandler.increaseGoodsAccount(goodsAccount,stock.getChange());
+           		goodsAccountHandler.merge(goodsAccount);
             }else {
                 goodsHandler.reduceBalacne(stock.getGoods().getId(),-stock.getChange());
                 goodsHandler.reduceStock(stock.getGoods().getId(),-stock.getChange());
                 goodsAccountHandler.deductGoodsAccount(goodsAccount,stock.getChange());
-            }
+				goodsAccountHandler.merge(goodsAccount);
+			}
 			return Message.createSuccessMessage("新增库存成功");
 		}catch(Exception exp){
 			exp.printStackTrace();
