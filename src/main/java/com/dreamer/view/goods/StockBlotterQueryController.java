@@ -1,31 +1,24 @@
 package com.dreamer.view.goods;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import ps.mx.otter.utils.DatatableDTO;
-import ps.mx.otter.utils.SearchParameter;
-import ps.mx.otter.utils.WebUtil;
-
 import com.dreamer.domain.mall.goods.Goods;
 import com.dreamer.domain.mall.goods.StockBlotter;
 import com.dreamer.domain.mall.goods.StockBlotter.StockBlotterView;
 import com.dreamer.repository.goods.GoodsDAO;
 import com.dreamer.repository.goods.StockBlotterDAO;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import ps.mx.otter.utils.DatatableDTO;
+import ps.mx.otter.utils.SearchParameter;
+import ps.mx.otter.utils.WebUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/stock")
@@ -39,6 +32,7 @@ public class StockBlotterQueryController {
 		try {
 			List<Goods> goods = goodsDAO.search(param, null, startStock,
 					endStock, (t) -> true);
+			//统计公司库存 代理库存 已发货数量
 			WebUtil.turnPage(param, request);
 			model.addAttribute("goods", goods);
 			model.addAttribute("startStock", startStock);

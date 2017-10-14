@@ -28,6 +28,9 @@ public interface BaseHandler<T>  {
     //根据一组参数获取
     List<T> getList(String name,Object value);
 
+    //根据一组参数获取
+    List<T> getListIn(String name,List<Object> value);
+
     List<T> findAll();
 
     List<T> getOr(Map<String,Object> map);

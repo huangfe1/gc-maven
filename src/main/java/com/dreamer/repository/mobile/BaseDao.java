@@ -34,6 +34,9 @@ public interface BaseDao<T> {
     //根据参数获取
     List<T> getList(String name,Object value);
 
+    //根据参数获取
+    List<T> getListIn(String name,List<Object> value);
+
     //根据一组参数获取
     T get(Map<String,Object> map);
 

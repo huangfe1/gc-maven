@@ -90,12 +90,12 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
 
     @Override
     @Transactional
-    public Agent addAgentByAdmin(Agent agent,String refCode) {
-       if(agent.getId()!=null){
-           agent=updateAgent(refCode,agent);
-       }else {
-           agent = buildAgent(refCode,agent.getMobile(),agent.getIdCard(),agent.getWeixin(),agent.getRealName(),agent.getRemittance(),agent.getPassword());
-       }
+    public Agent addAgentByAdmin(Agent agent, String refCode) {
+        if (agent.getId() != null) {
+            agent = updateAgent(refCode, agent);
+        } else {
+            agent = buildAgent(refCode, agent.getMobile(), agent.getIdCard(), agent.getWeixin(), agent.getRealName(), agent.getRemittance(), agent.getPassword());
+        }
         return merge(agent);
     }
 
@@ -143,8 +143,8 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         Agent agent = new Agent();
         Agent parent = muteUserHandler.getMuteUser();
         //如果是管理员的
-        if(!parent.getAgentCode().equals(refCode)){
-            parent= findByAgentCodeOrId(refCode);
+        if (!parent.getAgentCode().equals(refCode)) {
+            parent = findByAgentCodeOrId(refCode);
         }
         agent.setParent(parent);
         agent.setUserStatus(UserStatus.NORMAL);
@@ -190,19 +190,19 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         String mobile = param.getMobile();
         param.setWeixin(null);
         param.setMobile(null);
-        map.put("weixin",wx);
-        map.put("mobile",mobile);
+        map.put("weixin", wx);
+        map.put("mobile", mobile);
         List<Agent> agents = getOr(map);
-        if(agents.size()>0){
-            throw new ApplicationException("微信或者电话重复"+agents.get(0).getRealName());
+        if (agents.size() > 0) {
+            throw new ApplicationException("微信或者电话重复" + agents.get(0).getRealName());
         }
         param.setWeixin(wx);
         param.setMobile(mobile);
         //验证是否存在
         Agent parent = muteUserHandler.getMuteUser();
         //如果是管理员的
-        if(!parent.getAgentCode().equals(refCode)){
-            parent= findByAgentCodeOrId(refCode);
+        if (!parent.getAgentCode().equals(refCode)) {
+            parent = findByAgentCodeOrId(refCode);
         }
         param.setParent(parent);
         //验证是否为空
@@ -319,7 +319,6 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     }
 
 
-
     /**
      * 通过Code或者Id查找
      *
@@ -346,11 +345,11 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     @Transactional
     public void changePaw(Integer uid, String oldP, String newP, String conP) {
         Agent agent = get(uid);
-        if(!oldP.trim().equals(agent.getPassword())){
+        if (!oldP.trim().equals(agent.getPassword())) {
             throw new ApplicationException("原始密码不正确");
         }
 
-        if(!newP.trim().equals(conP.trim())){
+        if (!newP.trim().equals(conP.trim())) {
             throw new ApplicationException("两次密码不匹配");
         }
         agent.setPassword(newP);
@@ -371,7 +370,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
             return false;//整顿了的直接跳过
         }
 
-        if(isVip(agent))return true;
+        if (isVip(agent)) return true;
 
 //        if(agent.getNeedCheck()!=null&&agent.getNeedCheck()==false)return true;//不需要审核
 
@@ -407,8 +406,6 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
 //        }
         return false;
     }
-
-
 
 
     //优惠商城能返利
@@ -452,8 +449,8 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     //新品牌代言
     @Override
     public boolean isNewVip(Agent agent) {
-        Date startDate = DateUtil.formatStr("2017-06-26","yyyy-MM-dd");
-        if(isVip(agent)&&agent.getJoinDate()!=null&&agent.getJoinDate().after(startDate)){
+        Date startDate = DateUtil.formatStr("2017-06-26", "yyyy-MM-dd");
+        if (isVip(agent) && agent.getJoinDate() != null && agent.getJoinDate().after(startDate)) {
             return true;
         }
         return false;
@@ -478,15 +475,15 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         Goods goods = goodsHandler.get(gid);
         if (goods.isMainGoods()) {//如果是主打产品
             List<GoodsAccount> goodsAccounts = goodsAccountHandler.getGoodsAccounts(agent);
-            for(GoodsAccount gc : goodsAccounts){
+            for (GoodsAccount gc : goodsAccounts) {
                 gc.setAgentLevel(level);
             }
-            if(null==agent.getUpdateTime()){
+            if (null == agent.getUpdateTime()) {
                 agent.setUpdateTime(new Timestamp(agent.getJoinDate().getTime()));//存储原始加入日期
             }
             agent.setJoinDate(new Date());
-        }else {
-            GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(agent,goods);
+        } else {
+            GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(agent, goods);
             goodsAccount.setAgentLevel(level);
         }
         merge(agent);
@@ -503,13 +500,49 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
 
     @Override
     public AgentLevel getLevel(Agent agent) {
-     return    goodsAccountHandler.getMainGoodsAccount(agent).getAgentLevel();
+        return goodsAccountHandler.getMainGoodsAccount(agent).getAgentLevel();
     }
 
     @Override
     public List<Agent> findAgents(SearchParameter<Agent> parameter) {
         return agentDao.findAgents(parameter);
     }
+
+    @Override
+    public List<Agent> getAllChildrens(String agentCode) {
+        Agent agent = get("agentCode", agentCode);
+        if (agentCode.equals("01")) {
+            agent = muteUserHandler.getMuteUser();
+        }
+        List<Agent> allChildrens = new ArrayList<>();
+        List<Agent> myChildrens = getList("parent.id", agent.getId());
+        allChildrens.addAll(myChildrens);
+        List<Agent> otherChildrens = new ArrayList<>();
+        getChildrens(myChildrens, otherChildrens);
+        return allChildrens;
+    }
+
+    @Override
+    public List<Object[]> countAgentsByLevel(List<Agent> agents) {
+        List<Integer> uids = new ArrayList<>();
+        for (Agent agent : agents) {
+            uids.add(agent.getId());
+        }
+        return agentDao.countAgentsByLevel(uids);
+    }
+
+    //遍历 找出所有的代理
+    public void getChildrens(List<Agent> agents, List<Agent> childrens) {
+        List<Object> ids = new ArrayList<>();
+        for (Agent agent : agents) {
+            ids.add(agent.getId());
+        }
+        if(ids.size()==0)return;
+        List<Agent> temps = getListIn("parent.id", ids);
+        childrens.addAll(agents);
+        getChildrens(temps, childrens);
+    }
+
 
     @Autowired
     private AgentDao agentDao;

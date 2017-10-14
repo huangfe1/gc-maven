@@ -6,6 +6,7 @@ import com.dreamer.domain.user.User;
 import com.dreamer.domain.user.enums.AccountsType;
 import com.wxjssdk.util.DateUtil;
 import org.hibernate.criterion.*;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ps.mx.otter.utils.SearchParameter;
 
@@ -82,6 +83,20 @@ public class AccountsRecordDao extends BaseDaoImpl<AccountsRecord> {
         }
 
         return searchByPage(p,dc);
+    }
+
+
+    //通过代理id集 找出记录
+    public List<AccountsRecord> listByChlidrens(AccountsType accountsType, List<Integer> uids,String startTime,String endTime) {
+        String hql = "from AccountsRecord as ac where ac.accountsType = :type and ac.agent.id in :uids and updateTime<=:endTime and updateTime>=:startTime";
+        Query query = currentSession().createQuery(hql);
+        query.setParameter("type",accountsType);
+        query.setParameter("uids",uids);
+        Date startDate = DateUtil.formatStartTime(startTime);
+        Date endDate = DateUtil.formatEndTime(endTime);
+        query.setParameter("startTime",startDate);
+        query.setParameter("endTime",endDate);
+        return query.list();
     }
 
 

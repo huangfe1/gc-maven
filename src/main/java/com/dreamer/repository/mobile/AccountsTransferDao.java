@@ -1,11 +1,14 @@
 package com.dreamer.repository.mobile;
 
 import com.dreamer.domain.user.AccountsTransfer;
+import com.dreamer.domain.user.Agent;
 import com.dreamer.domain.user.User;
+import com.dreamer.domain.user.enums.AccountsType;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ps.mx.otter.utils.SearchParameter;
 
@@ -40,6 +43,9 @@ public class AccountsTransferDao extends BaseDaoImpl<AccountsTransfer> {
         dc.addOrder(Order.desc("id"));
         return searchByPage(parameter, dc);
     }
+
+
+
 
 
 }

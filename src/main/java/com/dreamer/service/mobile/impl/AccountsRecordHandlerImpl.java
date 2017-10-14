@@ -1,7 +1,9 @@
 package com.dreamer.service.mobile.impl;
 
 import com.dreamer.domain.user.AccountsRecord;
+import com.dreamer.domain.user.Agent;
 import com.dreamer.domain.user.User;
+import com.dreamer.domain.user.enums.AccountsType;
 import com.dreamer.repository.mobile.AccountsRecordDao;
 import com.dreamer.service.mobile.AccountsRecordHandler;
 import com.dreamer.util.PreciseComputeUtil;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ps.mx.otter.utils.SearchParameter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +64,15 @@ public class AccountsRecordHandlerImpl extends BaseHandlerImpl<AccountsRecord> i
     @Override
     public List<AccountsRecord> findAccountsRecords(SearchParameter<AccountsRecord> parameter, User user) {
         return accountsRecordDao.findAccountsRecords(parameter,user);
+    }
+
+    @Override
+    public List<AccountsRecord> listByChlidrens(AccountsType accountsType, List<Agent> agents,String startTime,String endTime) {
+        List<Integer> uids = new ArrayList<>();
+        for(Agent agent : agents){
+            uids.add(agent.getId());
+        }
+        return accountsRecordDao.listByChlidrens(accountsType,uids,startTime,endTime);
     }
 
     @Override

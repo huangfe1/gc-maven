@@ -88,7 +88,7 @@
     <div class="cardInfo">
         <ul>
             <li>
-                <span>真名</span><input name="name" class="name" readonly type="text" placeholder="黄飞">
+                <span>真名</span><input name="name" class="name" readonly type="text" placeholder="${user.realName}">
             </li>
 
             <li>

@@ -230,44 +230,48 @@
 				<%--</div>--%>
 			<%--</div>--%>
 			<%--</c:if>--%>
-<%--<c:if test="${user.admin and (user.loginName eq 'zmzcaohai' || user.loginName eq 'tangjia')}">--%>
-			<%--<div class="row">--%>
-				<%--<div class="col-lg-3 col-md-6">--%>
-					<%--<div class="panel panel-primary">--%>
-						<%--<div class="panel-heading">--%>
-							<%--<div class="row">--%>
-								<%--<div class="col-xs-3">--%>
-									<%--<i class="fa fa-users fa-5x"></i>--%>
-								<%--</div>--%>
-								<%--<div class="col-xs-9 text-right">--%>
-									<%--<div class="huge" id="newer">${newer}</div>--%>
-									<%--<div>新的注册</div>--%>
-								<%--</div>--%>
-							<%--</div>--%>
-						<%--</div>--%>
-						<%--<a href="<c:url value='/agent/audit/index.html'/>">--%>
-							<%--<div class="panel-footer">--%>
-								<%--<span class="pull-left">查看详细</span> <span class="pull-right"><i--%>
-									<%--class="fa fa-arrow-circle-right"></i></span>--%>
-								<%--<div class="clearfix"></div>--%>
-							<%--</div>--%>
-						<%--</a>--%>
-					<%--</div>--%>
-				<%--</div>--%>
+<c:if test="${user.admin and (user.loginName eq 'zdtpz' || user.loginName eq 'tangjia')}">
+			<div class="row">
 
-				<%--<div class="col-lg-3 col-md-6">--%>
-					<%--<div class="panel panel-green">--%>
-						<%--<div class="panel-heading">--%>
-							<%--<div class="row">--%>
-								<%--<div class="col-xs-3">--%>
-									<%--&lt;%&ndash;<i class="fa fa-tasks fa-5x"></i>&ndash;%&gt;--%>
+
+				<div class="row">
+					<div class="col-lg-3 col-md-6">
+						<div class="panel panel-red">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="fa fa-yen fa-4x"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<div class="huge" id="newer">${voucherSum}</div>
+										<div>历史奖金总数</div>
+									</div>
+								</div>
+							</div>
+							<%--<a href="<c:url value='#'/>">--%>
+								<%--<div class="panel-footer">--%>
+									<%--<span class="pull-left">查看详细</span> <span class="pull-right"><i--%>
+										<%--class="fa fa-arrow-circle-right"></i></span>--%>
+									<%--<div class="clearfix"></div>--%>
 								<%--</div>--%>
-								<%--<div class="col-xs-12 ">--%>
-									<%--<div class="huge">${sumVoucher}</div>--%>
-									<%--<div>市场代金券总数</div>--%>
-								<%--</div>--%>
-							<%--</div>--%>
-						<%--</div>--%>
+							<%--</a>--%>
+						</div>
+					</div>
+
+
+				<div class="col-lg-3 col-md-6">
+					<div class="panel panel-green">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa fa-yen fa-4x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge">${withdrawSum==null?0:withdrawSum}</div>
+									<div>已提现奖金</div>
+								</div>
+							</div>
+						</div>
 						<%--<a href="<c:url value='#'/>">--%>
 							<%--<div class="panel-footer">--%>
 								<%--<span class="pull-left">查看详细</span> <span class="pull-right"><i--%>
@@ -275,43 +279,21 @@
 								<%--<div class="clearfix"></div>--%>
 							<%--</div>--%>
 						<%--</a>--%>
-					<%--</div>--%>
-				<%--</div>--%>
-				<%--<div class="col-lg-3 col-md-6">--%>
-					<%--<div class="panel panel-green">--%>
-						<%--<div class="panel-heading">--%>
-							<%--<div class="row">--%>
-								<%--<div class="col-xs-3">--%>
-									<%--<i class="fa fa-tasks fa-5x"></i>--%>
-								<%--</div>--%>
-								<%--<div class="col-xs-9 text-right">--%>
-									<%--<div class="huge">${transferNewer}</div>--%>
-									<%--<div>转货请求</div>--%>
-								<%--</div>--%>
-							<%--</div>--%>
-						<%--</div>--%>
-						<%--<a href="<c:url value='/transfer/confirm.html'/>">--%>
-							<%--<div class="panel-footer">--%>
-								<%--<span class="pull-left">查看详细</span> <span class="pull-right"><i--%>
-									<%--class="fa fa-arrow-circle-right"></i></span>--%>
-								<%--<div class="clearfix"></div>--%>
-							<%--</div>--%>
-						<%--</a>--%>
-					<%--</div>--%>
-				<%--</div>--%>
-				<%--<div class="col-lg-3 col-md-6">--%>
-					<%--<div class="panel panel-yellow">--%>
-						<%--<div class="panel-heading">--%>
-							<%--<div class="row">--%>
-								<%--<div class="col-xs-3">--%>
-									<%--<i class="fa fa-comments fa-5x"></i>--%>
-								<%--</div>--%>
-								<%--<div class="col-xs-9 text-right">--%>
-									<%--<div class="huge">${deliveryNewer}</div>--%>
-									<%--<div>发货申请</div>--%>
-								<%--</div>--%>
-							<%--</div>--%>
-						<%--</div>--%>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<div class="panel panel-yellow">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-3">
+									<i class="fa fa-yen fa-4x"></i>
+								</div>
+								<div class="col-xs-9 text-right">
+									<div class="huge">${av}</div>
+									<div>未提现奖金</div>
+								</div>
+							</div>
+						</div>
 						<%--<a href="<c:url value='/delivery/index.html'/>">--%>
 							<%--<div class="panel-footer">--%>
 								<%--<span class="pull-left">查看详细</span> <span class="pull-right"><i--%>
@@ -319,8 +301,8 @@
 								<%--<div class="clearfix"></div>--%>
 							<%--</div>--%>
 						<%--</a>--%>
-					<%--</div>--%>
-				<%--</div>--%>
+					</div>
+				</div>
 				<%--<div class="col-lg-3 col-md-6">--%>
 					<%--<div class="panel panel-red">--%>
 						<%--<div class="panel-heading">--%>
@@ -330,21 +312,21 @@
 								<%--</div>--%>
 								<%--<div class="col-xs-9 text-right">--%>
 									<%--<div class="huge">${ empty newOrder ? 0 : newOrder}</div>--%>
-									<%--<div>积分订单</div>--%>
+									<%--<div></div>--%>
 								<%--</div>--%>
 							<%--</div>--%>
 						<%--</div>--%>
-						<%--<a href="<c:url value='/pm/order/index.html?entity.status=NEW'/>">--%>
-							<%--<div class="panel-footer">--%>
-								<%--<span class="pull-left">查看详细</span> <span class="pull-right"><i--%>
-									<%--class="fa fa-arrow-circle-right"></i></span>--%>
-								<%--<div class="clearfix"></div>--%>
-							<%--</div>--%>
-						<%--</a>--%>
+						<%--&lt;%&ndash;<a href="<c:url value='/pm/order/index.html?entity.status=NEW'/>">&ndash;%&gt;--%>
+							<%--&lt;%&ndash;<div class="panel-footer">&ndash;%&gt;--%>
+								<%--&lt;%&ndash;<span class="pull-left">查看详细</span> <span class="pull-right"><i&ndash;%&gt;--%>
+									<%--&lt;%&ndash;class="fa fa-arrow-circle-right"></i></span>&ndash;%&gt;--%>
+								<%--&lt;%&ndash;<div class="clearfix"></div>&ndash;%&gt;--%>
+							<%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+						<%--&lt;%&ndash;</a>&ndash;%&gt;--%>
 					<%--</div>--%>
 				<%--</div>--%>
-			<%--</div>--%>
-			<%--</c:if>--%>
+			</div>
+			</c:if>
 		</div>
 	</div>
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"

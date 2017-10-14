@@ -61,6 +61,22 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
         goodsDao.merge(goods);
     }
 
+    @Override
+    @Transactional
+    public void addStockSum(Integer gid, Integer quantity) {
+        Goods goods = goodsDao.get(gid);
+        goods.increaseStockSum(quantity);
+        goodsDao.merge(goods);
+    }
+
+    @Override
+    @Transactional
+    public void reduceStockSum(Integer gid, Integer quantity) {
+        Goods goods = goodsDao.get(gid);
+        goods.deductStockSum(quantity);
+        goodsDao.merge(goods);
+    }
+
     private GoodsDao goodsDao;
 
     public GoodsDao getGoodsDao() {

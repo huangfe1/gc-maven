@@ -66,8 +66,9 @@
 									<th>产品名称</th>
 									<th>当前库存</th>
 									<th>当前余额</th>
+									<th>代理余额</th>
 									<%--<th>当前积分</th>--%>
-									<th>库存预警值</th>
+									<th>已发货数</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -79,8 +80,9 @@
 											href="<c:url value='/stock/detail.html?goodsId=${g.id}' /> ">${g.name}</a></td>
 										<td>${g.currentStock}</td>
 										<td>${g.currentBalance}</td>
+										<td>${g.stockSum-g.currentBalance}</td>
 										<%--<td>${g.currentPoint}</td>--%>
-										<td>${g.alertStock}</td>
+										<td>${g.stockSum-g.currentStock}</td>
 										<td><a class="btn btn-success default editBtn"
 											href="<c:url value='/stock/edit.html?goodsId=${g.id}' /> "><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>增加库存</a>
 											<a class="btn btn-info default detailBtn" data-role="detail"

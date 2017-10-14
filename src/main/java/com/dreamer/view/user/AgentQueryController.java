@@ -34,6 +34,13 @@ import java.util.stream.Collectors;
 public class AgentQueryController {
 
 
+//	//树形列表
+//	@RequestMapping("/treeList")
+//	public String treeList(Integer uid){
+//
+//	}
+
+
 	@RequestMapping(value = { "/index.html", "/search.html" }, method = RequestMethod.GET)
 	public String index(
 			@ModelAttribute("parameter") SearchParameter<Agent> parameter, Model model, HttpServletRequest request) {

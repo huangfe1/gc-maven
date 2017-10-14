@@ -39,7 +39,6 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
             Goods goods = item.getGoods();
             GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(agent, goods, main);
             goodsAccountHandler.deductGoodsAccount(goodsAccount, item.getQuantity());
-            //TODO 不知道会不会减少  实际证明减少了
             //减少公司库房
             goodsHandler.reduceStock(item.getGoods().getId(),item.getQuantity());
         }
@@ -57,7 +56,6 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
             Goods goods = item.getGoods();
             GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(agent, goods, main);
             goodsAccountHandler.increaseGoodsAccount(goodsAccount, item.getQuantity());
-            //TODO 不知道会不会减少  实际证明减少了
             //退回公司库房
             goodsHandler.addStock(item.getGoods().getId(),item.getQuantity());
         }
@@ -93,13 +91,13 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
         if (logistics == null) {
             throw new ApplicationException(note.getAddress().getProvince() + "地址不存在！");
         }
-        Double result = 0.0;
+        Double weight = 0.0;
         for (DeliveryItem item : note.getDeliveryItems()) {
-            Double fee = getLogisticsFee(item.getGoods(), item.getQuantity(), logistics);
-            result = PreciseComputeUtil.add(result, fee);
+            weight+=item.getGoods().getWeight()*item.getQuantity();
         }
-        result = PreciseComputeUtil.round(result);
-        return result;
+        Double fee = getLogisticsFee(weight, logistics);
+        fee = PreciseComputeUtil.round(fee);
+        return fee;
     }
 
     public static void main(String[] args) {

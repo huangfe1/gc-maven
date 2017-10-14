@@ -34,9 +34,9 @@
 										<th>商品名</th>
 										<th>库存变更数</th>
 										<th>变更后库存</th>
-										<th>积分变更数</th>
-										<th>变更后积分</th>
-										<th>操作员</th>
+										<%--<th>积分变更数</th>--%>
+										<%--<th>变更后积分</th>--%>
+										<%--<th>操作员</th>--%>
 										<th>操作时间</th>
 									</tr>
 								</thead>
@@ -107,12 +107,6 @@
 				"data" : "change"
 			}, {
 				"data" : "currentStock"
-			},{
-				"data":"point"
-			},{
-				"data":"currentPoint"
-			},{
-				"data":"user.realName"
 			},{
 				"data":"operateTime"
 			} ]

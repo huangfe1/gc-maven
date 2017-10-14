@@ -24,5 +24,12 @@ public interface GoodsHandler extends BaseHandler<Goods> {
     //减少库存
     void reduceStock(Integer gid,Integer quantity);
 
+    //增加库存总数
+    void addStockSum(Integer gid,Integer quantity);
+
+    //减少库存总数
+    void reduceStockSum(Integer gid,Integer quantity);
+
+
 
 }

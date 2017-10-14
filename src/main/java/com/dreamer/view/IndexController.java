@@ -9,6 +9,7 @@ import com.dreamer.repository.user.AccountsDAO;
 import com.dreamer.repository.user.AdminDAO;
 import com.dreamer.repository.user.AgentDAO;
 import com.dreamer.repository.user.MutedUserDAO;
+import com.dreamer.service.mobile.CountHandler;
 import com.dreamer.service.mobile.UserHandler;
 import com.dreamer.service.mobile.factory.WxConfigFactory;
 import com.dreamer.service.user.AgentHandler;
@@ -104,20 +105,19 @@ public class IndexController {
 
 
 
+    //首页 1-统计所有产生的奖金  2-还有多少奖金没有提现  3-提现了多少奖金
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(HttpSession session, HttpServletRequest request, Model model) {
         try {
             User user = (User) WebUtil.getCurrentUser(request);
-//            model.addAttribute("newer", agentDAO.countNewer());
-//            model.addAttribute("transferNewer", transferDAO.countNewer());
-//            model.addAttribute("deliveryNewer", deliveryNoteDAO.countNewer(user));
-//            model.addAttribute("newOrder", orderDAO.countNewOrder());
-//            model.addAttribute("sumVoucher", accountsDAO.sumVoucher());//代金券总数
-//            if (user.isAgent()) {
-//                Agent agent = agentDAO.findById(user.getId());
-//                model.addAttribute("transferNewer", transferDAO.countNewer(agent.getId()));
-//                WebUtil.addSessionAttribute(request, Constant.USER_KEY, agent);
-//            }
+            if(user.isAdmin()){//如果是管理员
+                //一共产生了多少奖金
+                model.addAttribute("voucherSum",countHandler.countVoucher());
+                //提现了多少奖金
+                model.addAttribute("withdrawSum",countHandler.countWithdraw());
+                //还有多少奖金没有体现
+                model.addAttribute("av",countHandler.countAgentsVoucher());
+            }
             return "index";
         } catch (CurrentUserInfoMissingException umep) {
             session.invalidate();
@@ -315,6 +315,9 @@ public class IndexController {
 
     @Autowired
     private AgentHandler agentHandler;
+
+    @Autowired
+    private CountHandler countHandler;
 
 
 

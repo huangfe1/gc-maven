@@ -63,7 +63,7 @@
     <div class="list">
         <ul>
             <!--<li>修改密码</li>-->
-            <li class="zx">注销登陆</li>
+            <li class="zx">退出登陆</li>
         </ul>
     </div>
 

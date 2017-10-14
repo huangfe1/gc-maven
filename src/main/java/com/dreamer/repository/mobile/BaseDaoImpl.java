@@ -88,6 +88,12 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
         return getList(map);
     }
 
+    @Override
+    public List<T> getListIn(String name, List<Object> value) {
+        DetachedCriteria dc = DetachedCriteria.forClass(clazz);
+        dc.add(Restrictions.in(name, value));
+        return findByCriteria(dc, null, null);
+    }
 
     @Override
     public List<T> getOr(Map<String, Object> map) {

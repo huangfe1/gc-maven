@@ -32,6 +32,10 @@ public interface AgentHandler extends BaseHandler<Agent> {
 
     Agent addAgentByAdmin(Agent agent,String refCode);
 
+    List<Agent> getAllChildrens(String agentCode);
+
+    List<Object[]> countAgentsByLevel(List<Agent> agents);
+
 
     boolean canReward(Agent agent);
 

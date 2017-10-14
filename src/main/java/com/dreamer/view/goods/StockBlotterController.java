@@ -34,11 +34,13 @@ public class StockBlotterController {
 			if(stock.getChange()>0){
                 goodsHandler.addBalance(stock.getGoods().getId(),stock.getChange());
                 goodsHandler.addStock(stock.getGoods().getId(),stock.getChange());
+                goodsHandler.addStockSum(stock.getGoods().getId(),stock.getChange());
                 goodsAccountHandler.increaseGoodsAccount(goodsAccount,stock.getChange());
            		goodsAccountHandler.merge(goodsAccount);
             }else {
                 goodsHandler.reduceBalacne(stock.getGoods().getId(),-stock.getChange());
                 goodsHandler.reduceStock(stock.getGoods().getId(),-stock.getChange());
+                goodsHandler.reduceStockSum(stock.getGoods().getId(),-stock.getChange());
                 goodsAccountHandler.deductGoodsAccount(goodsAccount,stock.getChange());
 				goodsAccountHandler.merge(goodsAccount);
 			}

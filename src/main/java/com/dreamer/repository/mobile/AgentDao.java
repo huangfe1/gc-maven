@@ -1,7 +1,11 @@
 package com.dreamer.repository.mobile;
 
 import com.dreamer.domain.user.Agent;
-import org.hibernate.criterion.*;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ps.mx.otter.utils.SearchParameter;
 
@@ -21,6 +25,13 @@ public class AgentDao extends BaseDaoImpl<Agent> {
         dc.add(Restrictions.ne("wxUnionID", ""));
         //TODO 没有结果不知道这里会返回什么
         return findByCriteria(dc);
+    }
+
+    public List<Object[]> countAgentsByLevel(List<Integer> uids){
+        String hql = "select level.name,count(gc.id) from GoodsAccount  as gc left join AgentLevel as level on level.id = gc.agentLevel.id left join Goods as g on g.id = gc.goods.id where g.benchmark = true and gc.user.id in :list   group by level.id  order by level.level ";
+        Query query = currentSession().createQuery(hql);
+        query.setParameter("list",uids);
+        return query.getResultList();
     }
 
 

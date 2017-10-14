@@ -21,6 +21,7 @@ public class Goods implements java.io.Serializable {
 	private Integer order;
 	private Integer currentBalance;
 	private Integer currentStock;
+	private Integer stockSum;//总入库
 	private Integer alertStock;
 	private Timestamp updateTime;
     private Boolean shelf;//上架
@@ -93,9 +94,16 @@ public class Goods implements java.io.Serializable {
 		}
 		return 0;
 	}
-	
-	
-	
+
+
+	public Integer getStockSum() {
+		return stockSum;
+	}
+
+	public void setStockSum(Integer stockSum) {
+		this.stockSum = stockSum;
+	}
+
 	public boolean isMainGoods(){
 		return benchmark;
 	}
@@ -141,11 +149,6 @@ public class Goods implements java.io.Serializable {
 		increaseCurrentBalance(stock.getChange());
 		stock.recordChange(this);
 	}
-	
-	public Integer increaseCurrentStock(Integer added){
-		setCurrentStock(currentStock+added);
-		return getCurrentStock();
-	}
 
     public void setShelf(Boolean shelf) {
         this.shelf = shelf;
@@ -155,6 +158,13 @@ public class Goods implements java.io.Serializable {
     public Boolean getShelf() {
         return shelf;
     }
+	
+	public Integer increaseCurrentStock(Integer added){
+		setCurrentStock(currentStock+added);
+		return getCurrentStock();
+	}
+
+
 
     public Integer deductCurrentStock(Integer deduct){
 		if(deduct>getCurrentStock()){
@@ -163,6 +173,25 @@ public class Goods implements java.io.Serializable {
 		setCurrentStock(currentStock-deduct);
 		return getCurrentStock();
 	}
+
+
+
+    public Integer increaseStockSum(Integer added){
+        setStockSum(stockSum+added);
+        return getStockSum();
+    }
+
+
+
+    public Integer deductStockSum(Integer deduct){
+        if(deduct>getStockSum()){
+            throw new ApplicationException("总入库减少失败！");
+        }
+        setStockSum(stockSum-deduct);
+        return getStockSum();
+    }
+
+
 
 
     /**
