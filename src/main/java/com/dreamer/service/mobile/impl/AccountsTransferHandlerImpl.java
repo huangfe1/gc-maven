@@ -113,14 +113,15 @@ public class AccountsTransferHandlerImpl extends BaseHandlerImpl<AccountsTransfe
 
     @Override
     @Transactional
-    public void withDraw(Integer uid, Double amount, Integer cid) {
+    public void withDraw(Integer uid, Double amount, Integer cid,String remark) {
         Agent agent = agentDao.get(uid);
         Card card = cardDao.get(cid);
         if(!card.getAgent().getId().equals(uid)){
             throw new ApplicationException("银行卡不存在!联系管理员");
         }
         String info = card.toString();
-        String remark = "提现-"+info;
+        String rm = "提现-"+info;
+        remark=rm+"-备注:"+remark;
         MutedUser mutedUser = muteUserHandler.getMuteUser();
         AccountsTransfer accountsTransfer = new AccountsTransfer(mutedUser, agent, remark, amount, AccountsType.VOUCHER, new Date());
         accountsTransfer.setOut_trade_no(CommonUtil.createNo());//创建订单号 提交

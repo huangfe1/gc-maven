@@ -167,6 +167,7 @@
             </div>
             <h4>总业绩</h4>
             <p>￥${benefit}</p>
+            <p>直属:￥${sumB}</p>
         </div>
     </div>
 

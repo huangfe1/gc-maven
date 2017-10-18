@@ -1,7 +1,9 @@
 package com.dreamer.service.mobile.impl;
 
 import com.dreamer.domain.mall.goods.Goods;
+import com.dreamer.domain.mall.goods.StockBlotter;
 import com.dreamer.repository.mobile.GoodsDao;
+import com.dreamer.repository.mobile.StockBlotterDao;
 import com.dreamer.service.mobile.GoodsHandler;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ps.mx.otter.utils.SearchParameter;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +58,17 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
 
     @Override
     @Transactional
+    public void addStockBlotter(StockBlotter stockBlotter) {
+        Goods goods = get(stockBlotter.getGoods().getId());
+        stockBlotter.setGoods(goods);
+        stockBlotter.setCurrentBalance(goods.getCurrentBalance());
+        stockBlotter.setCurrentStock(goods.getCurrentStock());
+        stockBlotter.setOperateTime(new Date());
+        sb.merge(stockBlotter);
+    }
+
+    @Override
+    @Transactional
     public void reduceStock(Integer gid,Integer quantity) {
         Goods goods = goodsDao.get(gid);
         goods.deductCurrentStock(quantity);
@@ -78,6 +92,9 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
     }
 
     private GoodsDao goodsDao;
+
+    @Autowired
+    private StockBlotterDao sb;
 
     public GoodsDao getGoodsDao() {
         return goodsDao;

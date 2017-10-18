@@ -55,7 +55,7 @@ public class AccountsRecordDao extends BaseDaoImpl<AccountsRecord> {
     }
 
     public List<AccountsRecord> findAccountsRecords(SearchParameter<AccountsRecord> p, User user){
-        Example example = Example.create(p.getEntity());
+        Example example = Example.create(p.getEntity()).enableLike(MatchMode.ANYWHERE);
         DetachedCriteria dc = DetachedCriteria.forClass(AccountsRecord.class);
         dc.addOrder(Order.desc("id"));//id排序
         dc.add(example);

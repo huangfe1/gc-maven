@@ -82,7 +82,8 @@
                                 <label class="">	<c:forEach items="${levels}" var="level">
                                     ${level[0]} : ${level[1]}
                                 </c:forEach></label>
-                                <label class="">    业绩合计 : ${sum}</label>
+                                <label class="">   直接代理业绩合计 : ${mySum}</label>
+                                <label class="">   系统总业绩合计 : ${allSum}</label>
 
                             </div>
                         </form>

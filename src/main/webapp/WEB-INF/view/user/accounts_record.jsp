@@ -59,6 +59,8 @@
 							<!--下单人姓名-->
 							<label class="">参与人姓名</label> <input type="text" value="${parameter.entity.causedAgent.realName}" name="entity.causedAgent.realName" id="more" autofocus class="typeahead form-control" placeholder="参与人">
 
+							<label class="">详情</label> <input type="text" value="${parameter.entity.info}" name="entity.info" id="more" autofocus class="typeahead form-control" placeholder="">
+
 							<label class="">电子币种类</label>
 							<select class="form-control" name="typeState">
 								<c:forEach items="${accountsTypes}" var="type">
@@ -173,7 +175,7 @@
 	<script type="text/javascript">
 		$(function() {
             $("#download").click(function(){
-                $("#searchForm").attr("action", "<c:url value='/voucher/downRecord.html'/>")
+                $("#searchForm").attr("action", "<c:url value='/accounts/record/downRecord.html'/>")
                 $("#searchForm").submit();
             });
 

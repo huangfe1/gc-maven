@@ -22,7 +22,7 @@
 		<div class="row">
 			<div class="col-md-2 col-xs-2">
 				<a href="#" class="thumbnail">
-				<img src="<c:url value='/resources/images/mall-logo.jpg'/>"  style="width:80px;">
+				<img src="<c:url value='http://ht.52zdt.com/zdt/resources/mallimages/gs.jpg'/>"  style="width:80px;">
 				</a>
 			</div>
 		</div>
@@ -40,23 +40,23 @@
 					<table class="table">
 						<tbody>
 							<tr>
-								<td class="col-md-6 col-xs-6"><strong>发货人：</strong>${parameter.entity.userByApplyAgent.realName }</td>
-								<td class="col-md-6 col-xs-6"><strong>联系电话：</strong>${parameter.entity.userByApplyAgent.mobile }</td>
+								<td class="col-md-6 col-xs-6"><strong>发货人：</strong>${parameter.entity.applyAgent.realName }</td>
+								<td class="col-md-6 col-xs-6"><strong>联系电话：</strong>${parameter.entity.applyAgent.mobile }</td>
 							</tr>
 						</tbody>
 					</table>
 					<table class="table">
 						<tbody>
 							<tr>
-								<td class="col-md-6 col-xs-6"><strong>客户姓名：</strong>${parameter.entity.consigneeName }</td>
-								<td class="col-md-6 col-xs-6"><strong>联系方式：</strong>${parameter.entity.mobile }</td>
+								<td class="col-md-6 col-xs-6"><strong>客户姓名：</strong>${parameter.entity.address.consignee }</td>
+								<td class="col-md-6 col-xs-6"><strong>联系方式：</strong>${parameter.entity.address.mobile }</td>
 							</tr>
 						</tbody>
 					</table>
 					<table class="table">
 						<tbody>
 							<tr>
-								<td><strong>配送地址：</strong>${parameter.entity.address }</td>
+								<td><strong>配送地址：</strong>${parameter.entity.address.province}${parameter.entity.address.city}${parameter.entity.address.county}${parameter.entity.address.address}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -70,7 +70,7 @@
 								<th>商品名称</th>
 								<th>数量</th>
 								<!-- <th>商品金额</th> -->
-								<th>产生的积分</th>
+								<%--<th>产生的积分</th>--%>
 							</tr>
 						</thead>
 						<tbody>
@@ -79,7 +79,7 @@
 									<td>${item.goods.name }</td>
 									<td>${item.quantity }</td>
 									<%-- <td></td> --%>
-									<td>${item.point }</td>
+									<%--<td>${item.point }</td>--%>
 								</tr>
 							</c:forEach>
 						</tbody>

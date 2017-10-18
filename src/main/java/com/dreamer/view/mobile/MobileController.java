@@ -12,6 +12,7 @@ import com.dreamer.domain.wechat.WxConfig;
 import com.dreamer.service.mobile.*;
 import com.dreamer.service.mobile.factory.WxConfigFactory;
 import com.dreamer.util.CommonUtil;
+import com.dreamer.util.PreciseComputeUtil;
 import com.dreamer.util.TokenInfo;
 import com.wxjssdk.JSAPI;
 import com.wxjssdk.dto.SdkResult;
@@ -457,10 +458,10 @@ public class MobileController {
     //提现业务
     @RequestMapping("/mobile/withdraw.json")
     @ResponseBody
-    public Message withdraw(Double amount, Integer cid, HttpServletRequest request) {
+    public Message withdraw(Double amount, Integer cid,String remark, HttpServletRequest request) {
         try {
             User user = (User) WebUtil.getCurrentUser(request);
-            accountsTransferHandler.withDraw(user.getId(), amount, cid);//提现
+            accountsTransferHandler.withDraw(user.getId(), amount, cid,remark);//提现
             return Message.createSuccessMessage();
         } catch (Exception e) {
             return Message.createFailedMessage(e.getMessage());
@@ -750,6 +751,14 @@ public class MobileController {
         List<AccountsRecord> records = accountsRecordHandler.findAccountsRecords(user.getId(), null, null, AccountsType.VOUCHER.getState());
         Map<Integer, Double> map = accountsRecordHandler.countRecordsAmount(records);
         model.addAttribute("todayVoucher", map.get(AccountsRecord.ADD));//进账
+        //直属代理总业绩
+        List<Agent> cs = agentHandler.getList("parent.id",user.getId());
+        Double sumB = 0.0;
+        for(Agent a:cs){
+            sumB+=a.getAccounts().getAccount(AccountsType.BENEFIT);
+        }
+        sumB  = PreciseComputeUtil.round(sumB);
+        model.addAttribute("sumB",sumB);
         return "/mobile/wallet";
     }
 

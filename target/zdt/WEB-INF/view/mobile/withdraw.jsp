@@ -234,6 +234,8 @@
     //提交提现
     $("#btn").click(function () {
 
+        var remark = prompt("如果需要备注,请填写");
+
         if( $("#btn span").html()=="正在提交..")return;
         noClick();
         var url = "<c:url value="/mobile/withdraw.json"/>";
@@ -245,7 +247,8 @@
         if(cid==null||cid=="")return;
         var param = {
             "cid":cid,
-            "amount":amount
+            "amount":amount,
+            "remark":remark
         }
 
         $.post(url,param,function (data) {

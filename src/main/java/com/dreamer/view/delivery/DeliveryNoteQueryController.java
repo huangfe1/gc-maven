@@ -57,93 +57,56 @@ public class DeliveryNoteQueryController {
 		List<DeliveryNote> orders=deliveryNoteHandler.findDeliveryNotes(parameter,user);
         Map<String,Integer> sum =new HashMap<>();
 		List<String> headers = new ArrayList<>();
-		headers.add("业务单号");
-		headers.add("寄件单位");
-		headers.add("寄件人姓名");
-		headers.add("寄件人电话");
-		headers.add("寄件人手机");
-		headers.add("寄件人省");
-		headers.add("寄件人市");
-		headers.add("寄件区/县");
-		headers.add("寄件人地址");
-		headers.add("寄件人邮编");
-		headers.add("收件人姓名");
-		headers.add("收件人电话");
-		headers.add("收件人手机");
-		headers.add("收件省");
-		headers.add("收件市");
-		headers.add("收件区/县");
-		headers.add("收件人地址");
-		headers.add("收件邮政编码");
-		headers.add("运费");
-		headers.add("订单金额");
+		headers.add("序号");
+		headers.add("发货人");
+		headers.add("订单日期");
+		headers.add("收货人");
+		headers.add("收货人电话");
+		headers.add("收货地址");
 		headers.add("商品名称");
-		headers.add("商品编码");
-		headers.add("销售属性");
-		headers.add("商品金额");
+		headers.add("单位");
 		headers.add("数量");
+		headers.add("快递单号");
+		headers.add("发货情况");
+		headers.add("防伪码");
 		headers.add("备注");
 		headers.add("物流费");
 		headers.add("订单ID");
-//        headers.add("产品名字");
-//        headers.add("产品数量");
 		List<Map>   datas = new ArrayList<>();
 		Map m = null;
 		DeliveryNote order=null;
 		for(int i=0;i<orders.size();i++){
 			order=orders.get(i);
-			//如果下单数量超过一位  就分几次单
 			m=new HashedMap();
-			m.put(0,"");
-			m.put(1,"");
-			m.put(2,"芝德堂");
-			m.put(3,"");
-			m.put(4,"");
-			m.put(5,"");
-			m.put(6,"");
-			m.put(8,"湖南长沙");
-			m.put(9,"");
-			m.put(10,order.getAddress().getConsignee()+order.getAddress().getConsigneeCode());//收货人姓名
-			m.put(11,"");
-			m.put(12,order.getAddress().getMobile());//收货人手机
-			m.put(13,"");
-			m.put(14,"");
-			m.put(15,"");
-			m.put(16,order.getAddress().getProvince()+order.getAddress().getCity()+order.getAddress().getCounty()+order.getAddress().getAddress());//收货人地址
-			m.put(17,"");
-			m.put(18,"");
-			m.put(19,"");
+			m.put(0,i);
+			m.put(1,order.getApplyAgent().getRealName());
+//			m.put(2,"芝德堂");
+			m.put(2,order.getDeliveryTime());
+			m.put(3,order.getAddress().getConsignee());
+			m.put(4,order.getAddress().getMobile());
+			m.put(5,order.getAddress().getProvince()+order.getAddress().getCity()+order.getAddress().getCounty()+order.getAddress().getAddress());//收货人地址
 			StringBuffer stringBuffer=new StringBuffer();
 			for(DeliveryItem item:order.getDeliveryItems()){//遍历所有的item
-                String gn=item.getGoods().getName();
-                Integer gq=item.getQuantity();
-				stringBuffer.append(gn);
-				stringBuffer.append(gq);
+				stringBuffer.append(item.getGoods().getName());
+				stringBuffer.append(item.getQuantity());
 				stringBuffer.append(item.getGoods().getSpec()+"/");
-                if(sum.containsKey(gn)){
-                    Integer tem=sum.get(gn);
-                    sum.put(gn,tem+gq);
-                }else {
-                    sum.put(gn,gq);
-                }
 			}
-			m.put(20,stringBuffer.toString());
-			m.put(21,"");
-			m.put(22,"");
-			m.put(23,"");
-			m.put(24,"");
-			m.put(25,order.getRemark());
-			m.put(26,order.getLogisticsFee());//物流费
-			m.put(27,""+order.getId());//订单ID
-//            if(i<results.size()){
-//                m.put(28,""+results.get(i)[0]);//订单ID
-//                m.put(29,""+results.get(i)[1]);//订单ID
-//            }
-			m.put(28,"");//订单ID
-//            //有多少就增加多少
-//            for (int id=0;id<order.getQuantity();id++){
+			m.put(6,stringBuffer.toString());
+			m.put(7,"");
+			m.put(8,order.getQuantity());
+			m.put(9,"");
+			if(order.getLogistics()!=null)	m.put(9,order.getLogistics());
+			m.put(10,order.getStatus().getDesc());
+			m.put(11,"");
+			m.put(12,order.getRemark());
+			m.put(13,order.getLogisticsFee());//物流费
+			m.put(14,""+order.getId());//订单ID
+//			if(i<results.size()){
+//				m.put(28,""+results.get(i)[0]);//订单ID
+//				m.put(29,""+results.get(i)[1]);//订单ID
+//			}
+			m.put(15,"");//订单ID
 			datas.add(m);
-//            }
 		}
         //总数表格
         List<String> sheaders=new ArrayList<>();
@@ -368,80 +331,54 @@ public class DeliveryNoteQueryController {
 			deliveryNoteHandler.merge(order);
 		}
 		List<String> headers = new ArrayList<>();
-		headers.add("业务单号");
-		headers.add("寄件单位");
-		headers.add("寄件人姓名");
-		headers.add("寄件人电话");
-		headers.add("寄件人手机");
-		headers.add("寄件人省");
-		headers.add("寄件人市");
-		headers.add("寄件区/县");
-		headers.add("寄件人地址");
-		headers.add("寄件人邮编");
-		headers.add("收件人姓名");
-		headers.add("收件人电话");
-		headers.add("收件人手机");
-		headers.add("收件省");
-		headers.add("收件市");
-		headers.add("收件区/县");
-		headers.add("收件人地址");
-		headers.add("收件邮政编码");
-		headers.add("运费");
-		headers.add("订单金额");
+		headers.add("序号");
+		headers.add("发货人");
+		headers.add("订单日期");
+		headers.add("收货人");
+		headers.add("收货人电话");
+		headers.add("收货地址");
 		headers.add("商品名称");
-		headers.add("商品编码");
-		headers.add("销售属性");
-		headers.add("商品金额");
+		headers.add("单位");
 		headers.add("数量");
+		headers.add("快递单号");
+		headers.add("发货情况");
+		headers.add("防伪码");
 		headers.add("备注");
         headers.add("物流费");
 		headers.add("订单ID");
-		headers.add("产品名字");
-		headers.add("产品数量");
 		List<Map> datas = new ArrayList<>();
 		Map m ;
 		DeliveryNote order;
 		for(int i=0;i<orders.size();i++){
 			order=orders.get(i);
 			m=new HashedMap();
-			m.put(0,"");
-			m.put(1,"");
-			m.put(2,"芝德堂");
-			m.put(3,"");
-			m.put(4,"17775862960");
-			m.put(5,"");
-			m.put(6,"");
-			m.put(8,"湖南长沙");
-			m.put(9,"");
-			m.put(10,order.getAddress().getConsignee());//收货人姓名
-			m.put(11,"");
-			m.put(12,order.getAddress().getMobile()+order.getAddress().getConsigneeCode());//收货人手机
-			m.put(13,"");
-			m.put(14,"");
-			m.put(15,"");
-			m.put(16,order.getAddress().getProvince()+order.getAddress().getCity()+order.getAddress().getCounty()+order.getAddress().getAddress());//收货人地址
-			m.put(17,"");
-			m.put(18,"");
-			m.put(19,"");
+			m.put(0,i);
+			m.put(1,order.getApplyAgent().getRealName());
+//			m.put(2,"芝德堂");
+			m.put(2,order.getDeliveryTime());
+			m.put(3,order.getAddress().getConsignee());
+			m.put(4,order.getAddress().getMobile());
+			m.put(5,order.getAddress().getProvince()+order.getAddress().getCity()+order.getAddress().getCounty()+order.getAddress().getAddress());//收货人地址
 			StringBuffer stringBuffer=new StringBuffer();
 			for(DeliveryItem item:order.getDeliveryItems()){//遍历所有的item
 				stringBuffer.append(item.getGoods().getName());
 				stringBuffer.append(item.getQuantity());
 				stringBuffer.append(item.getGoods().getSpec()+"/");
 			}
-			m.put(20,stringBuffer.toString());
-			m.put(21,"");
-			m.put(22,"");
-			m.put(23,"");
-			m.put(24,"");
-			m.put(25,order.getRemark());
-            m.put(26,order.getLogisticsFee());//物流费
-			m.put(27,""+order.getId());//订单ID
+			m.put(6,stringBuffer.toString());
+			m.put(7,"");
+			m.put(8,order.getQuantity());
+			if(order.getLogistics()!=null)	m.put(9,order.getLogistics());
+			m.put(10,order.getStatus().getDesc());
+			m.put(11,"");
+			m.put(12,order.getRemark());
+            m.put(13,order.getLogisticsFee());//物流费
+			m.put(14,""+order.getId());//订单ID
 //			if(i<results.size()){
 //				m.put(28,""+results.get(i)[0]);//订单ID
 //				m.put(29,""+results.get(i)[1]);//订单ID
 //			}
-			m.put(30,"");//订单ID
+			m.put(15,"");//订单ID
 			datas.add(m);
 		}
 //		ExcelFile.ExpExs("","特权代理商城订单",headers,datas,response);//创建表格并写入
@@ -454,8 +391,8 @@ public class DeliveryNoteQueryController {
 		List<Map> sdatas=new ArrayList<>();
 		for(Object[] key:results){
 			ms =new HashedMap();
-			System.out.println(key[0]);
-			System.out.println(key[1]);
+//			System.out.println(key[0]);
+//			System.out.println(key[1]);
 			ms.put(0,key[0]);
 			ms.put(1,""+key[1]);
 			sdatas.add(ms);

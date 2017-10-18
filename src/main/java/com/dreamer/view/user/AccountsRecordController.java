@@ -19,6 +19,7 @@ import ps.mx.otter.utils.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -47,6 +48,86 @@ public class AccountsRecordController {
     }
 
 
+    @RequestMapping("/downRecord.html")
+    public void download(@ModelAttribute("parameter") SearchParameter<AccountsRecord> parameter, Integer typeState, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            AccountsType accountsType = AccountsType.stateOf(typeState);
+            parameter.getEntity().setAccountsType(accountsType);
+            parameter.setRowsPerPage(-1);
+            List<AccountsRecord> pts = accountsRecordHandler.findAccountsRecords(parameter, user);
+
+            Double  jin = 0.0;
+            Double  chu = 0.0;
+
+            List<Map>   datas1 = new ArrayList<>();
+            List<Map>   datas2 = new ArrayList<>();
+
+            List<String> headers1 = new ArrayList<>();
+            headers1.add("姓名");
+            headers1.add("支初/进账");
+            headers1.add("详情");
+            headers1.add("数量");
+            headers1.add("变更后");
+            headers1.add("时间");
+
+            List<String> headers2 = new ArrayList<>();
+            headers2.add("代理进账总数");
+            headers2.add("代理支出总数");
+            Map m =null;
+            for(AccountsRecord record : pts) {
+                m=new HashMap();
+                m.put(0,record.getAgent().getRealName()+record.getAgent().getAgentCode());
+                m.put(1,record.getAddSub());
+                m.put(2,record.getInfo());
+                m.put(3,record.getAmount());
+                m.put(4,record.getNowAmount());
+                m.put(5,record.getUpdateTime());
+                datas1.add(m);
+                if (record.getAddSub().equals(0)) {
+                    BigDecimal b1 = new BigDecimal(chu.toString());
+                    BigDecimal b2 = new BigDecimal(record.getAmount().toString());
+                    chu=new Double(b1.subtract(b2).doubleValue());
+                } else {
+                    BigDecimal b1 = new BigDecimal(jin.toString());
+                    BigDecimal b2 = new BigDecimal(record.getAmount().toString());
+                    jin=new Double(b1.add(b2).doubleValue());
+                }
+            }
+
+            Map m1 = new HashMap();
+            m1.put(0,jin);
+            m1.put(1,chu);
+            datas2.add(m1);
+
+            List<String> ss=new ArrayList<>();
+            ss.add("券详情");
+            ss.add("金额总数");
+
+
+            List<List> hs=new ArrayList<>();
+            hs.add(headers1);
+            hs.add(headers2);
+            List<List<Map>> ds=new ArrayList<>();
+            ds.add(datas1);
+            ds.add(datas2);
+
+            ExcelFile.ExpExs("",ss,hs,ds,response);//创建表格并写入
+
+
+            //            WebUtil.turnPage(parameter, request);
+//            model.addAttribute("records", accountsRecords);
+//            model.addAttribute("accountsTypes", AccountsType.values());
+//            return "/user/accounts_record";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
     //通过编号  业绩统计
     @RequestMapping("/count.html")
     public String countIndex(@RequestParam(required = false) String agentCode, Model model, @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
@@ -59,9 +140,11 @@ public class AccountsRecordController {
             startTime = "2000-01-01";
             endTime = "2025-01-01";
         }
-        //找出所有下级代理的业绩
+        //找出所有下级代理的业绩 新系统的
         List<AccountsRecord> accountsRecords = accountsRecordHandler.listByChlidrens(AccountsType.BENEFIT, childrens, startTime, endTime);
         Double sum = 0.0;
+        Double allSum = 0.0;
+        Double mySum = 0.0;
         for (AccountsRecord ac : accountsRecords) {
             if (ac.getAddSub() == 1) {
                 sum = PreciseComputeUtil.add(sum, ac.getAmount());
@@ -69,8 +152,18 @@ public class AccountsRecordController {
                 sum = PreciseComputeUtil.sub(sum, ac.getAmount());
             }
         }
+        //所有业绩
+        for(Agent agent:childrens){
+            allSum+=agent.getAccounts().getAccount(AccountsType.BENEFIT);
+            if(agent.getParent().getAgentCode().equals(agentCode)){
+                //直接业绩
+                mySum+=agent.getAccounts().getAccount(AccountsType.BENEFIT);
+            }
+        }
+
         model.addAttribute("levels", objects);//级别
-        model.addAttribute("sum", sum);//总业绩
+        model.addAttribute("mySum", mySum);//直接业绩
+        model.addAttribute("allSum", allSum);//总业绩
         model.addAttribute("records", accountsRecords);//业绩明细
         model.addAttribute("agentCode", agentCode);
         model.addAttribute("startTime",startTime);

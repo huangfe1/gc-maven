@@ -64,8 +64,9 @@
 								<tr>
 									<th>选择</th>
 									<th>产品名称</th>
-									<th>当前库存</th>
-									<th>当前余额</th>
+									<th>总入库</th>
+									<th>库房库存</th>
+									<th>公司余额</th>
 									<th>代理余额</th>
 									<%--<th>当前积分</th>--%>
 									<th>已发货数</th>
@@ -78,6 +79,7 @@
 										<td><input type="checkbox" value="${g.id}"></td>
 										<td><a class="editBtn"
 											href="<c:url value='/stock/detail.html?goodsId=${g.id}' /> ">${g.name}</a></td>
+										<td>${g.stockSum}</td>
 										<td>${g.currentStock}</td>
 										<td>${g.currentBalance}</td>
 										<td>${g.stockSum-g.currentBalance}</td>

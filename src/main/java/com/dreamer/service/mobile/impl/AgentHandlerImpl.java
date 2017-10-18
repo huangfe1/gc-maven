@@ -519,6 +519,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         allChildrens.addAll(myChildrens);
         List<Agent> otherChildrens = new ArrayList<>();
         getChildrens(myChildrens, otherChildrens);
+        allChildrens.addAll(otherChildrens);
         return allChildrens;
     }
 

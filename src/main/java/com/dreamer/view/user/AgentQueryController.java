@@ -10,6 +10,7 @@ import com.dreamer.domain.user.enums.AgentStatus;
 import com.dreamer.domain.user.enums.UserStatus;
 import com.dreamer.service.goods.AgentLevelTradingLimitedHandler;
 import com.dreamer.service.mobile.AgentHandler;
+import com.dreamer.util.ExcelFile;
 import com.dreamer.view.goods.GoodsAccountDTO;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
@@ -23,10 +24,8 @@ import ps.mx.otter.utils.SearchParameter;
 import ps.mx.otter.utils.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -64,7 +63,71 @@ public class AgentQueryController {
 		}
 		return "user/agent_index";
 	}
-	
+
+
+	@RequestMapping(value = { "/download.html" }, method = RequestMethod.GET)
+	@ResponseBody
+	public void download(
+            @ModelAttribute("parameter") SearchParameter<Agent> parameter, HttpServletResponse response, HttpServletRequest request) {
+		try {
+			List<Agent> agents;
+			User user = (User) WebUtil.getCurrentUser(request);
+			if(!user.isAdmin()){
+				//只能查询自己的下面的代理
+				Agent agent = agentHandler.get(user.getId());
+				parameter.getEntity().setParent(agent);//上级设置为自己
+			}else {
+				//获取上级编号
+			}
+			parameter.setRowsPerPage(-1);
+			agents = agentHandler.findAgents(parameter);
+            List<String> headers = new ArrayList<>();
+            headers.add("编号");
+            headers.add("姓名");
+            headers.add("电话");
+            headers.add("上级代理");
+            headers.add("预存款");
+            headers.add("奖金");
+            headers.add("个人业绩");
+            headers.add("库存");
+            headers.add("级别");
+            List<Map> datas = new ArrayList<>();
+			for(Agent agent:agents){
+                Map m = new HashMap();
+                m.put(0,agent.getAgentCode());
+                m.put(1,agent.getRealName());
+                m.put(2,agent.getMobile());
+                m.put(3,agent.getParent().getRealName()+"--"+agent.getParent().getAgentCode());
+                m.put(4,agent.getAccounts().getAccount(AccountsType.ADVANCE));
+                m.put(5,agent.getAccounts().getAccount(AccountsType.VOUCHER));
+                m.put(6,agent.getAccounts().getAccount(AccountsType.BENEFIT));
+                StringBuffer sb = new StringBuffer();
+                for(GoodsAccount ga : agent.getGoodsAccounts()){
+                    sb.append(ga.getGoods().getName()+" : "+ga.getCurrentBalance());
+                }
+                m.put(7,sb.toString());
+                m.put(8,agentHandler.getLevelName(agent));
+                datas.add(m);
+            }
+            List<List> sh = new ArrayList<>();
+            sh.add(headers);
+            List<List<Map>> ds = new ArrayList<>();
+            ds.add(datas);
+            List<String> ss = new ArrayList<>();
+            ss.add("代理详情");
+            ExcelFile.ExpExs("", ss, sh, ds, response);
+
+//			WebUtil.turnPage(parameter, request);
+//			model.addAttribute("status", AgentStatus.values());
+//			model.addAttribute("agents", agents);
+		} catch (Exception exp) {
+			exp.printStackTrace();
+			LOG.error("代理查询失败", exp);
+		}
+//		return "user/agent_index";
+	}
+
+
 	@RequestMapping(value = { "/accounts_detail.html" }, method = RequestMethod.GET)
 	public String accountsDetail(
 			@ModelAttribute("parameter") SearchParameter<Agent> parameter,

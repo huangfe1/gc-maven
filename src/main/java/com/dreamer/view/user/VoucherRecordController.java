@@ -75,7 +75,7 @@ public class VoucherRecordController {
 			    m.put(2,voucherRecord.getMore());
 			    m.put(3,voucherRecord.getVoucher());
 			    m.put(4,voucherRecord.getVoucher_now());
-			    m.put(4,voucherRecord.getUpdateTime());
+			    m.put(5,voucherRecord.getUpdateTime());
                 datas1.add(m);
                 if (voucherRecord.getType().equals(0)) {
                     BigDecimal b1 = new BigDecimal(chu.toString());

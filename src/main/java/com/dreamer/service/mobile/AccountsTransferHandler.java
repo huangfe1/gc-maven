@@ -17,7 +17,7 @@ public interface AccountsTransferHandler extends BaseHandler<AccountsTransfer>{
 
     String recharge(String body);//充值
 
-    void withDraw(Integer uid,Double amount,Integer cid);//提现
+    void withDraw(Integer uid,Double amount,Integer cid,String remark);//提现
 
     void refuseWithdraw(Integer aid);//拒绝提现
 

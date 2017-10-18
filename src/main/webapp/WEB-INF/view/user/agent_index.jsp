@@ -43,31 +43,31 @@
                           method="GET">
                         <div class="form-group">
                             <label class="">关键字</label> <input
-                                                                value="${parameter.entity.agentCode}"
-                                                                name="entity.agentCode" id="agentCode"
-                                                                autofocus class="form-control" placeholder="关键字">
+                                value="${parameter.entity.agentCode}"
+                                name="entity.agentCode" id="agentCode"
+                                autofocus class="form-control" placeholder="关键字">
 
                             <%--<label class="">名字</label> <input type="text" value="${parameter.entity.realName}"--%>
-                                                              <%--name="entity.realName" id="realName" autofocus--%>
-                                                              <%--class="form-control" placeholder="姓名">--%>
+                            <%--name="entity.realName" id="realName" autofocus--%>
+                            <%--class="form-control" placeholder="姓名">--%>
 
                             <%--<label class="">手机号码</label> <input type="text" value="${parameter.entity.mobile}"--%>
-                                                                <%--name="entity.mobile" id="mobile" class="form-control"--%>
-                                                                <%--placeholder="联系电话">--%>
+                            <%--name="entity.mobile" id="mobile" class="form-control"--%>
+                            <%--placeholder="联系电话">--%>
 
-                            <%--<label>申请时间</label>--%>
-                            <%--<div class="input-daterange input-group" id="datepicker">--%>
-                                <%--<span class="input-group-addon"><span--%>
-                                        <%--class="glyphicon glyphicon-calendar"></span></span>--%>
-                                <%--<input type="text" class="form-control pointer" value="${parameter.startTime }"--%>
-                                       <%--id="startDate" data-date-format="yyyy-mm-dd" name="startTime"--%>
-                                       <%--placeholder="开始日期"/>--%>
-                                <%--<span class="input-group-addon">到</span>--%>
-                                <%--<input type="text" class="form-control pointer" value="${parameter.endTime }"--%>
-                                       <%--name="endTime" placeholder="截止日期"/>--%>
-                                <%--<span class="input-group-addon"><span--%>
-                                        <%--class="glyphicon glyphicon-calendar"></span></span>--%>
-                            <%--</div>--%>
+                            <label>申请时间</label>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <span class="input-group-addon"><span
+                                        class="glyphicon glyphicon-calendar"></span></span>
+                                <input type="text" class="form-control pointer" value="${parameter.startTime }"
+                                       id="startDate" data-date-format="yyyy-mm-dd" name="startTime"
+                                       placeholder="开始日期"/>
+                                <span class="input-group-addon">到</span>
+                                <input type="text" class="form-control pointer" value="${parameter.endTime }"
+                                       name="endTime" placeholder="截止日期"/>
+                                <span class="input-group-addon"><span
+                                        class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
 
 
                             <%--<label class="">代理状态</label> <select type="text"--%>
@@ -93,10 +93,10 @@
                         </button></li>
 
                         <li style="margin-left: 10px">
-                            <button type="button"
-                                    class="btn btn-danger navbar-btn noticeBtn">
-                        <li class="fa fa-wechat"></li>
-                        通知代理
+                            <button type="button" id="download"
+                                    class="btn btn-danger navbar-btn download">
+                        <li class="fa fa-caret-square-o-down"></li>
+                        下载
                         </button></li>
                         <!-- <li><button type="button"
                                 class="btn btn-primary navbar-btn transBtn">
@@ -142,9 +142,9 @@
                                 <td>${l.parent.realName}--${l.parent.agentCode}</td>
 
                                     <%--<td><fmt:formatNumber value="${l.accounts.pointsBalance}"/></td>--%>
-                                <%--<td>${l.accounts.voucherBalance}</td>--%>
-                                <%--<td>${l.accounts.advanceBalance}</td>--%>
-                                <%--<td>${l.accounts.purchaseBalance}</td>--%>
+                                    <%--<td>${l.accounts.voucherBalance}</td>--%>
+                                    <%--<td>${l.accounts.advanceBalance}</td>--%>
+                                    <%--<td>${l.accounts.purchaseBalance}</td>--%>
                                     <%--<td>${l.accounts.benefitPointsBalance}</td>--%>
                                 <td><fmt:formatDate value="${l.joinDate}" type="date"/></td>
                                 <td>${l.agentStatus.desc}</td>
@@ -158,25 +158,25 @@
                                             class="glyphicon glyphicon-wrench" aria-hidden="true"></span>修改</a>
                                         <%--<a class="btn btn-info default transBtn"--%>
                                         <%--href="<c:url value='/agent/transfer.html?id=${l.id}' /> "><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转让</a>--%>
-                                    <%--<c:if test="${l.inactive or l.reorganize}">--%>
+                                        <%--<c:if test="${l.inactive or l.reorganize}">--%>
                                         <%--<a class="btn btn-success default ajaxLink" data-role="active"--%>
-                                           <%--href="<c:url value='/agent/active.json?id=${l.id}' /> "><span--%>
-                                                <%--class="fa fa-unlock fa-fw" aria-hidden="true"></span>激活</a>--%>
-                                    <%--</c:if>--%>
-                                    <%--<c:if test="${l.active}">--%>
+                                        <%--href="<c:url value='/agent/active.json?id=${l.id}' /> "><span--%>
+                                        <%--class="fa fa-unlock fa-fw" aria-hidden="true"></span>激活</a>--%>
+                                        <%--</c:if>--%>
+                                        <%--<c:if test="${l.active}">--%>
                                         <%--<a class="btn btn-warning default ajaxLink" data-role="reorganize"--%>
-                                           <%--href="<c:url value='/agent/reorganize.json?id=${l.id}' /> "><span--%>
-                                                <%--class="fa fa-lock fa-fw" aria-hidden="true"></span>整顿</a>--%>
-                                    <%--</c:if>--%>
+                                        <%--href="<c:url value='/agent/reorganize.json?id=${l.id}' /> "><span--%>
+                                        <%--class="fa fa-lock fa-fw" aria-hidden="true"></span>整顿</a>--%>
+                                        <%--</c:if>--%>
                                     <a class="btn btn-info  transBtn"
                                        href="<c:url value='/transfer/to.html?toId=${l.id}' /> "><span
                                             class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转货</a>
                                     <a class="btn btn-warning  transBtn"
                                        href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=0' /> "><span
                                             class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转代金券</a>
-                                    <%--<a class="btn btn-success  transBtn"--%>
-                                       <%--href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=1' /> "><span--%>
-                                            <%--class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转进货券</a>--%>
+                                        <%--<a class="btn btn-success  transBtn"--%>
+                                        <%--href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=1' /> "><span--%>
+                                        <%--class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转进货券</a>--%>
                                     <a class="btn btn-info  transBtn"
                                        href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=1' /> "><span
                                             class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转预存款</a>
@@ -270,6 +270,12 @@
                         });
                     });
             });
+
+
+        $("#download").click(function(){
+            $("#searchForm").attr("action", "<c:url value='/agent/download.html'/>")
+            $("#searchForm").submit();
+        });
 
 
         $(".noticeBtn").click(

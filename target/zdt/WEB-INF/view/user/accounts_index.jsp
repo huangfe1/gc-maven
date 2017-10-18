@@ -87,10 +87,10 @@
                         </div>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <%--<li><button type="button"--%>
-                        <%--class="btn btn-primary navbar-btn transBtn">--%>
-                        <%--<li class="fa fa-exchange fa-fw"></li>转让券--%>
-                        <%--</button></li>--%>
+                        <li><button type="button"
+                        class="btn btn-primary navbar-btn download">
+                        <li class="fa fa-caret-square-o-down"></li>下载
+                        </button></li>
                     </ul>
                 </div>
             </div>
@@ -110,8 +110,8 @@
                             <th>受让人代理编码</th>
                             <th>数量</th>
                             <th>备注</th>
-                            <th>申请时间</th>
-                            <th>转让时间</th>
+                            <th>时间</th>
+                            <%--<th>转让时间</th>--%>
                             <th>状态</th>
                             <%--<c:if test="${user.admin}">--%>
                             <%--<th>操作</th>--%>
@@ -128,7 +128,7 @@
                                 <td>${l.amount}</td>
                                 <td>(${l.type.stateInfo})${l.remark}</td>
                                 <td>${l.updateTime}</td>
-                                <td>${l.transferTime}</td>
+                                <%--<td>${l.transferTime}</td>--%>
                                 <c:if test="${l.status.state==4}">
                                     <td><a class="btn btn-success default ajaxLink editBtn"
                                            href="<c:url value='/mobile/withdraw/confirm.json?aid=${l.id}' /> "><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>同意打款</a>
@@ -193,6 +193,12 @@
 <jsp:include page="/WEB-INF/view/common/script_common.jsp"></jsp:include>
 <script type="text/javascript">
     $(function () {
+
+
+        $(".download").click(function(){
+            $("#searchForm").attr("action", "<c:url value='/accounts/download.html'/>")
+            $("#searchForm").submit();
+        });
 
         $("#dataList a.ajaxLink").click(function (e) {
 

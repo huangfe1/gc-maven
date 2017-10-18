@@ -9,8 +9,8 @@ import com.dreamer.domain.user.AgentLevel;
 import com.dreamer.domain.user.MutedUser;
 import com.dreamer.repository.goods.GoodsDAO;
 import com.dreamer.repository.goods.PriceDAO;
-import com.dreamer.repository.goods.StockBlotterDAO;
 import com.dreamer.repository.mobile.GoodsCategoryDao;
+import com.dreamer.repository.mobile.StockBlotterDao;
 import com.dreamer.repository.system.SystemParameterDAOInf;
 import com.dreamer.repository.user.AgentLevelDAO;
 import com.dreamer.repository.user.MutedUserDAO;
@@ -68,7 +68,7 @@ public class GoodsHandler {
 		GoodsAccount companyAccount = companyUser.loadAccountForGoodsNotNull(goods);
 		companyAccount.increaseBalance(stock.getChange());
 		goods.addStockBlotter(stock);
-		stockBlotterDAO.save(stock);
+		stockBlotterDao.merge(stock);
 		LOG.debug("新增库存成功");
 	}
 
@@ -134,11 +134,12 @@ public class GoodsHandler {
 	@Autowired
 	private PriceDAO priceDAO;
 	@Autowired
-	private StockBlotterDAO stockBlotterDAO;
-	@Autowired
 	private SystemParameterDAOInf systemParameterDAO;
 	@Autowired
 	private MutedUserDAO mutedUserDAO;
+
+	@Autowired
+	private StockBlotterDao stockBlotterDao;
 
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
 

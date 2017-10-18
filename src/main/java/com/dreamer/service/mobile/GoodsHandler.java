@@ -1,6 +1,7 @@
 package com.dreamer.service.mobile;
 
 import com.dreamer.domain.mall.goods.Goods;
+import com.dreamer.domain.mall.goods.StockBlotter;
 import ps.mx.otter.utils.SearchParameter;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface GoodsHandler extends BaseHandler<Goods> {
 
     //增加库存
     void addStock(Integer gid,Integer quantity);
+
+    void addStockBlotter(StockBlotter stockBlotter);
 
     //减少库存
     void reduceStock(Integer gid,Integer quantity);
