@@ -318,7 +318,7 @@
     <!--是公司-->
     <c:if test="${agent.mutedUser}">
         <div class="buttons">
-        <div data-uid="${agent.id}" class="backTransferGoods"><span>申请退货</span></div>
+        <div data-uid="${agent.id}" class="backTransferGoods"><span>申请换货</span></div>
 
     </c:if>
 

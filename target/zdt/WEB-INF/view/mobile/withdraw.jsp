@@ -174,10 +174,20 @@
                 <strong>￥</strong>
                 <input class="amount" value="" autofocus>
             </div>
-            <a href="">当前余额<span class="balance">${balance}</span>, <span id="all" style="color: #5D6286">全部提现</span>
+
+            <a href="">
+                当前余额<span class="balance">${balance}</span>
+                ,
+                <span id="all" style="color: #5D6286">全部提现</span>
             </a>
+
+            <div>   <input   type="checkbox"  id="isAdvance"> <span style="color: #5D6286"> 转成预存款</span></div>
+
+
+
             <div class="btn" id="btn" <c:if test="${card==null}">style="background:#A3DFA2;"</c:if>  ><span>提现</span></div>
         </div>
+
     </div>
 
 
@@ -243,12 +253,20 @@
         if(amount<=0){
             alert("请填写金额");
         }
+
+        var isAdvance = false;
+
+       if( $("#isAdvance").is(':checked')){
+           isAdvance = true;
+       }
+
         var cid = $(".cid").val();
         if(cid==null||cid=="")return;
         var param = {
             "cid":cid,
             "amount":amount,
-            "remark":remark
+            "remark":remark,
+            "isAdvance":isAdvance
         }
 
         $.post(url,param,function (data) {

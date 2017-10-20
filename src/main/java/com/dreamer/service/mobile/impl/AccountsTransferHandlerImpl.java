@@ -111,9 +111,11 @@ public class AccountsTransferHandlerImpl extends BaseHandlerImpl<AccountsTransfe
         return result;
     }
 
+
+    //TODO 通知事务问题
     @Override
     @Transactional
-    public void withDraw(Integer uid, Double amount, Integer cid,String remark) {
+    public void withDraw(Integer uid, Double amount, Integer cid,String remark,Boolean isAdvance) {
         Agent agent = agentDao.get(uid);
         Card card = cardDao.get(cid);
         if(!card.getAgent().getId().equals(uid)){
@@ -127,7 +129,15 @@ public class AccountsTransferHandlerImpl extends BaseHandlerImpl<AccountsTransfe
         accountsTransfer.setOut_trade_no(CommonUtil.createNo());//创建订单号 提交
         //转账业务 生成记录
         List<AccountsRecord> records = transfer(accountsTransfer);
-        accountsTransfer.setStatus(AccountsTransferStatus.WITHDRAW);//提现申请
+        System.out.println(isAdvance);
+        if(isAdvance){
+            accountsTransfer.setStatus(AccountsTransferStatus.REMITTED);//提现申请
+            accountsTransfer.setRemark(accountsTransfer.getRemark()+",已转成预存款");
+            transferAccounts(mutedUser.getId(),agent.getId(),AccountsType.ADVANCE.getState(),amount,"转换-奖金转换成预存款");
+        }else {
+            accountsTransfer.setStatus(AccountsTransferStatus.WITHDRAW);//提现申请
+        }
+
         //保存转账订单
         accountsTransferDao.merge(accountsTransfer);
         //保存记录

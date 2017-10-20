@@ -458,10 +458,10 @@ public class MobileController {
     //提现业务
     @RequestMapping("/mobile/withdraw.json")
     @ResponseBody
-    public Message withdraw(Double amount, Integer cid,String remark, HttpServletRequest request) {
+    public Message withdraw(Double amount, Integer cid,String remark, HttpServletRequest request,Boolean isAdvance) {
         try {
             User user = (User) WebUtil.getCurrentUser(request);
-            accountsTransferHandler.withDraw(user.getId(), amount, cid,remark);//提现
+            accountsTransferHandler.withDraw(user.getId(), amount, cid,remark,isAdvance);//提现
             return Message.createSuccessMessage();
         } catch (Exception e) {
             return Message.createFailedMessage(e.getMessage());

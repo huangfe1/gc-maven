@@ -57,11 +57,11 @@ public class AccountsRecordController {
             parameter.setRowsPerPage(-1);
             List<AccountsRecord> pts = accountsRecordHandler.findAccountsRecords(parameter, user);
 
-            Double  jin = 0.0;
-            Double  chu = 0.0;
+            Double jin = 0.0;
+            Double chu = 0.0;
 
-            List<Map>   datas1 = new ArrayList<>();
-            List<Map>   datas2 = new ArrayList<>();
+            List<Map> datas1 = new ArrayList<>();
+            List<Map> datas2 = new ArrayList<>();
 
             List<String> headers1 = new ArrayList<>();
             headers1.add("姓名");
@@ -74,45 +74,45 @@ public class AccountsRecordController {
             List<String> headers2 = new ArrayList<>();
             headers2.add("代理进账总数");
             headers2.add("代理支出总数");
-            Map m =null;
-            for(AccountsRecord record : pts) {
-                m=new HashMap();
-                m.put(0,record.getAgent().getRealName()+record.getAgent().getAgentCode());
-                m.put(1,record.getAddSub());
-                m.put(2,record.getInfo());
-                m.put(3,record.getAmount());
-                m.put(4,record.getNowAmount());
-                m.put(5,record.getUpdateTime());
+            Map m = null;
+            for (AccountsRecord record : pts) {
+                m = new HashMap();
+                m.put(0, record.getAgent().getRealName() + record.getAgent().getAgentCode());
+                m.put(1, record.getAddSub());
+                m.put(2, record.getInfo());
+                m.put(3, record.getAmount());
+                m.put(4, record.getNowAmount());
+                m.put(5, record.getUpdateTime());
                 datas1.add(m);
                 if (record.getAddSub().equals(0)) {
                     BigDecimal b1 = new BigDecimal(chu.toString());
                     BigDecimal b2 = new BigDecimal(record.getAmount().toString());
-                    chu=new Double(b1.subtract(b2).doubleValue());
+                    chu = new Double(b1.subtract(b2).doubleValue());
                 } else {
                     BigDecimal b1 = new BigDecimal(jin.toString());
                     BigDecimal b2 = new BigDecimal(record.getAmount().toString());
-                    jin=new Double(b1.add(b2).doubleValue());
+                    jin = new Double(b1.add(b2).doubleValue());
                 }
             }
 
             Map m1 = new HashMap();
-            m1.put(0,jin);
-            m1.put(1,chu);
+            m1.put(0, jin);
+            m1.put(1, chu);
             datas2.add(m1);
 
-            List<String> ss=new ArrayList<>();
+            List<String> ss = new ArrayList<>();
             ss.add("券详情");
             ss.add("金额总数");
 
 
-            List<List> hs=new ArrayList<>();
+            List<List> hs = new ArrayList<>();
             hs.add(headers1);
             hs.add(headers2);
-            List<List<Map>> ds=new ArrayList<>();
+            List<List<Map>> ds = new ArrayList<>();
             ds.add(datas1);
             ds.add(datas2);
 
-            ExcelFile.ExpExs("",ss,hs,ds,response);//创建表格并写入
+            ExcelFile.ExpExs("", ss, hs, ds, response);//创建表格并写入
 
 
             //            WebUtil.turnPage(parameter, request);
@@ -123,9 +123,6 @@ public class AccountsRecordController {
             e.printStackTrace();
         }
     }
-
-
-
 
 
     //通过编号  业绩统计
@@ -153,11 +150,11 @@ public class AccountsRecordController {
             }
         }
         //所有业绩
-        for(Agent agent:childrens){
-            allSum+=agent.getAccounts().getAccount(AccountsType.BENEFIT);
-            if(agent.getParent().getAgentCode().equals(agentCode)){
+        for (Agent agent : childrens) {
+            allSum += agent.getAccounts().getAccount(AccountsType.BENEFIT);
+            if (agent.getParent().getAgentCode().equals(agentCode)) {
                 //直接业绩
-                mySum+=agent.getAccounts().getAccount(AccountsType.BENEFIT);
+                mySum += agent.getAccounts().getAccount(AccountsType.BENEFIT);
             }
         }
 
@@ -166,8 +163,8 @@ public class AccountsRecordController {
         model.addAttribute("allSum", allSum);//总业绩
         model.addAttribute("records", accountsRecords);//业绩明细
         model.addAttribute("agentCode", agentCode);
-        model.addAttribute("startTime",startTime);
-        model.addAttribute("endTime",endTime);
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
         return "/user/accounts_record_children";
     }
 
@@ -211,9 +208,10 @@ public class AccountsRecordController {
         headers1.add("上级");
         headers1.add("电话");
         headers1.add("业绩");
-        HashMap m1 = new HashMap();
-        System.out.println(childrens.size());
+        HashMap m1;
+//        System.out.println(childrens.size());
         for (Agent agent : childrens) {
+            m1 = new HashMap();
             m1.put(0, agent.getRealName() + "--" + agent.getAgentCode());
             m1.put(1, agent.getParent().getRealName() + "--" + agent.getParent().getAgentCode());
             m1.put(2, agent.getMobile());

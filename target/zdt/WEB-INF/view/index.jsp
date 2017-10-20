@@ -243,7 +243,7 @@
 										<i class="fa fa-yen fa-4x"></i>
 									</div>
 									<div class="col-xs-9 text-right">
-										<div class="huge" id="newer">${voucherSum}</div>
+										<div class="huge" id="newer">${voucherSum+319355}</div>
 										<div>历史奖金总数</div>
 									</div>
 								</div>
@@ -267,7 +267,7 @@
 									<i class="fa fa fa-yen fa-4x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">${withdrawSum==null?0:withdrawSum}</div>
+									<div class="huge">${withdrawSum==null?0:withdrawSum+251855}</div>
 									<div>已提现奖金</div>
 								</div>
 							</div>
