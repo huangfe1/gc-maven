@@ -19,7 +19,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title text-primary" id="myModalLabel">
-					<span class="glyphicon glyphicon-retweet"></span>代理代金券转账</h4>
+					<span class="glyphicon glyphicon-retweet"></span>代理奖金转账</h4>
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
@@ -51,7 +51,7 @@
 										<div class="col-sm-4">
 											<input type="text" class="form-control" required autofocus="autofocus"
 												   id="editName" tabIndex="12" name="agentFromrealName"
-												   value="筑美" placeholder="请输入代金券接受人姓名">
+												   value="筑美" placeholder="请输入奖金接受人姓名">
 											<span class="help-block text-danger">注册时填写的实名,必须与代理编号对应</span>
 										</div>
 										<div class="col-md-4 col-xs-4 text-error"></div>
@@ -63,7 +63,7 @@
 											<input type="text" class="form-control" required
 												   id="editFAgentCode" tabIndex="12"
 												   name="agentFromCode" value="01"
-												   placeholder="输入接受代金券的代理编号">
+												   placeholder="输入接受奖金的代理编号">
 										</div>
 										<div class="col-md-4 col-xs-4 text-error"></div>
 									</div>
@@ -74,7 +74,7 @@
 										<div class="col-sm-4">
 											<input type="text" class="form-control" required autofocus="autofocus"
 												   id="editName" tabIndex="12" name="realName"
-												   value="" placeholder="请输入代金券接受人姓名">
+												   value="" placeholder="请输入奖金接受人姓名">
 											<span class="help-block text-danger">注册时填写的实名,必须与代理编号对应</span>
 										</div>
 										<div class="col-md-4 col-xs-4 text-error"></div>
@@ -85,12 +85,12 @@
 											<input type="text" class="form-control" required
 												   id="editAgentCode" tabIndex="12"
 												   name="agentCode" value=""
-												   placeholder="输入接受代金券的代理编号">
+												   placeholder="输入接受奖金的代理编号">
 										</div>
 										<div class="col-md-4 col-xs-4 text-error"></div>
 									</div>
 									<div class="form-group">
-										<label for="currentStock" class="col-sm-2 control-label">转出代金券数量</label>
+										<label for="currentStock" class="col-sm-2 control-label">转出奖金数量</label>
 										<div class="col-sm-4">
 											<input type="number" class="form-control input-lg" required
 												   id="editPoint" tabIndex="12" name="voucher" value=""
@@ -102,7 +102,7 @@
 									<div class="form-group">
 										<label for="currentStock" class="col-sm-2 col-xs-12 control-label">备注说明</label>
 										<div class="col-sm-6 col-xs-12">
-											<textarea class="form-control" rows="4" name="remark" tabindex="13">公司转出代金券</textarea>
+											<textarea class="form-control" rows="4" name="remark" tabindex="13">公司转出奖金</textarea>
 										</div>
 									</div>
 								</div>
@@ -123,7 +123,7 @@
 							<button type="submit" class="btn btn-success btn-block"
 									form="editForm" id="saveBtn" name="saveBtn" value="saveBtn"
 									tabindex="4" data-loading-text="正在提交......">
-								<span class="glyphicon glyphicon-random">&nbsp;</span>转代金券给代理
+								<span class="glyphicon glyphicon-random">&nbsp;</span>转奖金给代理
 							</button>
 						</div>
 					</div>
@@ -157,7 +157,7 @@
 										var m = $.parseJSON(xhr.responseText);
 										btn.button("reset");
 										if (m.flag == "0") {
-											alert("代金券转让成功");
+											alert("奖金转让成功");
 											$(".quitBtn").click();
 											$("#search").click();
 										} else {

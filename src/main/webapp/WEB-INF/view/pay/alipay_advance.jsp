@@ -168,7 +168,7 @@ border-color: #d9534f;
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="winModalLabel">芝德堂预存款充值</h4>
+					<h4 class="modal-title" id="winModalLabel">高臣药业预存款充值</h4>
 				</div>
 				<div class="modal-body" id="winMessageBody"></div>
 			</div>

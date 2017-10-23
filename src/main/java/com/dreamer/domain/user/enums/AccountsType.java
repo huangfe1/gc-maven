@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public enum  AccountsType implements Serializable {
 
-    VOUCHER(0,"代金券"),ADVANCE(1,"预存款"),BENEFIT(2,"总业绩");
+    VOUCHER(0,"提成奖"),ADVANCE(1,"预存款"),BENEFIT(2,"消费值");
 
     private int state;
 

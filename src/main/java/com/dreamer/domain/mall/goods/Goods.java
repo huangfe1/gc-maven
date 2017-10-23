@@ -14,116 +14,139 @@ import java.util.*;
 
 public class Goods implements java.io.Serializable {
 
-	private static final long serialVersionUID = -4183715107638006860L;
-	private Integer id;
-	@JsonView(BaseView.class)
-	private String name;
-	private Integer order;
-	private Integer currentBalance;
-	private Integer currentStock;
-	private Integer stockSum;//总入库
-	private Integer alertStock;
-	private Timestamp updateTime;
+    private static final long serialVersionUID = -4183715107638006860L;
+    private Integer id;
+    @JsonView(BaseView.class)
+    private String name;
+    private Integer order;
+    private Integer currentBalance;
+    private Integer currentStock;
+    private Integer stockSum;//总入库
+    private Integer alertStock;
+    private Timestamp updateTime;
     private Boolean shelf;//上架
-	private Integer version;
-	private Double pointFactor;
-	private Double currentPoint;
-	private Boolean benchmark;//是否主打产品
-	private GoodsType goodsType;//产品的类型
-	private String voucher;//返利模式
-	private Double weight;//货物重量
-	private Integer boxamount;//一箱多少盒
-	private String imgFile;
-	private String spec;
-	private Double retailPrice;
-	private String detailImg;//详情页名字
+    private Integer version;
+    private Double pointFactor;
+    private Double currentPoint;
+    private Boolean benchmark;//是否主打产品
+    private GoodsType goodsType;//产品的类型
+    private String voucher;//返利模式
+    private Double weight;//货物重量
+    private Integer boxamount;//一箱多少盒
+    private String imgFile;
+    private String spec;//规格型号
+    private Double retailPrice;
+    private String detailImg;//详情页名字
+
+    private String license;//批准文号
+
+    private String company;//生产企业
 
     @JsonIgnore
     private GoodsCategory category;
-	private Boolean activity;//0不活动  1活动
-	private String actImg;//活动图片
-	private String startTime;//活动开始时间
-	private String endTime;//活动结束时间
-	@JsonIgnore
-	private AuthorizationType authorizationType;
-	@JsonIgnore
-	private Set<Price> prices = new HashSet<Price>(0);
-	@JsonIgnore
-	public Price getLowestPrice(){
-		Price price=null;
-		Integer lowestLevel=-1;
-		Iterator<Price> ite=prices.iterator();
-		while(ite.hasNext()){
-			Price temp=ite.next();
-			if(temp.getAgentLevel().getGoodsType()==this.getGoodsType()){
-				int level=temp.getAgentLevel().getLevel();
-				if(level>lowestLevel){
-					lowestLevel=level;
-					price=temp;
-				}
-				}
-			}
-		
-		return price;
-	}
-	/**
-	 * 获取本商品指定等级的等级价格对象
-	 * @param level AgentLevel 等级
-	 * @return {@link Price}
-	 */
-	@JsonIgnore
-	public Price getPrice(AgentLevel level){
-		Iterator<Price> ite=prices.iterator();
-		while(ite.hasNext()){
-			Price temp=ite.next();
-			if(Objects.equals(temp.getAgentLevel().getId(),level.getId())){
-				return temp;
-			}
-		}
-		return null;
-	}
-	
-	@JsonIgnore
-	public Integer getThreshold(AgentLevel level){
-		Iterator<Price> ite=prices.iterator();
-		while(ite.hasNext()){
-			Price temp=ite.next();
-			if(Objects.equals(temp.getAgentLevel(),level)){
-				return temp.getThreshold();
-			}
-		}
-		return 0;
-	}
+    private Boolean activity;//0不活动  1活动
+    private String actImg;//活动图片
+    private String startTime;//活动开始时间
+    private String endTime;//活动结束时间
+    @JsonIgnore
+    private AuthorizationType authorizationType;
+    @JsonIgnore
+    private Set<Price> prices = new HashSet<Price>(0);
+
+    @JsonIgnore
+    public Price getLowestPrice() {
+        Price price = null;
+        Integer lowestLevel = -1;
+        Iterator<Price> ite = prices.iterator();
+        while (ite.hasNext()) {
+            Price temp = ite.next();
+            if (temp.getAgentLevel().getGoodsType() == this.getGoodsType()) {
+                int level = temp.getAgentLevel().getLevel();
+                if (level > lowestLevel) {
+                    lowestLevel = level;
+                    price = temp;
+                }
+            }
+        }
+
+        return price;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    /**
+     * 获取本商品指定等级的等级价格对象
+     *
+     * @param level AgentLevel 等级
+     * @return {@link Price}
+     */
+    @JsonIgnore
+    public Price getPrice(AgentLevel level) {
+        Iterator<Price> ite = prices.iterator();
+        while (ite.hasNext()) {
+            Price temp = ite.next();
+            if (Objects.equals(temp.getAgentLevel().getId(), level.getId())) {
+                return temp;
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public Integer getThreshold(AgentLevel level) {
+        Iterator<Price> ite = prices.iterator();
+        while (ite.hasNext()) {
+            Price temp = ite.next();
+            if (Objects.equals(temp.getAgentLevel(), level)) {
+                return temp.getThreshold();
+            }
+        }
+        return 0;
+    }
 
 
-	public Integer getStockSum() {
-		return stockSum;
-	}
+    public Integer getStockSum() {
+        return stockSum;
+    }
 
-	public void setStockSum(Integer stockSum) {
-		this.stockSum = stockSum;
-	}
+    public void setStockSum(Integer stockSum) {
+        this.stockSum = stockSum;
+    }
 
-	public boolean isMainGoods(){
-		return benchmark;
-	}
-	
-	public boolean stockEnough(Integer quantity){
-		return this.currentStock>=quantity;
-	}
-	
-	public void addPrice(Price price){
-		price.setGoods(this);
-		prices.add(price);
-	}
-	
-	public void clearPrices(){
-		Iterator<Price> ips=prices.iterator();
-		while(ips.hasNext()){
-			ips.next().setGoods(null);
-		}
-		prices.clear();
-	}
+    public boolean isMainGoods() {
+        return benchmark;
+    }
+
+    public boolean stockEnough(Integer quantity) {
+        return this.currentStock >= quantity;
+    }
+
+    public void addPrice(Price price) {
+        price.setGoods(this);
+        prices.add(price);
+    }
+
+    public void clearPrices() {
+        Iterator<Price> ips = prices.iterator();
+        while (ips.hasNext()) {
+            ips.next().setGoods(null);
+        }
+        prices.clear();
+    }
 
     public GoodsCategory getCategory() {
         return category;
@@ -133,22 +156,22 @@ public class Goods implements java.io.Serializable {
         this.category = category;
     }
 
-    public void removePrice(Price price){
-		prices.remove(price);
-		price.setGoods(null);
-	}
-	
-	public void addStockBlotter(StockBlotter stock){
-		
-		stock.setGoods(this);
-		Double point=caculatePoints(stock.getChange());
-		stock.setPoint(point);
-		stockValidate(stock);
-		increaseCurrentStock(stock.getChange());
-		//increaseCurrentPoint(point);
-		increaseCurrentBalance(stock.getChange());
-		stock.recordChange(this);
-	}
+    public void removePrice(Price price) {
+        prices.remove(price);
+        price.setGoods(null);
+    }
+
+    public void addStockBlotter(StockBlotter stock) {
+
+        stock.setGoods(this);
+        Double point = caculatePoints(stock.getChange());
+        stock.setPoint(point);
+        stockValidate(stock);
+        increaseCurrentStock(stock.getChange());
+        //increaseCurrentPoint(point);
+        increaseCurrentBalance(stock.getChange());
+        stock.recordChange(this);
+    }
 
     public void setShelf(Boolean shelf) {
         this.shelf = shelf;
@@ -158,40 +181,35 @@ public class Goods implements java.io.Serializable {
     public Boolean getShelf() {
         return shelf;
     }
-	
-	public Integer increaseCurrentStock(Integer added){
-		setCurrentStock(currentStock+added);
-		return getCurrentStock();
-	}
+
+    public Integer increaseCurrentStock(Integer added) {
+        setCurrentStock(currentStock + added);
+        return getCurrentStock();
+    }
 
 
-
-    public Integer deductCurrentStock(Integer deduct){
-		if(deduct>getCurrentStock()){
-			throw new ApplicationException("货物总库存不足");
-		}
-		setCurrentStock(currentStock-deduct);
-		return getCurrentStock();
-	}
-
+    public Integer deductCurrentStock(Integer deduct) {
+        if (deduct > getCurrentStock()) {
+            throw new ApplicationException("货物总库存不足");
+        }
+        setCurrentStock(currentStock - deduct);
+        return getCurrentStock();
+    }
 
 
-    public Integer increaseStockSum(Integer added){
-        setStockSum(stockSum+added);
+    public Integer increaseStockSum(Integer added) {
+        setStockSum(stockSum + added);
         return getStockSum();
     }
 
 
-
-    public Integer deductStockSum(Integer deduct){
-        if(deduct>getStockSum()){
+    public Integer deductStockSum(Integer deduct) {
+        if (deduct > getStockSum()) {
             throw new ApplicationException("总入库减少失败！");
         }
-        setStockSum(stockSum-deduct);
+        setStockSum(stockSum - deduct);
         return getStockSum();
     }
-
-
 
 
     /**
@@ -214,7 +232,7 @@ public class Goods implements java.io.Serializable {
      * @return
      */
     public Integer getDeadLine() {
-        if(!activity)return 0;
+        if (!activity) return 0;
         try {
             Date start = new Date();//当前时间
             Date end = stringToDate(endTime);//结束时间
@@ -247,17 +265,17 @@ public class Goods implements java.io.Serializable {
 
 
     public String getDetailImg() {
-		return detailImg;
-	}
+        return detailImg;
+    }
 
-	public void setDetailImg(String detailImg) {
-		this.detailImg = detailImg;
-	}
+    public void setDetailImg(String detailImg) {
+        this.detailImg = detailImg;
+    }
 
-	public Integer increaseCurrentBalance(Integer added){
-		setCurrentBalance(getCurrentBalance()+added);
-		return getCurrentBalance();
-	}
+    public Integer increaseCurrentBalance(Integer added) {
+        setCurrentBalance(getCurrentBalance() + added);
+        return getCurrentBalance();
+    }
 
     public Boolean getActivity() {
         return activity;
@@ -299,168 +317,176 @@ public class Goods implements java.io.Serializable {
         this.boxamount = boxamount;
     }
 
-    public Integer deductCurrentBalance(Integer deduct){
-		if(deduct>getCurrentBalance()){
-			throw new ApplicationException("货物账户总余额不足");
-		}
-		setCurrentBalance(getCurrentBalance()-deduct);
-		return getCurrentBalance();
-	}
-	
-	public Double increaseCurrentPoint(Double added){
-		setCurrentPoint(getCurrentPoint()+added);
-		return getCurrentPoint();
-	}
-	
-	public Double deductCurrentPoint(Double deduct){
-		if(deduct>getCurrentPoint()){
-			throw new ApplicationException("货物账户总积分不足");
-		}
-		setCurrentPoint(getCurrentPoint()-deduct);
-		return getCurrentPoint();
-	}
-	
-	public Double caculatePoints(Integer amount){
-		return amount*pointFactor;
-	}
-	
-	public void stockValidate(StockBlotter stock){
-		if(stock.getChange()<0){
-			if(currentStock+stock.getChange()<0){
-				throw new ApplicationException("库存变更为减少时,减少值不能大于现有库存");
-			}
-		}
-		if(stock.getPoint()<0){
-			if(currentStock+stock.getPoint()<0.0D){
-				throw new ApplicationException("积分变更为减少时,减少值不能大于现有积分");
-			}
-		}
-	}
+    public Integer deductCurrentBalance(Integer deduct) {
+        if (deduct > getCurrentBalance()) {
+            throw new ApplicationException("货物账户总余额不足");
+        }
+        setCurrentBalance(getCurrentBalance() - deduct);
+        return getCurrentBalance();
+    }
 
-	// Constructors
+    public Double increaseCurrentPoint(Double added) {
+        setCurrentPoint(getCurrentPoint() + added);
+        return getCurrentPoint();
+    }
 
-	/** default constructor */
-	public Goods() {
-	}
+    public Double deductCurrentPoint(Double deduct) {
+        if (deduct > getCurrentPoint()) {
+            throw new ApplicationException("货物账户总积分不足");
+        }
+        setCurrentPoint(getCurrentPoint() - deduct);
+        return getCurrentPoint();
+    }
 
-	/** minimal constructor */
-	public Goods(String name) {
-		this.name = name;
-	}
+    public Double caculatePoints(Integer amount) {
+        return amount * pointFactor;
+    }
 
-	/** full constructor */
-	public Goods(String name, Integer order, Integer currentBalance,
-			Integer currentStock, Timestamp updateTime, Integer version,
-			Double pointFactor, Double currentPoint,GoodsType goodsType,String voucher, Set<Price> prices) {
-		this.name = name;
-		this.order = order;
-		this.currentBalance = currentBalance;
-		this.currentStock = currentStock;
-		this.updateTime = updateTime;
-		this.version = version;
-		this.pointFactor = pointFactor;
-		this.currentPoint = currentPoint;
-		this.prices = prices;
-		this.goodsType=goodsType;
-		this.voucher=voucher;
-	}
+    public void stockValidate(StockBlotter stock) {
+        if (stock.getChange() < 0) {
+            if (currentStock + stock.getChange() < 0) {
+                throw new ApplicationException("库存变更为减少时,减少值不能大于现有库存");
+            }
+        }
+        if (stock.getPoint() < 0) {
+            if (currentStock + stock.getPoint() < 0.0D) {
+                throw new ApplicationException("积分变更为减少时,减少值不能大于现有积分");
+            }
+        }
+    }
 
-	// Property accessors
+    // Constructors
 
-	public String getVoucher() {
-		return voucher;
-	}
-	public void setVoucher(String voucher) {
-		this.voucher = voucher;
-	}
-	public Integer getId() {
-		return this.id;
-	}
+    /**
+     * default constructor
+     */
+    public Goods() {
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    /**
+     * minimal constructor
+     */
+    public Goods(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    /**
+     * full constructor
+     */
+    public Goods(String name, Integer order, Integer currentBalance,
+                 Integer currentStock, Timestamp updateTime, Integer version,
+                 Double pointFactor, Double currentPoint, GoodsType goodsType, String voucher, Set<Price> prices) {
+        this.name = name;
+        this.order = order;
+        this.currentBalance = currentBalance;
+        this.currentStock = currentStock;
+        this.updateTime = updateTime;
+        this.version = version;
+        this.pointFactor = pointFactor;
+        this.currentPoint = currentPoint;
+        this.prices = prices;
+        this.goodsType = goodsType;
+        this.voucher = voucher;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    // Property accessors
 
-	public Integer getOrder() {
-		return this.order;
-	}
+    public String getVoucher() {
+        return voucher;
+    }
 
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
+    public void setVoucher(String voucher) {
+        this.voucher = voucher;
+    }
 
-	public Integer getCurrentBalance() {
-		return this.currentBalance;
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setCurrentBalance(Integer currentBalance) {
-		this.currentBalance = currentBalance;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getCurrentStock() {
-		return this.currentStock;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setCurrentStock(Integer currentStock) {
-		this.currentStock = currentStock;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Timestamp getUpdateTime() {
-		return this.updateTime;
-	}
+    public Integer getOrder() {
+        return this.order;
+    }
 
-	public void setUpdateTime(Timestamp updateTime) {
-		this.updateTime = updateTime;
-	}
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
 
-	public Integer getVersion() {
-		return this.version;
-	}
+    public Integer getCurrentBalance() {
+        return this.currentBalance;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    public void setCurrentBalance(Integer currentBalance) {
+        this.currentBalance = currentBalance;
+    }
 
-	public Double getPointFactor() {
-		return this.pointFactor;
-	}
+    public Integer getCurrentStock() {
+        return this.currentStock;
+    }
 
-	public void setPointFactor(Double pointFactor) {
-		this.pointFactor = pointFactor;
-	}
+    public void setCurrentStock(Integer currentStock) {
+        this.currentStock = currentStock;
+    }
 
-	public Double getCurrentPoint() {
-		return this.currentPoint;
-	}
+    public Timestamp getUpdateTime() {
+        return this.updateTime;
+    }
 
-	public void setCurrentPoint(Double currentPoint) {
-		this.currentPoint = currentPoint;
-	}
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
+    }
 
-	public Set<Price> getPrices() {
-		return this.prices;
-	}
+    public Integer getVersion() {
+        return this.version;
+    }
 
-	public void setPrices(Set<Price> prices) {
-		this.prices = prices;
-	}
-	
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	public Boolean getBenchmark() {
-		return benchmark;
-	}
+    public Double getPointFactor() {
+        return this.pointFactor;
+    }
 
-	public void setBenchmark(Boolean benchmark) {
-		this.benchmark = benchmark;
-	}
+    public void setPointFactor(Double pointFactor) {
+        this.pointFactor = pointFactor;
+    }
+
+    public Double getCurrentPoint() {
+        return this.currentPoint;
+    }
+
+    public void setCurrentPoint(Double currentPoint) {
+        this.currentPoint = currentPoint;
+    }
+
+    public Set<Price> getPrices() {
+        return this.prices;
+    }
+
+    public void setPrices(Set<Price> prices) {
+        this.prices = prices;
+    }
+
+
+    public Boolean getBenchmark() {
+        return benchmark;
+    }
+
+    public void setBenchmark(Boolean benchmark) {
+        this.benchmark = benchmark;
+    }
 
     public Double getWeight() {
         return weight;
@@ -471,66 +497,72 @@ public class Goods implements java.io.Serializable {
     }
 
     public AuthorizationType getAuthorizationType() {
-		return authorizationType;
-	}
+        return authorizationType;
+    }
 
-	public void setAuthorizationType(AuthorizationType authorizationType) {
-		this.authorizationType = authorizationType;
-	}
-	
-	public Integer getAlertStock() {
-		return alertStock;
-	}
+    public void setAuthorizationType(AuthorizationType authorizationType) {
+        this.authorizationType = authorizationType;
+    }
 
-	public void setAlertStock(Integer alertStock) {
-		this.alertStock = alertStock;
-	}
+    public Integer getAlertStock() {
+        return alertStock;
+    }
 
-	public String getImgFile() {
-		return imgFile;
-	}
-	public void setImgFile(String imgFile) {
-		this.imgFile = imgFile;
-	}
-	public String getSpec() {
-		return spec;
-	}
-	public void setSpec(String spec) {
-		this.spec = spec;
-	}
-	
-	public Double getRetailPrice() {
-		return retailPrice;
-	}
-	public void setRetailPrice(Double retailPrice) {
-		this.retailPrice = retailPrice;
-	}
-	
-	public GoodsType getGoodsType() {
-		return goodsType;
-	}
-	public void setGoodsType(GoodsType goodsType) {
-		this.goodsType = goodsType;
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(id,name);
-	}
+    public void setAlertStock(Integer alertStock) {
+        this.alertStock = alertStock;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
-		if (!(object instanceof Goods)) {
-			return false;
-		}
-		Goods other = (Goods) object;
-		if (Objects.equals(getId(), other.getId()) && Objects.equals(getName(), other.getName())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public String getImgFile() {
+        return imgFile;
+    }
+
+    public void setImgFile(String imgFile) {
+        this.imgFile = imgFile;
+    }
+
+    public String getSpec() {
+        return spec;
+    }
+
+    public void setSpec(String spec) {
+        this.spec = spec;
+    }
+
+    public Double getRetailPrice() {
+        return retailPrice;
+    }
+
+    public void setRetailPrice(Double retailPrice) {
+        this.retailPrice = retailPrice;
+    }
+
+    public GoodsType getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(GoodsType goodsType) {
+        this.goodsType = goodsType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Goods)) {
+            return false;
+        }
+        Goods other = (Goods) object;
+        if (Objects.equals(getId(), other.getId()) && Objects.equals(getName(), other.getName())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

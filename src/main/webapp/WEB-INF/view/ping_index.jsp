@@ -16,7 +16,7 @@
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script>
     $(function () {
-        var url = "http://ht.52zdt.com/zdt/pingplus/createCode";
+        var url = "http://ht.gcyy365.com/gc/pingplus/createCode";
 //        var url = "http://localhost:8080/pingplus/createCode";
         $("#buy").click(function () {
             $.get(url,function (data) {

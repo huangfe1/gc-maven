@@ -411,7 +411,7 @@ a:hover {
 											<ul class="list-group" id="djqPay">
 												<li class="list-group-item"><div class="radio">
 													<label> <input type="checkbox" name="useVoucher" checked="true"
-																   id="useVoucher" value="WX"> 代金券支付
+																   id="useVoucher" value="WX"> 奖金支付
 													</label>
 												</div></li>
 											</ul>

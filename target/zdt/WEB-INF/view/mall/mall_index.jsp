@@ -249,7 +249,7 @@ cursor:pointer;
 			</div>
 		</div>
 		<span style="color:red;font-size: 1.2em">精彩推荐:</span><span
-			style="color: #00aba9;margin-left: 2em">芝德堂一站式购物平台,赶紧抢购!!!</span>
+			style="color: #00aba9;margin-left: 2em">高臣药业一站式购物平台,赶紧抢购!!!</span>
 	</div>
 
 

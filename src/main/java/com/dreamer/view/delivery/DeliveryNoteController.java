@@ -59,28 +59,28 @@ public class DeliveryNoteController {
 //			return Message.createFailedMessage(exp.getMessage());
 //		}
 //	}
-	
-	@RequestMapping(value = "/remove.json")
-	public Message remove(
-			@ModelAttribute("parameter") DeliveryNote parameter,
-			HttpServletRequest request, Model model) {
-		try {
-			User user=(User) WebUtil.getCurrentUser(request);
-			if(user.isAgent()){
-				if(!Objects.equals(user.getId(), parameter.getApplyAgent().getId())){
-					throw new ApplicationException("非管理员和申请人无删除权限");
-				}
-			}
-			deliveryNoteHandler.deleteDeliveryNote(parameter.getId());
-			return Message.createSuccessMessage();
-		} catch (Exception exp) {
-			LOG.error("删除申请失败,",exp);
+
+    @RequestMapping(value = "/remove.json")
+    public Message remove(
+            @ModelAttribute("parameter") DeliveryNote parameter,
+            HttpServletRequest request, Model model) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            if (user.isAgent()) {
+                if (!Objects.equals(user.getId(), parameter.getApplyAgent().getId())) {
+                    throw new ApplicationException("非管理员和申请人无删除权限");
+                }
+            }
+            deliveryNoteHandler.deleteDeliveryNote(parameter.getId());
+            return Message.createSuccessMessage();
+        } catch (Exception exp) {
+            LOG.error("删除申请失败,", exp);
 //			exp.printStackTrace();
-			System.out.println(exp.getMessage());
-			return Message.createFailedMessage(exp.getMessage());
-		}
-	}
-	
+            System.out.println(exp.getMessage());
+            return Message.createFailedMessage(exp.getMessage());
+        }
+    }
+
 //	@RequestMapping(value = "/confirm.json", method = RequestMethod.POST)
 //	public Message confirm(
 //			@ModelAttribute("parameter") DeliveryNote parameter,
@@ -103,70 +103,69 @@ public class DeliveryNoteController {
 
 //	/**
 
-	/**
-	 *
-	 * @param file
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value =  "/uploadOrdersNumber.json",method = RequestMethod.POST)
-	public Message uploadOrdersNumber(MultipartFile file, HttpServletRequest request){
-		int i=0;
-		ExcelFile excelFile = new ExcelFile();
-		String[] columns=new String[]{"快递公司","业务单号","物流费","订单ID"};
-		try {
-			List<Map<String,Object>> lists=excelFile.read(file.getInputStream(),0,1,columns);
-			for(Map<String,Object> map:lists){
-				String orderNo=(String) map.get("业务单号");
-                Integer orderId=Integer.parseInt(map.get("订单ID")+"");
-                Double logcinsee=Double.parseDouble(map.get("物流费")+"");
+    /**
+     * @param file
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/uploadOrdersNumber.json", method = RequestMethod.POST)
+    public Message uploadOrdersNumber(MultipartFile file, HttpServletRequest request) {
+        int i = 0;
+        ExcelFile excelFile = new ExcelFile();
+        String[] columns = new String[]{"快递公司", "业务单号", "物流费", "订单ID"};
+        try {
+            List<Map<String, Object>> lists = excelFile.read(file.getInputStream(), 0, 1, columns);
+            for (Map<String, Object> map : lists) {
+                String orderNo = (String) map.get("业务单号");
+                Integer orderId = Integer.parseInt(map.get("订单ID") + "");
+                Double logcinsee = Double.parseDouble(map.get("物流费") + "");
 //                String company="百事快递";
-				String company=(String) map.get("快递公司");
-				if(orderNo!=null&&!orderNo.equals("")&&orderId!=null){
-                    deliveryNoteHandler.delivery(orderId,company,orderNo,logcinsee);
-					i++;
-				}
-			}
-			return Message.createSuccessMessage();
-		}catch (Exception exp){
+                String company = (String) map.get("快递公司");
+                if (orderNo != null && !orderNo.equals("") && orderId != null) {
+                    deliveryNoteHandler.delivery(orderId, company, orderNo, logcinsee);
+                    i++;
+                }
+            }
+            return Message.createSuccessMessage();
+        } catch (Exception exp) {
             exp.printStackTrace();
-			return Message.createFailedMessage(exp.getMessage()+"本次共处理了"+i);
-		}
-	}
+            return Message.createFailedMessage(exp.getMessage() + "本次共处理了" + i);
+        }
+    }
 
 
-//
-	@RequestMapping(value = "/delivery.json", method = RequestMethod.POST)
-	public Message delivery(
-			@ModelAttribute("parameter") DeliveryNote parameter,
-			HttpServletRequest request,Double actual_logisticsFee) {
-		try {
-			User user=(User)WebUtil.getCurrentUser(request);
-			if(!user.isAdmin()){
-					throw new ApplicationException("非管理员无发货权限");
-			}
-			deliveryNoteHandler.delivery(parameter.getId(),parameter.getLogistics(),parameter.getLogisticsCode(),actual_logisticsFee);
-			return Message.createSuccessMessage();
-		} catch (Exception exp) {
-			LOG.error("发货确认失败,",exp);
-			exp.printStackTrace();
-			return Message.createFailedMessage(exp.getMessage());
-		}
-	}
+    //
+    @RequestMapping(value = "/delivery.json", method = RequestMethod.POST)
+    public Message delivery(
+            @ModelAttribute("parameter") DeliveryNote parameter,
+            HttpServletRequest request, Double actual_logisticsFee) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            if (!parameter.getApplyAgent().getParent().getParent().getId().equals(user.getId())) {
+                throw new ApplicationException("无发货权限");
+            }
+            deliveryNoteHandler.delivery(parameter.getId(), parameter.getLogistics(), parameter.getLogisticsCode(), actual_logisticsFee);
+            return Message.createSuccessMessage();
+        } catch (Exception exp) {
+            LOG.error("发货确认失败,", exp);
+            exp.printStackTrace();
+            return Message.createFailedMessage(exp.getMessage());
+        }
+    }
 
-	@ModelAttribute("parameter")
-	public DeliveryNote preprocess(@RequestParam("id")Optional<Integer> id) {
-		if (id.isPresent()) {
-			return deliveryNoteHandler.get(id.get());
-		} else {
-			return new DeliveryNote();
-		}
-	}
+    @ModelAttribute("parameter")
+    public DeliveryNote preprocess(@RequestParam("id") Optional<Integer> id) {
+        if (id.isPresent()) {
+            return deliveryNoteHandler.get(id.get());
+        } else {
+            return new DeliveryNote();
+        }
+    }
 
 
-	@Autowired
-	private DeliveryNoteHandler deliveryNoteHandler;
-	
-	private final Logger LOG=LoggerFactory.getLogger(getClass());
+    @Autowired
+    private DeliveryNoteHandler deliveryNoteHandler;
+
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 }

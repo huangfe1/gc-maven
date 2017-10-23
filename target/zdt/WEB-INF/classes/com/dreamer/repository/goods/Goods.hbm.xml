@@ -15,6 +15,18 @@
     <comment>货物名称</comment>
    </column>
   </property>
+
+  <property name="license" type="java.lang.String">
+   <column name="license">
+    <comment>批准文号</comment>
+   </column>
+  </property>
+
+  <property name="company" type="java.lang.String">
+   <column name="company">
+    <comment>生产企业</comment>
+   </column>
+  </property>
   
   <property name="stockSum" type="java.lang.Integer">
    <column name="stockSum" default="0">

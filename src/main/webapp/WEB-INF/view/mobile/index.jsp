@@ -337,62 +337,62 @@
         </div>
     </div>
 
-    <nav class="container-fluid">
-        <ul class="row ect-row-nav">
+    <%--<nav class="container-fluid">--%>
+        <%--<ul class="row ect-row-nav">--%>
+            <%--&lt;%&ndash;<li class="col-xs-3">&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<a href="<c:url value='/goods/category/show'/>">&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<i><img width="50" height="50" src="${ctx}/resources/mallimages/fl.png" alt=""></i>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<p>我的订单</p>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</a>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</li>&ndash;%&gt;--%>
+                <%--<li class="col-xs-3">--%>
+                    <%--<a href="<c:url value='/mobile/transfer/records.html'/>">--%>
+                        <%--<i><img width="50" height="50" src="${ctx}/resources/mallimages/fl.png" alt=""></i>--%>
+                        <%--<p>我的订单</p>--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+
+                <%--<li class="col-xs-3">--%>
+                    <%--&lt;%&ndash;<a href="<c:url value="/dmz/pmall/show.html"/>">&ndash;%&gt;--%>
+                    <%--<a href="<c:url value="#"/>">--%>
+                        <%--<i><img width="50" height="50" src="${ctx}/resources/mallimages/jf.png" alt=""></i>--%>
+                        <%--<p>优惠商城</p>--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+
             <%--<li class="col-xs-3">--%>
-                <%--<a href="<c:url value='/goods/category/show'/>">--%>
-                    <%--<i><img width="50" height="50" src="${ctx}/resources/mallimages/fl.png" alt=""></i>--%>
-                    <%--<p>我的订单</p>--%>
+                <%--<a href="<c:url value="/dmz/mobile/index.html" />">--%>
+                    <%--<i><img width="50" height="50" src="${ctx}/resources/mallimages/user.png" alt=""></i>--%>
+                    <%--<p>特权商城</p>--%>
                 <%--</a>--%>
             <%--</li>--%>
-                <li class="col-xs-3">
-                    <a href="<c:url value='/mobile/transfer/records.html'/>">
-                        <i><img width="50" height="50" src="${ctx}/resources/mallimages/fl.png" alt=""></i>
-                        <p>我的订单</p>
-                    </a>
-                </li>
+            <%--&lt;%&ndash;<li class="col-xs-3">&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<a href="<c:url value='/mobile/shopcart/index.html'/>">&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<i><img width="50" height="50" src="${ctx}/resources/mallimages/cart.png" alt=""></i>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<p class="text-center">购物车</p>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</a>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</li>&ndash;%&gt;--%>
 
-                <li class="col-xs-3">
-                    <%--<a href="<c:url value="/dmz/pmall/show.html"/>">--%>
-                    <a href="<c:url value="#"/>">
-                        <i><img width="50" height="50" src="${ctx}/resources/mallimages/jf.png" alt=""></i>
-                        <p>优惠商城</p>
-                    </a>
-                </li>
+                <%--<li class="col-xs-3">--%>
+                    <%--&lt;%&ndash;<a href="<c:url value='/dmz/pmall/view.html?entity.goodsType.id=17'/>">&ndash;%&gt;--%>
+                    <%--<a href="<c:url value='#'/>">--%>
+                        <%--<i><img width="50" height="50" src="${ctx}/resources/mallimages/cart.png" alt=""></i>--%>
+                        <%--<p class="text-center">公益商城</p>--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+        <%--</ul>--%>
+    <%--</nav>--%>
 
-            <li class="col-xs-3">
-                <a href="<c:url value="/dmz/mobile/index.html" />">
-                    <i><img width="50" height="50" src="${ctx}/resources/mallimages/user.png" alt=""></i>
-                    <p>特权商城</p>
-                </a>
-            </li>
-            <%--<li class="col-xs-3">--%>
-                <%--<a href="<c:url value='/mobile/shopcart/index.html'/>">--%>
-                    <%--<i><img width="50" height="50" src="${ctx}/resources/mallimages/cart.png" alt=""></i>--%>
-                    <%--<p class="text-center">购物车</p>--%>
-                <%--</a>--%>
-            <%--</li>--%>
-
-                <li class="col-xs-3">
-                    <%--<a href="<c:url value='/dmz/pmall/view.html?entity.goodsType.id=17'/>">--%>
-                    <a href="<c:url value='#'/>">
-                        <i><img width="50" height="50" src="${ctx}/resources/mallimages/cart.png" alt=""></i>
-                        <p class="text-center">公益商城</p>
-                    </a>
-                </li>
-        </ul>
-    </nav>
-
-    <div class="gridRow">
-        <ul>
-            <c:forEach items="${categorys}" var="category">
-                <li>
-                    <a href="<c:url value='/goods/category/show/${category.id}'/>"><img
-                            src="${dmzImgPath}${category.img}" alt=""></a>
-                </li>
-            </c:forEach>
-        </ul>
-    </div>
+    <%--<div class="gridRow">--%>
+        <%--<ul>--%>
+            <%--<c:forEach items="${categorys}" var="category">--%>
+                <%--<li>--%>
+                    <%--<a href="<c:url value='/goods/category/show/${category.id}'/>"><img--%>
+                            <%--src="${dmzImgPath}${category.img}" alt=""></a>--%>
+                <%--</li>--%>
+            <%--</c:forEach>--%>
+        <%--</ul>--%>
+    <%--</div>--%>
 
     <div class="indexList">
         <div class="indexListTit">

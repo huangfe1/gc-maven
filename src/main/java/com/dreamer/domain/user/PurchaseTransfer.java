@@ -66,8 +66,8 @@ public class PurchaseTransfer implements java.io.Serializable {
     public void commit(User userByFromAgent,User userByToAgent){
         setOut_trade_no(fillOrderNo());//设置订单
         setUpdateTime(new Date());//设置提交时间
-        setUserByFromAgent(userByFromAgent);//转代金券人
-        setUserByToAgent(userByToAgent);//收代金券人
+        setUserByFromAgent(userByFromAgent);//转奖金人
+        setUserByToAgent(userByToAgent);//收奖金人
 		setType(PurchaseTransferType.ERROR);
 //		setRemark(purchaseTransferType.ERROR.desc);//设置成未付款
 		setRemark("请向公司指定支付宝账号汇款");//设置成未付款

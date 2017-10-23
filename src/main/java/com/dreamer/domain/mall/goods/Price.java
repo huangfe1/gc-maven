@@ -1,8 +1,8 @@
 package com.dreamer.domain.mall.goods;
 
-import java.util.Date;
-
 import com.dreamer.domain.user.AgentLevel;
+
+import java.util.Date;
 
 public class Price implements java.io.Serializable {
 
@@ -20,11 +20,29 @@ public class Price implements java.io.Serializable {
 	private Date updateTime;
 	private Integer version;
 	private Integer threshold;
+	private Integer buyAmount;//每天要求销售
+	private String voucherStr;//返利
+
+	public Integer getBuyAmount() {
+		return buyAmount;
+	}
+
+	public void setBuyAmount(Integer buyAmount) {
+		this.buyAmount = buyAmount;
+	}
 
 	// Constructors
 
 	/** default constructor */
 	public Price() {
+	}
+
+	public String getVoucherStr() {
+		return voucherStr;
+	}
+
+	public void setVoucherStr(String voucherStr) {
+		this.voucherStr = voucherStr;
 	}
 
 	/** minimal constructor */

@@ -106,7 +106,7 @@ public class DeliveryNoteHandler {
 //	}
 
 //    /**
-//     * 代理商城直接发货订单
+//     * 商城直接发货订单
 //     *
 //     * @param note
 //     * @param consigneeAgentCode
@@ -360,11 +360,11 @@ public class DeliveryNoteHandler {
 //        transfer.setPurchase(purchase_balance);//扣减可用的预存款
 //        //先扣减预存款
 ////        userByToAgent.getAccounts().payPurchaseTo(note.getParentByOperator().getAccounts(), purchase_balance);
-//        //设置需要支付的代金券
+//        //设置需要支付的奖金
 //        BigDecimal b1 = BigDecimal.valueOf(note.getAmount());
 //        BigDecimal b2 = BigDecimal.valueOf(purchase_balance);
 //        transfer.setVoucher(b1.subtract(b2).doubleValue());
-//        //再扣减代金券
+//        //再扣减奖金
 ////        userByToAgent.getAccounts().payVoucherTo(note.getParentByOperator().getAccounts(), b1.subtract(b2).doubleValue());
 //        //设置转货方为自己的上级 转出货物
 //        transfer.setUserByFromAgent((Agent) note.getParentByOperator());
@@ -399,7 +399,7 @@ public class DeliveryNoteHandler {
     }
 
     /**
-     * 代金券可支付金额
+     * 奖金可支付金额
      *
      * @return
      */

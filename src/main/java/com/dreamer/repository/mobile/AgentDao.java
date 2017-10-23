@@ -51,7 +51,11 @@ public class AgentDao extends BaseDaoImpl<Agent> {
         }
 
         if(parameter.getEntity().getParent()!=null){
-            criteria.add(Restrictions.eq("parent.id",parameter.getEntity().getParent().getId()));
+            Disjunction dis = Restrictions.disjunction();
+            DetachedCriteria c = criteria.createCriteria("parent");
+            dis.add(Restrictions.eq("id",parameter.getEntity().getParent().getId()));
+            dis.add(Restrictions.eq("parent.id",parameter.getEntity().getParent().getId()));
+            c .add(dis);
         }
         //时间
         if (parameter.getStartTime() != null || parameter.getEndTime() != null) {

@@ -13,6 +13,9 @@ public class CountHandlerImpl implements CountHandler {
     public Double countVoucher() {
         Double addSum = countDao.countVoucher();
         Double subSum = countDao.countBackVoucher();
+        if(addSum==null)addSum=0.0;
+        if(subSum==null)subSum=0.0;
+
         return PreciseComputeUtil.sub(addSum,subSum);
     }
 
@@ -23,7 +26,8 @@ public class CountHandlerImpl implements CountHandler {
 
     @Override
     public Double countAgentsVoucher() {
-        return countDao.countAgentsVoucher();
+        Double te = countDao.countAgentsVoucher();
+        return te==null?0:te;
     }
 
     @Autowired

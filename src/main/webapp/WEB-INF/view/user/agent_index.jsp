@@ -114,25 +114,26 @@
                         <thead>
                         <tr>
                             <th>选择</th>
-                            <th>代理编号</th>
+                            <th>编号</th>
                             <th>姓名</th>
                             <th>电话</th>
                             <%--<th>微信</th>--%>
-                            <th>供货商</th>
+                            <th>上属</th>
+                            <th>证件</th>
 
                             <%--<th>积分</th>--%>
-                            <%--<th>代金券余额</th>--%>
+                            <%--<th>奖金余额</th>--%>
                             <%--<th>预存款</th>--%>
                             <%--<th>进货券余额</th>--%>
                             <%--<th>福利积分</th>--%>
-                            <th>注册时间</th>
-                            <th>代理状态</th>
+                            <th>时间</th>
+                            <th>状态</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody id="dataList">
                         <c:forEach items="${agents}" var="l">
-                            <tr data-row="${l.id}">
+                            <tr <c:if test="${l.needBuy}">style='color:red;' </c:if>  data-row="${l.id}">
                                 <td><input type="checkbox" value="${l.id}"></td>
                                 <td><a class="editBtn"
                                        href="<c:url value='/agent/accounts_detail.html?id=${l.id}' /> ">${l.agentCode}</a>
@@ -140,6 +141,13 @@
                                 <td>${l.realName}</td>
                                 <td>${l.mobile}</td>
                                 <td>${l.parent.realName}--${l.parent.agentCode}</td>
+                                <td>
+
+                                    <c:if test="${l.imgFile!=null}">
+                                        <a target="_blank" href="${imgPath}${l.imgFile}">点我查看</a>
+                                    </c:if>
+
+                                </td>
 
                                     <%--<td><fmt:formatNumber value="${l.accounts.pointsBalance}"/></td>--%>
                                     <%--<td>${l.accounts.voucherBalance}</td>--%>
@@ -151,8 +159,8 @@
                                 <td style="word-break:keep-all;">
                                     <a class="btn btn-info editBtn"
                                        href="<c:url value='/agent/accounts_detail.html?id=${l.id}' /> ">账户明细</a>
-                                    <a class="btn btn-warning "
-                                       href="<c:url value='/securityCode/scan_num.html?owner=${l.realName}&&agentCode=${l.agentCode}' /> ">录入防伪</a>
+                                    <%--<a class="btn btn-warning "--%>
+                                       <%--href="<c:url value='/securityCode/scan_num.html?owner=${l.realName}&&agentCode=${l.agentCode}' /> ">录入防伪</a>--%>
                                     <a class="btn btn-success default editBtn"
                                        href="<c:url value='/agent/edit.html?id=${l.id}' /> "><span
                                             class="glyphicon glyphicon-wrench" aria-hidden="true"></span>修改</a>
@@ -173,7 +181,7 @@
                                             class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转货</a>
                                     <a class="btn btn-warning  transBtn"
                                        href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=0' /> "><span
-                                            class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转代金券</a>
+                                            class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转奖金</a>
                                         <%--<a class="btn btn-success  transBtn"--%>
                                         <%--href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=1' /> "><span--%>
                                         <%--class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转进货券</a>--%>

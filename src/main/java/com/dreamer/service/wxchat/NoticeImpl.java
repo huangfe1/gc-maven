@@ -38,7 +38,7 @@ public class NoticeImpl implements Notcie {
     @Transactional
     public void sendRecord() {
         /**
-         *代金券变动通知
+         *奖金变动通知
          */
         List<VoucherRecord> vs=voucherRecordDAO.getNeedNoticeRecord();
         for(VoucherRecord v:vs){
@@ -89,7 +89,7 @@ public class NoticeImpl implements Notcie {
     }
 
     /**
-     * 代金券通知通知
+     * 奖金通知通知
      * @param voucherRecord
      */
     @Override
@@ -105,7 +105,7 @@ public class NoticeImpl implements Notcie {
         String template_id;
         String firstvalue,keyword1value,keyword2value,keyword3value,remarkvalue;
 
-        if(voucherRecord.getType()==1){//代金券增加
+        if(voucherRecord.getType()==1){//奖金增加
             template_id="PFRuQ6QleOKVx8NdXTFZU1_JhV44WQuxY5VbGrGVvoQ";
 //            firstvalue=voucherRecord.getMore();
             firstvalue=voucherRecord.getMore().substring(0,9)+".....";
@@ -115,11 +115,11 @@ public class NoticeImpl implements Notcie {
             remarkvalue="点击'查看详情'立即查看您的账户财务记录。";
         }else {
             template_id ="YNYB1-BK635d_Fstwl5IHgIJwdTTMSKt-Cbstn6JCHI";
-             firstvalue="代金券消费通知!";
+             firstvalue="奖金消费通知!";
              keyword1value=String.valueOf(voucherRecord.getVoucher());//金额
              keyword2value="筑美商城";
              keyword3value=voucherRecord.getUpdateTime().toString();
-             remarkvalue=voucherRecord.getMore()+",剩余代金券"+voucherRecord.getVoucher_now();
+             remarkvalue=voucherRecord.getMore()+",剩余奖金"+voucherRecord.getVoucher_now();
         }
         wxNoticeTemplate.setTemplate_id(template_id);
         Map<String,WxNotcieTemplateData> m = new HashMap<>();

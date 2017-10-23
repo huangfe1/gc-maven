@@ -51,7 +51,7 @@
 					<!-- 	<ul class="nav navbar-nav navbar-right">
 							<li><button type="button"
 									class="btn btn-primary navbar-btn transBtn">
-									<li class="fa fa-exchange fa-fw"></li>转让代金券
+									<li class="fa fa-exchange fa-fw"></li>转让奖金
 								</button></li>
 						</ul> -->
 						</div>

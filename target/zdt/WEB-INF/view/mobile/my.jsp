@@ -274,7 +274,10 @@
                 <%--<p class="code">编号:${agent.agentCode}</p>--%>
                 <p class="phone">级别:${agent.levelName}</p>
             </div>
-            <span id="qrBtn"><i class="fa fa-qrcode" aria-hidden="true"></i></span>
+            <c:if test="${isVip}">
+                <span id="qrBtn"><i class="fa fa-qrcode" aria-hidden="true"></i></span>
+            </c:if>
+
         </div>
     </a>
 
@@ -288,24 +291,24 @@
 
 
         <div class="moreInfo">
-            <div class="label zq">
-                <div class="img">
-                    <img src="${ctx}/resources/mallimages/zq.png" alt="">
-                </div>
-                <span>转券</span>
-            </div>
+            <%--<div class="label zq">--%>
+                <%--<div class="img">--%>
+                    <%--<img src="${ctx}/resources/mallimages/zq.png" alt="">--%>
+                <%--</div>--%>
+                <%--<span>转券</span>--%>
+            <%--</div>--%>
             <div class="label jh">
                 <div class="img">
                     <img src="${ctx}/resources/mallimages/jh.png" alt="">
                 </div>
                 <span>进货</span>
             </div>
-            <div class="label fh">
-                <div class="img">
-                    <img src="${ctx}/resources/mallimages/fh.png" alt="">
-                </div>
-                <span>发货</span>
-            </div>
+            <%--<div class="label fh">--%>
+                <%--<div class="img">--%>
+                    <%--<img src="${ctx}/resources/mallimages/fh.png" alt="">--%>
+                <%--</div>--%>
+                <%--<span>发货</span>--%>
+            <%--</div>--%>
             <%--<div class="label gw">--%>
                 <%--<div class="img">--%>
                     <%--<img src="${ctx}/resources/mallimages/yhsc.png" alt="">--%>
@@ -322,12 +325,12 @@
 
 
     <div class="moreInfo">
-        <div class="label dd">
-            <div class="img">
-                <img src="${ctx}/resources/mallimages/dd.png" alt="">
-            </div>
-            <span>订单</span>
-        </div>
+        <%--<div class="label dd">--%>
+            <%--<div class="img">--%>
+                <%--<img src="${ctx}/resources/mallimages/dd.png" alt="">--%>
+            <%--</div>--%>
+            <%--<span>订单</span>--%>
+        <%--</div>--%>
         <div class="label bg">
             <div class="img">
                 <img src="${ctx}/resources/mallimages/bg.png" alt="">
@@ -375,7 +378,7 @@
             <div id="qrCode">
                 <img src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=${qrcodeUrl}" alt="">
             </div>
-            <h5 style="text-align: center;color: #a5a5a5;">推广二维码，让更多得人用上优惠的好产品!</h5>
+            <h5 style="text-align: center;color: #a5a5a5;">推广二维码，加入高臣!</h5>
             <br>
         </div>
         <div class="qrbg"></div>
@@ -399,7 +402,7 @@
 //            colorDark: '#000000',
 //            colorLight: '#ffffff'
 //        });
-        
+
         $("#wallet").click(function () {
             var url = "<c:url value="/mobile/wallet.html"/>"
             window.location.href=url;

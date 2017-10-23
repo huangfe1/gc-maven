@@ -22,6 +22,7 @@ public interface GoodsHandler extends BaseHandler<Goods> {
     //增加库存
     void addStock(Integer gid,Integer quantity);
 
+    //增加记录
     void addStockBlotter(StockBlotter stockBlotter);
 
     //减少库存
@@ -32,6 +33,10 @@ public interface GoodsHandler extends BaseHandler<Goods> {
 
     //减少库存总数
     void reduceStockSum(Integer gid,Integer quantity);
+
+    //管理员增加库存
+    void adminAddStock(StockBlotter stock);
+
 
 
 

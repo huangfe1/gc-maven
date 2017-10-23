@@ -31,17 +31,17 @@
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-				<div class="form-group">
-					<div class="col-md-12 col-xs-12">
-						<button type="button" class="btn btn-danger btn-block btn-lg quitBtn"
-							tabIndex="26" id="quitBtn" data-dismiss="selectModal" name="quitBtn"
-							value="login" tabindex="4" data-loading-text="正在返回......">
-							<span class="glyphicon glyphicon-remove-sign">&nbsp;</span>提交选择
-						</button>
-					</div>
-				</div>
-			</div>
+			<%--<div class="modal-footer">--%>
+				<%--<div class="form-group">--%>
+					<%--<div class="col-md-12 col-xs-12">--%>
+						<%--<button type="button" class="btn btn-danger btn-block btn-lg quitBtn"--%>
+							<%--tabIndex="26" id="quitBtn" data-dismiss="selectModal" name="quitBtn"--%>
+							<%--value="login" tabindex="4" data-loading-text="正在返回......">--%>
+							<%--<span class="glyphicon glyphicon-remove-sign">&nbsp;</span>提交选择--%>
+						<%--</button>--%>
+					<%--</div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
 		</div>
 	</div>
 

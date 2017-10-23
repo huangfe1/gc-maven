@@ -373,7 +373,7 @@
                                         <%--src="<c:url value="/resources/tcimages/user.jpg"/>"></div>--%>
                                 <%--<div class="contact">--%>
                                     <%--<a href="//shop.m.taobao.com/shop/shop_index.htm?user_id=2567130917"><p--%>
-                                            <%--class="title">湖南芝德堂</p>--%>
+                                            <%--class="title">湖南高臣药业</p>--%>
                                         <%--&lt;%&ndash;<p class="icon-right"><img class="icon-right"&ndash;%&gt;--%>
                                         <%--&lt;%&ndash;src="<c:url value="/resources/tcimages/icon-right-2.png"/> ">&ndash;%&gt;--%>
                                         <%--&lt;%&ndash;</p>&ndash;%&gt;--%>
@@ -508,7 +508,7 @@
                             "                                        src=\""+userjpg+"\"></div>\n" +
                             "                                <div class=\"contact\">\n" +
                             "                                    <a href=\"#\"><p\n" +
-//                            "                                            class=\"title\">湖南芝德堂("+time+")</p>\n" +
+//                            "                                            class=\"title\">湖南高臣药业("+time+")</p>\n" +
                             "                                            class=\"title\">"+time+"</p>\n" +
                             "                                    </a></div>\n" +
                             "                                <div class=\"state\">\n" +

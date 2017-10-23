@@ -61,7 +61,7 @@ width:25%;
 					</div>
 				</div>
 				<div class="col-xs-12">
-				<%--<h4>使用代金券:&nbsp;${transfer_calculate.voucher}</h4>--%>
+				<%--<h4>使用奖金:&nbsp;${transfer_calculate.voucher}</h4>--%>
 				<%--<h4>应付款:&nbsp;${transfer_calculate.amount-transfer_calculate.voucher}</h4>--%>
                     <h4>应付款:&nbsp;${transfer_calculate.amount}</h4>
 				</div>

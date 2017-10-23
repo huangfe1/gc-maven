@@ -155,9 +155,9 @@
             <div class="img" >
                 <img src="${ctx}/resources/mallimages/wxdj.png" alt="">
             </div>
-            <h4>代金券</h4>
+            <h4>奖金</h4>
             <p>￥${voucher}</p>
-            <p>今:￥${todayVoucher}</p>
+            <%--<p>今:￥${todayVoucher}</p>--%>
             <!--<p>月:￥2339</p>-->
 
         </div>
@@ -167,18 +167,18 @@
             </div>
             <h4>总业绩</h4>
             <p>￥${benefit}</p>
-            <p>直属:￥${sumB}</p>
+            <%--<p>直属:￥${sumB}</p>--%>
         </div>
     </div>
 
 
 
     <div class="server">
-        <h4>芝德堂服务</h4>
+        <h4>高臣药业服务</h4>
         <div class="items">
             <div class="item" id="dlsc">
                 <img src="${ctx}/resources/mallimages/fx.png" alt="">
-                <h4> 代理商城</h4>
+                <h4> 商城</h4>
             </div>
 
             <%--<div class="item" id="yhsc">--%>
@@ -193,7 +193,7 @@
 
             <div class="item" id="zhcz">
                 <img src="${ctx}/resources/mallimages/djqcz.png" alt="">
-                <h4>账户充值</h4>
+                <h4>充值</h4>
             </div>
 
             <%--<div class="item">--%>
@@ -273,7 +273,7 @@
             window.location.href=url;
         })
 
-        //代理商城
+        //商城
         $("#dlsc").click(function () {
             <c:if test="${user.agentCode ==null || user.agentCode eq ''}">
             alert("请先完善信息！");

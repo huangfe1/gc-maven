@@ -76,7 +76,7 @@
 								<%--积分余额--%>
 								<%--</li>--%>
 								<li class="list-group-item"><span class="badge primary">${parameter.entity.accounts.voucherBalance}</span>
-								拥有代金券
+								拥有奖金
 								</li>
 								<li class="list-group-item"><span class="badge primary">${parameter.entity.accounts.purchaseBalance}</span>
 									拥有进货券

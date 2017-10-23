@@ -37,7 +37,7 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-sm-2 control-label">赠送代金券</label>
+											<label class="col-sm-2 control-label">赠送奖金</label>
 											<div class="col-sm-4">
 												<p class="form-control-static">
 													${parameter.entity.voucher}</p>

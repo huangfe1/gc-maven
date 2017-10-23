@@ -16,7 +16,7 @@
             <div class="modal-body" id="messageBody">
                 <form id="registerForm" name="theForm" class="form-signin" action="<c:url value="/agent/completeInfo.json"/>"
                       method="POST">
-                    <label>您之前有芝德堂的授权编号吗？</label>
+                    <label>您之前有高臣药业的授权编号吗？</label>
                     <div class="radio" >
                         <label>
                             <input type="radio" checked name="hasCode" id="noCode" value="false">没有 - 我是新客户

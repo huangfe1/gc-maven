@@ -73,7 +73,7 @@
 
   <property generated="never" lazy="false" name="voucher" type="java.lang.Double">
    <column name="voucher" precision="10" not-null="false" default="0">
-    <comment>本次转货交易使用的代金券</comment>
+    <comment>本次转货交易使用的奖金</comment>
    </column>
   </property>
   <!--本次交易使用的进货券-->

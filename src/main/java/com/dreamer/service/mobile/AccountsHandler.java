@@ -26,7 +26,7 @@ public interface AccountsHandler extends BaseHandler<Accounts>{
 
     Double getAvailableVoucher(Agent agent, Double amount);
 
-    Map<Agent,Double>  rewardVoucher(Agent agent,List<Agent> parents, String voucherStr,Integer qunantity);
+    Map<Agent,Double>  rewardVoucher(List<Agent> parents, String voucherStr,Integer qunantity);
 
     Map<Agent, Double> rewardPmallVoucher(List<Agent> parents, Integer qunantity,Double profit);
 

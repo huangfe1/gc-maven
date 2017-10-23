@@ -144,14 +144,14 @@
 <div class="row" style="display: none">
 	<div class="col-md-12 col-xs-12">
 		<div class="panel panel-red">
-			<div class="panel-heading">是否使用代金券(${accounts.voucherBalance}元可用)</div>
+			<div class="panel-heading">是否使用奖金(${accounts.voucherBalance}元可用)</div>
 			<div class="panel-body">
 				<div class="col-md-12 col-xs-12">
 					<div class="form-group">
 						<ul class="list-group">
 							<li class="list-group-item"><div class="radio">
 								<label> <input type="checkbox" name="isUseVoucher" value="1"
-											   id="isUseVoucher" > 使用代金券
+											   id="isUseVoucher" > 使用奖金
 								</label>
 							</div></li>
 						</ul>

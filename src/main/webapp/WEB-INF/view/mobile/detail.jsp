@@ -247,6 +247,18 @@
                     </span>
             </p>
 
+            <p>
+                    <span>批准文号:
+                    <strong>${goods.license}</strong>
+                    </span>
+            </p>
+
+            <p>
+                    <span>生产公司:
+                    <strong>${goods.company}</strong>
+                    </span>
+            </p>
+
             <%--<c:if test="${goods.}"></c:if>--%>
             <%--<p>--%>
             <%--<span>活动结束时间:--%>

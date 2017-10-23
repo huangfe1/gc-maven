@@ -61,7 +61,7 @@ width:25%;
 					</div>
 				</div>
 				<div class="col-xs-12">
-				<h4>使用代金券:&nbsp;${transfer.entity.voucher}</h4>
+				<h4>使用奖金:&nbsp;${transfer.entity.voucher}</h4>
 				<h4>使用进货券:&nbsp;${transfer.entity.purchase}</h4>
 				</div>
 			</div>

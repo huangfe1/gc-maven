@@ -44,7 +44,7 @@ public class AccountsDAO extends HibernateBaseDAO<Accounts> {
 	}
 
 	/**
-	 * 查询市场所有的代金券
+	 * 查询市场所有的奖金
 	 */
 	public Double sumVoucher() {
 		String hql="select sum(voucherBalance) from Accounts as ac where ac.user.id !=3";

@@ -82,7 +82,7 @@
 			background-color: #d9534f;
 		}
 	</style>
-	<title>充值代金券</title>
+	<title>充值奖金</title>
 </head>
 
 <body>
@@ -94,7 +94,7 @@
         <div class="row" >
             <div class="col-md-12 col-xs-12">
                 <div class="panel panel-red">
-                    <div class="panel-heading">填写代金券充值数量</div>
+                    <div class="panel-heading">填写奖金充值数量</div>
                     <div class="panel-body">
                         <div class="col-md-12 col-xs-12">
                                     <!-- <li class="list-group-item"><div class="radio">
@@ -105,7 +105,7 @@
                                 <div class="control-group">
 
                                 <div class="controls" align="center">
-                                    <input style="line-height: 2em"  type="text" id="voucher" name="voucher" placeholder="代金券数量">
+                                    <input style="line-height: 2em"  type="text" id="voucher" name="voucher" placeholder="奖金数量">
                                 </div>
 
                             </div>

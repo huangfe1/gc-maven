@@ -2,10 +2,13 @@ package com.dreamer.view.mall.shopcart;
 
 import com.dreamer.domain.mall.goods.Goods;
 import com.dreamer.domain.mall.goods.GoodsType;
+import com.dreamer.domain.mall.goods.Price;
 import com.dreamer.domain.mall.shopcart.ShopCart;
 import com.dreamer.domain.user.Agent;
 import com.dreamer.repository.goods.GoodsDAO;
 import com.dreamer.repository.user.AgentDAO;
+import com.dreamer.service.mobile.AgentHandler;
+import com.dreamer.service.mobile.PriceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ps.mx.otter.exception.DataNotFoundException;
@@ -61,7 +64,9 @@ public class ShopCartController {
 			} else {
 				 cart = new ShopCart();
 			}
-			cart.addGoods(goods, addQuantity, agent.getMainLevelPrice(goods).getPrice());
+			Agent fAgnet = agentHandler.findVip(agent);
+			Price price  = priceHandler.getPrice(fAgnet,goods);
+			cart.addGoods(goods, addQuantity, price.getPrice());
 			result=cart.getQuantity();
 			WebUtil.addSessionAttribute(request, CART, cart);
 			return Message.createSuccessMessage("OK", String.valueOf(result));
@@ -123,6 +128,12 @@ public class ShopCartController {
 	
 	@Autowired
 	private GoodsDAO goodsDAO;
+
+    @Autowired
+    private AgentHandler agentHandler;
+
+    @Autowired
+    private PriceHandler priceHandler;
 
 	@Autowired
 	private AgentDAO agentDAO;

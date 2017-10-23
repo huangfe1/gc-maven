@@ -255,7 +255,7 @@
                    <%--src="<c:url value='/resources/images/tuiguang.jpg'/>"--%>
                    <%--data-holder-rendered="true">--%>
                 <%--<div class="caption">--%>
-                    <%--<h6 class="text-center">代理商城</h6>--%>
+                    <%--<h6 class="text-center">商城</h6>--%>
                 <%--</div>--%>
             <%--</a>--%>
         <%--</div>--%>

@@ -2,6 +2,7 @@ package com.dreamer.service.mobile;
 
 import com.dreamer.domain.user.Agent;
 import com.dreamer.domain.user.AgentLevel;
+import org.springframework.web.multipart.MultipartFile;
 import ps.mx.otter.utils.SearchParameter;
 
 import java.util.List;
@@ -24,11 +25,18 @@ public interface AgentHandler extends BaseHandler<Agent> {
     //找出某个代理下面有UnionId的代理
     List<Agent> findByParentHasUnionId(Integer pid);
 
+    Agent findVip(Agent agent);//找出分公司
+
     //创建游客
     Agent createVisitor(String unionId, String openId, String nickName, String headerImg, String refCode);
 
     //注册或者完善信息
-    Agent selfRegister(Agent agent, String refCode);
+    Agent selfRegister(Agent agent, String refCode, MultipartFile file);
+
+
+    //
+    void updateBuyDate(Agent agent,Integer amount,Integer buyAmount);
+
 
     Agent addAgentByAdmin(Agent agent,String refCode);
 

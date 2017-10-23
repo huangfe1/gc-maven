@@ -48,7 +48,7 @@ public class AuthorizationLetterHandler {
 //			gp.drawString(goods.getName(), 235, 607);//
 //			String an=goods.getName();
 //			if(goods.getGoodsType()== GoodsType.TEQ) {
-//				an = "芝德堂专业线项目";
+//				an = "高臣药业专业线项目";
 ////				String str="zmz727772zmz317828zmz851070zmz147846zmz812650zmz111668zmz213821";
 ////				if(str.contains(agent.getAgentCode())){//特殊代理进行联盟隐藏 刘加运 zmz317828 陈禹含 zmz851070 卿佩佩 zmz147846 彭波 zmz812650 王晓兰
 ////					gac.getAgentLevel().setName("品牌代言");

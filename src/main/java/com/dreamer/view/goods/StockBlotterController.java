@@ -1,10 +1,7 @@
 package com.dreamer.view.goods;
 
-import com.dreamer.domain.account.GoodsAccount;
-import com.dreamer.domain.mall.goods.Goods;
 import com.dreamer.domain.mall.goods.StockBlotter;
 import com.dreamer.domain.user.Admin;
-import com.dreamer.domain.user.MutedUser;
 import com.dreamer.repository.goods.StockBlotterDAO;
 import com.dreamer.service.mobile.GoodsAccountHandler;
 import com.dreamer.service.mobile.GoodsHandler;
@@ -28,23 +25,7 @@ public class StockBlotterController {
         try {
             Admin user = (Admin) WebUtil.getCurrentUser(request);
             stock.setUser(user);
-            MutedUser mutedUser = muteUserHandler.getMuteUser();
-            Goods goods = goodsHandler.get(stock.getGoods().getId());
-            GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(mutedUser, goods);
-            if (stock.getChange() > 0) {
-                goodsHandler.addBalance(stock.getGoods().getId(), stock.getChange());
-                goodsHandler.addStock(stock.getGoods().getId(), stock.getChange());
-                goodsHandler.addStockSum(stock.getGoods().getId(), stock.getChange());
-                goodsAccountHandler.increaseGoodsAccount(goodsAccount, stock.getChange());
-                goodsAccountHandler.merge(goodsAccount);
-            } else {
-                goodsHandler.reduceBalacne(stock.getGoods().getId(), -stock.getChange());
-                goodsHandler.reduceStock(stock.getGoods().getId(), -stock.getChange());
-                goodsHandler.reduceStockSum(stock.getGoods().getId(), -stock.getChange());
-                goodsAccountHandler.deductGoodsAccount(goodsAccount, stock.getChange());
-                goodsAccountHandler.merge(goodsAccount);
-            }
-            goodsHandler.addStockBlotter(stock);
+            goodsHandler.adminAddStock(stock);
             return Message.createSuccessMessage("新增库存成功");
         } catch (Exception exp) {
             exp.printStackTrace();

@@ -239,7 +239,7 @@
 
                     <c:if test="${cart.status.desc ne '已发货'}">
                     <span data-id="${cart.id}" class="deleteDelivery" style="float: right;color: red">
-                        暂未发货/点击取消
+                        <%--暂未发货/点击取消--%>正在出库
                     </span>
                     </c:if>
 

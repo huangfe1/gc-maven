@@ -183,7 +183,7 @@ width:auto !important;
 
 		<div class="row">
 			<div align="center" class="col-md-12 col-xs-12">
-				<input type="checkbox" name="useVoucher"  id="useVoucher"> <span>请勾选是否使用代金券(公司直接发货不可使用代金券!!)</span>
+				<input type="checkbox" name="useVoucher"  id="useVoucher"> <span>请勾选是否使用奖金(公司直接发货不可使用奖金!!)</span>
 			</div>
 		</div>
 		<br>

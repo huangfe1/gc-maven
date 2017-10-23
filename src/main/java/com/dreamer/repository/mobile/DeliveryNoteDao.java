@@ -3,16 +3,16 @@ package com.dreamer.repository.mobile;
 import com.dreamer.domain.mall.delivery.DeliveryNote;
 import com.dreamer.domain.mall.delivery.DeliveryStatus;
 import com.dreamer.domain.user.User;
+import com.wxjssdk.util.DateUtil;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ps.mx.otter.utils.SearchParameter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,10 +25,14 @@ public class DeliveryNoteDao extends BaseDaoImpl<DeliveryNote> {
         Example example = Example.create(parameter.getEntity());
         DetachedCriteria dc = DetachedCriteria.forClass(DeliveryNote.class);
         if (!user.isAdmin()) {
-            dc.add(Restrictions.or(Restrictions.eq("fromAgent.id", user.getId()), Restrictions.eq("toAgent.id", user.getId()), Restrictions.eq("applyAgent.id", user.getId())));
+            Disjunction dis = Restrictions.disjunction();
+            DetachedCriteria dc2 = dc.createCriteria("fromAgent");
+            DetachedCriteria c = dc2.createCriteria("parent");
+            dis.add(Restrictions.eq("id",user.getId()));
+            dis.add(Restrictions.eq("parent.id",user.getId()));
+            c .add(dis);
+//            dc.add(Restrictions.or(Restrictions.eq("fromAgent.id", user.getId()), Restrictions.eq("toAgent.id", user.getId()), Restrictions.eq("applyAgent.id", user.getId())));
         }
-//        addExample(dc,"applyAgent",parameter.getEntity().getApplyAgent());
-//        System.out.println(parameter.getEntity().getApplyAgent().getAgentCode());
        if(parameter.getEntity().getApplyAgent()!=null){
            DetachedCriteria agent = dc.createCriteria("applyAgent");
            addRestraction(agent,"agentCode",parameter.getEntity().getApplyAgent().getAgentCode());
@@ -41,6 +45,20 @@ public class DeliveryNoteDao extends BaseDaoImpl<DeliveryNote> {
         dc.addOrder(Order.desc("id"));
         return searchByPage(parameter, dc);
     }
+
+
+    //找出所有子等级
+    public List<DeliveryNote> findByChlidrens(List<Integer> cids, String startTime,String endTime){
+        String hql = "from DeliveryNote  note where note.applyAgent.id in :cids and note.applyTime <= :endTime and note.applyTime >= :startTime";
+        Query query = currentSession().createQuery(hql);
+        query.setParameter("cids",cids);
+        Date startDate = DateUtil.formatStartTime(startTime);
+        Date endDate = DateUtil.formatEndTime(endTime);
+        query.setParameter("startTime",startDate);
+        query.setParameter("endTime",endDate);
+        return query.list();
+    }
+
 
     public List<DeliveryNote> findDeliveryNotes(Integer uid, Integer nid) {
         DetachedCriteria dc = DetachedCriteria.forClass(DeliveryNote.class);

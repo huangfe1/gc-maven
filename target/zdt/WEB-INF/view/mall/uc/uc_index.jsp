@@ -185,12 +185,12 @@
 
                 <a href="<c:url value="/voucher/my.html"/>" class="list-group-item tip">
                     <div class="list_group_img"><img src="<c:url value="/resources/tcimages/zdjq.png"/>"></div>
-                    转让代金券
+                    转让奖金
                 </a>
 
                 <a href="<c:url value="/voucher/record.html"/> " class="list-group-item tip">
                     <div class="list_group_img"><img src="<c:url value="/resources/tcimages/mx.png"/>"></div>
-                    代金券详情
+                    奖金详情
                 </a>
 
                 <a href="<c:url value="/purchase/my.html"/>" class="list-group-item tip">

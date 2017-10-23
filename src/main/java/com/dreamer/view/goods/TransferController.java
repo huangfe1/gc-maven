@@ -146,7 +146,7 @@ public class TransferController {
 
 
     /**
-     * 代金券+进货券自动购买
+     * 奖金+进货券自动购买
      *
      * @return
      */
@@ -186,7 +186,7 @@ public class TransferController {
 
 
     /**
-     * 代金券+进货券自动购买
+     * 奖金+进货券自动购买
      *
      * @return
      */

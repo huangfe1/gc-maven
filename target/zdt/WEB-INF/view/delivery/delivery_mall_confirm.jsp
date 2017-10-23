@@ -9,7 +9,7 @@
 				aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
-			<h4 class="modal-title bg-danger" id="myModalLabel">代理商城订单-收款确认</h4>
+			<h4 class="modal-title bg-danger" id="myModalLabel">商城订单-收款确认</h4>
 		</div>
 		<div class="modal-body">
 			<div class="container-fluid">

@@ -183,7 +183,7 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
         deliveryNoteDao.delete(note);
         //保存物流费记录
         accountsRecordHandler.saveList(accountsRecords);
-        //通知 代金券
+        //通知 奖金
         noticeHandler.noticeAccountRecords(accountsRecords);
         //通知转货
 //        noticeHandler.noticeTransfer(transfer);
@@ -251,11 +251,11 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
         //减少库存
         deductGoodsAccounts(deliveryNote);
         //首单设置物流费为0
-        if(findDeliveryNotes(deliveryNote.getApplyAgent().getId(),null).isEmpty()){
-            deliveryNote.setLogisticsFee(0.0);
-            //保存
-            deliveryNote = deliveryNoteDao.merge(deliveryNote);
-        }else {
+//        if(findDeliveryNotes(deliveryNote.getApplyAgent().getId(),null).isEmpty()){
+//            deliveryNote.setLogisticsFee(0.0);
+//            保存
+//            deliveryNote = deliveryNoteDao.merge(deliveryNote);
+//        }else {
             //保存
             deliveryNote = deliveryNoteDao.merge(deliveryNote);
             //减少物流费 生成记录
@@ -263,10 +263,7 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
             //保存记录
             accountsRecordDao.saveList(records);
             noticeHandler.noticeAccountRecords(records);//物流费扣除通知
-        }
-
-
-
+//        }
 
         noticeHandler.noticeDeliveryNote(deliveryNote);//待发货通知
     }
@@ -321,6 +318,15 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
     @Override
     public List<DeliveryNote> findDeliveryNotes(SearchParameter<DeliveryNote> parameter, User user) {
         return deliveryNoteDao.findDeliveryNotes(parameter, user);
+    }
+
+    @Override
+    public List<DeliveryNote> findByChlidrens(List<Agent> chlidrens, String startTime, String endTime) {
+            List<Integer> cids = new ArrayList<>();
+            for(Agent agent : chlidrens){
+                cids.add(agent.getId());
+            }
+        return deliveryNoteDao.findByChlidrens(cids,startTime,endTime);
     }
 
     @Override

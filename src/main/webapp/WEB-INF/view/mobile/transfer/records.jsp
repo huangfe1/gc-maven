@@ -214,8 +214,8 @@
                                     <h4 >数量:X${item.quantity}&nbsp;</h4>
                                 </div>
                                 <div class="price accountsInfo" style="float: right;margin-left: 0">
-                                    <%--<h3><span>${item.price}￥</span></h3>--%>
-                                    <h4><i><del>${item.goods.retailPrice}￥</del></i></h4>
+                                    <h3><span>${item.price}￥</span></h3>
+                                    <%--<h4><i><del>${item.goods.retailPrice}￥</del></i></h4>--%>
                                 </div>
                                     <%--<div class="operate" style="display: none">--%>
                                     <%--<div class="inputs">--%>

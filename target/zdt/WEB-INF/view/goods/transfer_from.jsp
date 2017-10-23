@@ -76,7 +76,7 @@ text-align:center !important;
 								</div>
 							</div>
 							<div class="form-group">
-							<label class="col-sm-2 control-label">扣除代金券金额</label>
+							<label class="col-sm-2 control-label">扣除奖金金额</label>
 								<div class="col-sm-4">
 									<p class="form-control-static total" id="voucherPayable">0.0</p>
 								</div>
@@ -87,14 +87,14 @@ text-align:center !important;
 							</div>
 							
 							<%-- <div class="form-group">
-								<label for="currentStock" class="col-sm-2 control-label">使用代金券数额</label>
+								<label for="currentStock" class="col-sm-2 control-label">使用奖金数额</label>
 								<div class="col-sm-2">
 									<input type="number" max="${voucher}" class="form-control" required id="editVoucher" tabIndex="12"
 										name="voucher" value="${voucher}"
 										<c:if test="${voucher<=0}">
 											readonly="readonly"
 										</c:if>
-										placeholder="输入代金券金额">
+										placeholder="输入奖金金额">
 								</div>
 								<div class="col-md-4 col-xs-4 text-error"></div>
 							</div> --%>

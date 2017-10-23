@@ -73,22 +73,22 @@ public class AdvanceTransfer implements java.io.Serializable {
     }
 
 //    /**
-//     * 全部用代金券支付
+//     * 全部用奖金支付
 //     * @param time
 //     */
 //	public void payForAdvanceByVoucher(String time){
 //        setTransferTime(DateUtil.string2date(time, "yyyyMMddHHmmss"));
 //        setType(AdvanceTransferType.PAY);
-//        setRemark(AdvanceTransferType.PAY.desc+"使用了代金券"+getUseVoucher());
+//        setRemark(AdvanceTransferType.PAY.desc+"使用了奖金"+getUseVoucher());
 //        getUserByToAgent().getAccounts().deductVoucher(getUseVoucher(),"充值预存款扣减,订单"+getOut_trade_no());
-//        getUserByToAgent().getAccounts().increaseAdvance(getAdvance(),"在线充值,订单"+getOut_trade_no()+"使用代金券"+getUseVoucher());
+//        getUserByToAgent().getAccounts().increaseAdvance(getAdvance(),"在线充值,订单"+getOut_trade_no()+"使用奖金"+getUseVoucher());
 //	}
 
 //    public void payForAdvance(String time){
 //        setTransferTime(DateUtil.string2date(time, "yyyyMMddHHmmss"));
 //        setType(AdvanceTransferType.PAY);
 //        setRemark(VoucherTransferType.PAY.desc);
-//        if(getUseVoucher()>0){//有代金券可用
+//        if(getUseVoucher()>0){//有奖金可用
 //            getUserByToAgent().getAccounts().deductVoucher(getUseVoucher(),"充值预存款,订单"+getOut_trade_no());
 //        }
 //        getUserByToAgent().getAccounts().increaseAdvance(getAdvance(),"在线充值,订单"+getOut_trade_no());

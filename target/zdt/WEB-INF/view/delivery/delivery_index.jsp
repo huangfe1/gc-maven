@@ -96,21 +96,21 @@ td{
 						</form>
 						<!-- </div> -->
 						<ul class="nav navbar-nav navbar-right">
-							<c:choose>
-								<c:when test="${user.agent}">
-								<li><button type="button"
-									class="btn btn-primary navbar-btn addBtn">
-									<li class="fa fa-plus-square fa-fw"></li>请求发货
-								</button></li>
-								</c:when>
-								<c:when test="${user.admin}">
+							<%--<c:choose>--%>
+								<%--<c:when test="${user.agent}">--%>
+								<%--<li><button type="button"--%>
+									<%--class="btn btn-primary navbar-btn addBtn">--%>
+									<%--<li class="fa fa-plus-square fa-fw"></li>请求发货--%>
+								<%--</button></li>--%>
+								<%--</c:when>--%>
+								<%--<c:when test="${user.admin}">--%>
 									<a id="downNew" href="#">下载最近未发货的订单</a>
                                     <button type="button" class="btn btn-primary" id="upload"
                                             name="upload">
                                         <span class="glyphicon glyphicon-search searchBtn"></span>&nbsp;上传
                                     </button>
-                                </c:when>
-							</c:choose>
+                                <%--</c:when>--%>
+							<%--</c:choose>--%>
 						</ul>
 					
 				</div>
@@ -155,13 +155,13 @@ td{
 										<td>${g.logistics}</td>
 										<td>${g.status.desc}</td>
 										<td>
-										<c:choose>
-										<c:when test="${user.agent}">
-										<a class="btn btn-success default editBtn"
-											<%--<c:if test="${g.status!='NEW' }">disabled="disabled"</c:if>--%>
-											href="<c:url value='/delivery/edit.html?id=${g.id}' /> "><span class="fa fa-wrench fa-fw" aria-hidden="true"></span>详情</a>
-										</c:when>
-										<c:when test="${user.admin&&user.loginName ne 'zmz365zmz'}">
+										<%--<c:choose>--%>
+										<%--<c:when test="${user.agent}">--%>
+										<%--<a class="btn btn-success default editBtn"--%>
+											<%--&lt;%&ndash;<c:if test="${g.status!='NEW' }">disabled="disabled"</c:if>&ndash;%&gt;--%>
+											<%--href="<c:url value='/delivery/edit.html?id=${g.id}' /> "><span class="fa fa-wrench fa-fw" aria-hidden="true"></span>详情</a>--%>
+										<%--</c:when>--%>
+										<%--<c:when test="${user.admin&&user.loginName ne 'zmz365zmz'}">--%>
 											<%-- <c:if test="${g.status=='NEW' }">
 											<a class="btn btn-success default editBtn" 
 											href="<c:url value='/delivery/confirm.html?id=${g.id}' /> "><span class="glyphicon glyphicon-ok fa-fw" aria-hidden="true"></span>确认</a>
@@ -176,8 +176,8 @@ td{
 											<a class="btn btn-info  printBtn" 
 											href="<c:url value='/delivery/print.html?id=${g.id}' /> "  target="print"><span class="glyphicon glyphicon-print fa-fw" aria-hidden="true"></span>打印</a>
 											</c:if>
-										</c:when>
-										</c:choose>	
+										<%--</c:when>--%>
+										<%--</c:choose>	--%>
 											<a class="btn btn-danger default ajaxLink" data-role="delete"
 											<c:if test="${g.status!='NEW' }">disabled="disabled"</c:if>
 											href="<c:url value='/delivery/remove.json?id=${g.id}' /> "><span class="fa fa-trash fa-fw" aria-hidden="true"></span>删除</a>

@@ -131,7 +131,7 @@ border-color: #d9534f;
 		<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-			<h4 class="text-warning">你正在与芝德堂进行微信支付,请核对订单金额完成支付</h4>
+			<h4 class="text-warning">你正在与高臣药业进行微信支付,请核对订单金额完成支付</h4>
 			<h6>订单编号：${order.orderNo}</h6>
 			<h3>付款金额：${order.actualPayment}元</h3>
 			</div>
@@ -156,7 +156,7 @@ border-color: #d9534f;
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="winModalLabel">芝德堂优惠商城</h4>
+					<h4 class="modal-title" id="winModalLabel">高臣药业优惠商城</h4>
 				</div>
 				<div class="modal-body" id="winMessageBody"></div>
 			</div>

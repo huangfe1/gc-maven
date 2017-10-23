@@ -236,61 +236,61 @@
 <%--</header>--%>
 
 
-<%--<div id="letter"></div>--%>
+<div id="letter"></div>
 <div class="sort_box">
 
-    <div class="company">
-        <ul>
-            <li>
-                <div class="img sq"><img src="${ctx}/resources/mallimages/sq.jpeg" alt=""></div>
-                <div class="name"><span>授权客服</span></div>
-            </li>
-            <li>
-                <div class="img wl"><img src="${ctx}/resources/mallimages/wl.jpeg" alt=""></div>
-                <div class="name"><span>物流客服</span></div>
-            </li>
-            <li>
-                <div class="img wl"><img src="${ctx}/resources/mallimages/cw.jpeg" alt=""></div>
-                <div class="name"><span>专用客服</span></div>
-            </li>
-        </ul>
-    </div>
+    <%--<div class="company">--%>
+        <%--<ul>--%>
+            <%--<li>--%>
+                <%--<div class="img sq"><img src="${ctx}/resources/mallimages/sq.jpeg" alt=""></div>--%>
+                <%--<div class="name"><span>授权客服</span></div>--%>
+            <%--</li>--%>
+            <%--<li>--%>
+                <%--<div class="img wl"><img src="${ctx}/resources/mallimages/wl.jpeg" alt=""></div>--%>
+                <%--<div class="name"><span>物流客服</span></div>--%>
+            <%--</li>--%>
+            <%--<li>--%>
+                <%--<div class="img wl"><img src="${ctx}/resources/mallimages/cw.jpeg" alt=""></div>--%>
+                <%--<div class="name"><span>专用客服</span></div>--%>
+            <%--</li>--%>
+        <%--</ul>--%>
+    <%--</div>--%>
 
-    <div class="Title">相关账号</div>
+    <%--<div class="Title">相关账号</div>--%>
 
-    <div class="company">
-        <ul>
+    <%--<div class="company">--%>
+        <%--<ul>--%>
 
-            <c:if test="${isVip}">
-                <li data-uid="${mutedUserId}">
-                    <div class="img sq"><img src="${ctx}/resources/mallimages/gs.jpg" alt=""></div>
-                    <div class="name"><span>公司账号</span></div>
-                </li>
-            </c:if>
-            <c:if test="${!isVip}">
-                <li data-uid="${user.parent.id}">
-                    <div class="img sq"><img src="${user.parent.headimgurl}" alt=""></div>
-                    <div class="name"><span>业务咨询</span></div>
-                </li>
-            </c:if>
-            <li data-uid="${user.id}">
-                <div class="img sq"><img src="${user.headimgurl}" alt=""></div>
-                <div class="name"><span>自己账号</span></div>
-            </li>
-        </ul>
-    </div>
+            <%--<c:if test="${isVip}">--%>
+                <%--<li data-uid="${mutedUserId}">--%>
+                    <%--<div class="img sq"><img src="${ctx}/resources/mallimages/gs.jpg" alt=""></div>--%>
+                    <%--<div class="name"><span>公司账号</span></div>--%>
+                <%--</li>--%>
+            <%--</c:if>--%>
+            <%--<c:if test="${!isVip}">--%>
+                <%--<li data-uid="${user.parent.id}">--%>
+                    <%--<div class="img sq"><img src="${user.parent.headimgurl}" alt=""></div>--%>
+                    <%--<div class="name"><span>业务咨询</span></div>--%>
+                <%--</li>--%>
+            <%--</c:if>--%>
+            <%--<li data-uid="${user.id}">--%>
+                <%--<div class="img sq"><img src="${user.headimgurl}" alt=""></div>--%>
+                <%--<div class="name"><span>自己账号</span></div>--%>
+            <%--</li>--%>
+        <%--</ul>--%>
+    <%--</div>--%>
 
-    <div class="Title">搜索账号</div>
+    <%--<div class="Title">搜索账号</div>--%>
 
-    <div class="company search">
-        <ul>
-            <li>
-                <div class="img sq"><img src="<c:url value="/resources/images/newFr.png"/>" alt=""></div>
-                <div class="name"><span>搜索代理</span></div>
-                <div class="name sn" style="display: none"><input placeholder="编号/手机号" type="text"></div>
-            </li>
-        </ul>
-    </div>
+    <%--<div class="company search">--%>
+        <%--<ul>--%>
+            <%--<li>--%>
+                <%--<div class="img sq"><img src="<c:url value="/resources/images/newFr.png"/>" alt=""></div>--%>
+                <%--<div class="name"><span>搜索代理</span></div>--%>
+                <%--<div class="name sn" style="display: none"><input placeholder="编号/手机号" type="text"></div>--%>
+            <%--</li>--%>
+        <%--</ul>--%>
+    <%--</div>--%>
 
 
     <c:forEach items="${agents}" var="agent">

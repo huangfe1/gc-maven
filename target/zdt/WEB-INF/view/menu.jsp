@@ -31,7 +31,7 @@ th {
 		<a class="navbar-brand" href="<c:url value='/index.html'/>"><img
 			alt="Brand" style="width:20px;height:20px;"
 			src="<c:url value='/resources/images/title-1.png'/>"></a>
-		<p class="navbar-text">芝德堂管理信息系统</p>
+		<p class="navbar-text">高臣药业管理信息系统</p>
 	</div>
 	<!-- /.navbar-header -->
 	<div class="collapse navbar-collapse menu-navbar-collapse" id="menu-navbar-collapse">
@@ -40,14 +40,14 @@ th {
 				<%--<c:choose>--%>
 				<%--&lt;%&ndash;<c:when test="${user.agent}">&ndash;%&gt;--%>
 					<%--&lt;%&ndash;&lt;%&ndash;<li><p class="navbar-text">积分余额:<span id="pointsBalance">${accounts.pointsBalance}</span></p></li>&ndash;%&gt;&ndash;%&gt;--%>
-					<%--&lt;%&ndash;<li><p class="navbar-text">代金券:<span id="voucherBalance">${accounts.voucherBalance}</span></p></li>&ndash;%&gt;--%>
+					<%--&lt;%&ndash;<li><p class="navbar-text">奖金:<span id="voucherBalance">${accounts.voucherBalance}</span></p></li>&ndash;%&gt;--%>
 					<%--&lt;%&ndash;<li><p class="navbar-text">预存款:<span id="advanceBalance">${accounts.advanceBalance}</span></p></li>&ndash;%&gt;--%>
 					<%--&lt;%&ndash;<li><a href="<c:url value='/dmz/vmall/index.html'/>">我的商城</a></li>&ndash;%&gt;--%>
 					<%--&lt;%&ndash;<li><a href="<c:url value='/dmz/tmall/index.html'/>">特权商城</a></li>&ndash;%&gt;--%>
 				<%--&lt;%&ndash;&lt;%&ndash; 	<li><a href="<c:url value='/dmz/gmall/index.html'/>">我的官方商城</a></li> &ndash;%&gt;&ndash;%&gt;--%>
 				<%--&lt;%&ndash;</c:when>&ndash;%&gt;--%>
 				<%--&lt;%&ndash;<c:when test="${user.admin}">&ndash;%&gt;--%>
-					<%--&lt;%&ndash;<li><p class="navbar-text">公司账户代金券余额:<span id="voucherBalance">${accounts.voucherBalance}</span></p></li>&ndash;%&gt;--%>
+					<%--&lt;%&ndash;<li><p class="navbar-text">公司账户奖金余额:<span id="voucherBalance">${accounts.voucherBalance}</span></p></li>&ndash;%&gt;--%>
                     <%--&lt;%&ndash;<li><p class="navbar-text">公司账户预存款余额:<span id="advanceBalance">${accounts.advanceBalance}</span></p></li>&ndash;%&gt;--%>
                 <%--&lt;%&ndash;</c:when>&ndash;%&gt;--%>
 				<%--</c:choose>--%>
@@ -91,56 +91,59 @@ th {
 					<li><a href="#" class="menuitem"><i
 							class="fa fa-sitemap fa-fw"></i> 账户管理<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
-							<li><a href="<c:url value='/agent/myAuth.html?from=${user.id}'/>">
-							<i class="fa fa-list fa-fw"></i>我的账户<span class="fa arrow"></span></a></li>
-							<li><a href="<c:url value='/agent/index.html?from=${user.id}'/>">
-							<i class="fa fa-users fa-fw"></i>客户<span class="fa arrow"></span></a></li>
+							<%--<li><a href="<c:url value='/agent/myAuth.html?from=${user.id}'/>">--%>
+							<%--<i class="fa fa-list fa-fw"></i>我的账户<span class="fa arrow"></span></a></li>--%>
+
+                            <li><a href="<c:url value='/agent/index.html?from=${user.id}'/>">
+							<i class="fa fa-users fa-fw"></i>团队<span class="fa arrow"></span></a></li>
 							<%--<li><a href="<c:url value='/agent/teqchildren.html?from=${user.id}'/>">--%>
 								<%--<i class="fa fa-users fa-fw"></i>特权商城客户<span class="fa arrow"></span></a></li>--%>
 							<%--<li>--%>
-								<a
-								href="<c:url value='/transfer/my.html?from=${user.id}'/>"><i
-									class="glyphicon glyphicon-retweet fa-fw"></i>我要转货<span
-									class="fa arrow"></span></a></li>
-							<li><a
-								href="<c:url value='/transfer/records.html?from=${user.id}'/>"><i
-									class="fa fa-list fa-fw"></i>转货记录<span class="fa arrow"></span></a></li>
-							<!-- 转代金券 -->
-							<li><a
-									href="<c:url value='/voucher/my.html'/>"><i
-									class="fa fa-money fa-fw"></i>转代金券记录<span class="fa arrow"></span></a></li>
-
-							<!-- 转代金券 -->
-							<li><a
-									href="<c:url value='/advance/my.html'/>"><i
-									class="fa fa-money fa-fw"></i>转预存款记录<span class="fa arrow"></span></a></li>
-
-									<!-- 代金券记录 -->
-										<li><a
-								href="<c:url value='/voucher/record.html'/>"><i
-									class="fa fa-money fa-fw"></i>代金券详情<span class="fa arrow"></span></a></li>
-
-
-							<!-- 预存款详情 -->
-							<li><a
-									href="<c:url value='/advance/record.html'/>"><i
-									class="fa fa-money fa-fw"></i>预存款详情<span class="fa arrow"></span></a></li>
-								<%-- <li><a
-								href="<c:url value='/points/my.html'/>"><i
-									class="fa fa-user fa-fw"></i>积分转让<span class="fa arrow"></span></a></li> --%>
-						</ul></li>
+								<%--<a--%>
+								<%--href="<c:url value='/transfer/my.html?from=${user.id}'/>"><i--%>
+									<%--class="glyphicon glyphicon-retweet fa-fw"></i>我要转货<span--%>
+									<%--class="fa arrow"></span></a></li>--%>
+							<%--<li>--%>
+								<%--<a--%>
+								<%--href="<c:url value='/transfer/records.html?from=${user.id}'/>"><i--%>
+									<%--class="fa fa-list fa-fw"></i>转货记录<span class="fa arrow"></span></a></li>--%>
+							<!-- 转奖金 -->
+							<%--<li>--%>
+								<%--<a--%>
+									<%--href="<c:url value='/voucher/my.html'/>"><i--%>
+									<%--class="fa fa-money fa-fw"></i>转奖金记录<span class="fa arrow"></span></a></li>--%>
+<%----%>
+							<%--<!-- 转奖金 -->--%>
+							<%--<li><a--%>
+									<%--href="<c:url value='/advance/my.html'/>"><i--%>
+									<%--class="fa fa-money fa-fw"></i>转预存款记录<span class="fa arrow"></span></a></li>--%>
+<%----%>
+									<%--<!-- 奖金记录 -->--%>
+										<%--<li><a--%>
+								<%--href="<c:url value='/voucher/record.html'/>"><i--%>
+									<%--class="fa fa-money fa-fw"></i>奖金详情<span class="fa arrow"></span></a></li>--%>
+<%----%>
+<%----%>
+							<%--<!-- 预存款详情 -->--%>
+							<%--<li><a--%>
+									<%--href="<c:url value='/advance/record.html'/>"><i--%>
+									<%--class="fa fa-money fa-fw"></i>预存款详情<span class="fa arrow"></span></a></li>--%>
+								<%--&lt;%&ndash; <li><a--%>
+								<%--href="<c:url value='/points/my.html'/>"><i--%>
+									<%--class="fa fa-user fa-fw"></i>积分转让<span class="fa arrow"></span></a></li> &ndash;%&gt;--%>
+						<%--</ul></li>--%>
 					<li><a href="#" class="menuitem"><i
 							class="fa fa-sitemap fa-fw"></i> 货物管理<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
 							<li><a href="<c:url value='/delivery/index.html'/>"><i
-									class="fa fa-truck fa-fw"></i>请求发货<span
+									class="fa fa-truck fa-fw"></i>发货管理<span
 									class="fa arrow"></span></a></li>
-							<li><a href="<c:url value='/delivery/agent/confirm.html'/>"><i
-									class="fa fa-truck fa-fw"></i>发货确认<span
-									class="fa arrow"></span></a></li>
-							<li><a href="<c:url value='/securityCode/index.html'/>"><i
-									class="fa fa-shield fa-fw"></i>防伪码<span
-									class="fa arrow"></span></a></li>
+							<%--<li><a href="<c:url value='/delivery/agent/confirm.html'/>"><i--%>
+									<%--class="fa fa-truck fa-fw"></i>发货确认<span--%>
+									<%--class="fa arrow"></span></a></li>--%>
+							<%--<li><a href="<c:url value='/securityCode/index.html'/>"><i--%>
+									<%--class="fa fa-shield fa-fw"></i>防伪码<span--%>
+									<%--class="fa arrow"></span></a></li>--%>
 						</ul></li>
 				</c:if>
 				<c:if test="${user.admin}">

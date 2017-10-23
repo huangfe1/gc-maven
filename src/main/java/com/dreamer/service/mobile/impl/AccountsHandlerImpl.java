@@ -1,5 +1,6 @@
 package com.dreamer.service.mobile.impl;
 
+import com.dreamer.domain.mall.goods.Price;
 import com.dreamer.domain.user.*;
 import com.dreamer.domain.user.enums.AccountsTransferStatus;
 import com.dreamer.domain.user.enums.AccountsType;
@@ -12,6 +13,7 @@ import com.dreamer.repository.mobile.AgentDao;
 import com.dreamer.service.mobile.AccountsHandler;
 import com.dreamer.service.mobile.AgentHandler;
 import com.dreamer.service.mobile.GoodsAccountHandler;
+import com.dreamer.service.mobile.PriceHandler;
 import com.dreamer.service.user.agentCode.AgentCodeGenerator;
 import com.dreamer.util.PreciseComputeUtil;
 import com.dreamer.util.RewardUtil;
@@ -153,7 +155,7 @@ public class AccountsHandlerImpl extends BaseHandlerImpl<Accounts> implements Ac
 
 
     /**
-     * 返回可用的代金券
+     * 返回可用的奖金
      *
      * @param agent
      * @param amount
@@ -164,7 +166,7 @@ public class AccountsHandlerImpl extends BaseHandlerImpl<Accounts> implements Ac
         if (voucher >= amount) {
             return amount;
         } else {
-            throw new ApplicationException("代金券余额不足,需要" + amount);
+            throw new ApplicationException("奖金余额不足,需要" + amount);
         }
     }
 
@@ -196,50 +198,15 @@ public class AccountsHandlerImpl extends BaseHandlerImpl<Accounts> implements Ac
     }
 
     @Override
-    public Map<Agent, Double> rewardVoucher(Agent agent, List<Agent> parents, String voucherStr, Integer qunantity) {
+    public Map<Agent, Double> rewardVoucher(List<Agent> parents, String voucherStr, Integer qunantity) {
         HashMap<Agent, Double> maps = new HashMap<>();
         //返利参数
+//        Agent fAgent =  agentHandler.findVip(agent);//找打分公司
+//        Price price =  priceHandler.getPrice(agent)
         Double[] vs = RewardUtil.getVsFromStr(voucherStr);
-        //装载特殊返利级别对应的返利
-        String[] tvipNames = new String[AgentLevelName.values().length - 1];
-        for (int i = 0; i < AgentLevelName.values().length - 1; i++) {
-            tvipNames[i] = AgentLevelName.values()[i].toString();
-        }
-        Map<String, Double> mapV = new HashMap<>();
-        for (int i = 0; i < tvipNames.length; i++) {
-            mapV.put(tvipNames[i], vs[i]);//特别vip的返利
-        }
-        //截流总数
-        Double sumReward = 0.0;
-        //当事人的级别
-        String lv = goodsAccountHandler.getMainGoodsAccount(agent).getAgentLevel().getName();
-        if (mapV.containsKey(lv)) {//当事人是特殊vip
-            sumReward += mapV.get(lv)*qunantity;//之后的大咖要去除这个差价
-//            System.out.println(sumReward+"==");
-        }
-        //        崔秀娟 特殊处理
-//        Boolean hasFenGs = false;
-        //循环返利
+        //循环返利 业务员 药店
         for (int i = 0; i < parents.size(); i++) {
             Double result = 0.0;//该返的奖金
-            String levelName = goodsAccountHandler.getMainGoodsAccount(parents.get(i)).getAgentLevel().getName();
-            //如果是特殊vip
-            if (mapV.containsKey(levelName)) {
-                //增加返利
-                Double tem = PreciseComputeUtil.round(mapV.get(levelName) * qunantity);
-                result = tem - sumReward;
-                if (result < 0) {//减去已经返了的利润
-                    result = 0.0;
-                }
-                sumReward += result;//累积已经返了的利
-//                //如果是崔秀娟 且有如果有分公司
-//                if (levelName.contains(AgentLevelName.分公司.toString())) {
-//                    hasFenGs = true;
-//                }
-//                if (parents.get(i).getAgentCode().equals("zmz126786") && hasFenGs) {
-//                    result = result / 2;
-//                }
-            }
             //加上基础的返利
             result += RewardUtil.getVipVoucher(vs, i, qunantity);
             //如果返利为0不加入
@@ -434,6 +401,9 @@ public class AccountsHandlerImpl extends BaseHandlerImpl<Accounts> implements Ac
 
     @Autowired
     private AgentHandler agentHandler;
+
+    @Autowired
+    private PriceHandler priceHandler;
 
 
     public AccountsDao getAccountsDao() {

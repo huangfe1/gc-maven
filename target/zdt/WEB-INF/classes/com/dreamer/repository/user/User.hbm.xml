@@ -165,6 +165,26 @@
                     <comment>代理编号</comment>
                 </column>
             </property>
+
+            <property generated="never" lazy="false" name="registerAddress" type="java.lang.String" unique="true">
+                <column length="64" name="register_address" not-null="false">
+                    <comment>注册地址</comment>
+                </column>
+            </property>
+
+            <property generated="never" lazy="false" name="imgFile"
+                      type="java.lang.String" unique="true">
+                <column length="600" name="img_file" not-null="false">
+                    <comment>营业执照</comment>
+                </column>
+            </property>
+
+            <property name="buyTime" type="date">
+                <column name="buyTime">
+                    <comment>需要消费的时间</comment>
+                </column>
+            </property>
+
             <property generated="never" lazy="false" name="remittance" type="java.lang.String">
                 <column length="256" name="remittance">
                     <comment>汇款信息</comment>
@@ -175,11 +195,7 @@
                     <comment>代理子域名</comment>
                 </column>
             </property>
-            <!--<many-to-one class="com.dreamer.domain.user.User" fetch="select" name="referrer" >-->
-            <!--<column name="referrer">-->
-            <!--<comment>引荐人</comment>-->
-            <!--</column>-->
-            <!--</many-to-one> -->
+
             <property generated="never" lazy="false" name="agentStatus">
                 <column length="16" name="agent_status">
                     <comment>代理状态</comment>
@@ -198,64 +214,11 @@
                 </key>
                 <one-to-many class="com.dreamer.domain.authorization.Authorization"/>
             </set>
-            <!-- 代金券记录 延迟加载-->
-            <!--<set cascade="all-delete-orphan" inverse="true" name="voucherRecords" sort="unsorted" lazy="true">-->
-            <!--<key>-->
-            <!--<column name="agent" not-null="true">-->
-            <!--<comment>记录所属的代理</comment>-->
-            <!--</column>-->
-            <!--</key>-->
-            <!--<one-to-many class="com.dreamer.domain.account.VoucherRecord"/>-->
-            <!--</set>-->
-            <!--预存款记录 延迟加载 删除孤儿-->
-            <!--<set name="advanceRecords" inverse="true" cascade="all-delete-orphan" lazy="true">-->
-            <!--<key>-->
-            <!--<column name="agent" not-null="true">-->
-            <!--<comment>记录所属的代理</comment>-->
-            <!--</column>-->
-            <!--</key>-->
-            <!--<one-to-many class="com.dreamer.domain.account.AdvanceRecord" />-->
-            <!--</set>-->
 
-            <!--进货券记录 延迟加载 删除孤儿-->
-            <!--<set name="purchaseRecords" inverse="true" cascade="all-delete-orphan" lazy="true">-->
-            <!--<key>-->
-            <!--<column name="agent" not-null="true">-->
-            <!--<comment>记录所属的代理</comment>-->
-            <!--</column>-->
-            <!--</key>-->
-            <!--<one-to-many class="com.dreamer.domain.account.PurchaseRecord" />-->
-            <!--</set>-->
-
-            <!--&lt;!&ndash;地址信息&ndash;&gt;-->
-            <!--<set name="addresses" inverse="true" cascade="all-delete-orphan" lazy="true">-->
-            <!--<key>-->
-            <!--<column name="agent" not-null="true" >-->
-            <!--<comment>地址所属的代理</comment>-->
-            <!--</column>-->
-            <!--</key>-->
-            <!--<one-to-many class="com.dreamer.domain.user.Address"/>-->
-            <!--</set>-->
-
-            <!--地址记录 删除孤儿-->
-            <!--<set name="addresses" inverse="true" cascade="all-delete-orphan" lazy="true">-->
-            <!--<key>-->
-            <!--<column name="agent" not-null="true">-->
-            <!--<comment>记录所属的代理</comment>-->
-            <!--</column>-->
-            <!--</key>-->
-            <!--<one-to-many class="com.dreamer.domain.user.Address" />-->
-            <!--</set>-->
 
 
         </subclass>
-        <!-- <subclass discriminator-value="2" name="Visitor" select-before-update="false">
-         <many-to-one class="com.dreamer.domain.user.User" fetch="select" name="referrer">
-          <column name="referrer">
-           <comment>引荐人</comment>
-          </column>
-         </many-to-one>
-        </subclass> -->
+
         <subclass discriminator-value="3" name="MutedUser" select-before-update="false">
             <property generated="never" lazy="false" name="agentCode"
                       type="java.lang.String" unique="true">

@@ -44,7 +44,7 @@
         </property>
         <property name="voucher" type="java.lang.Double">
             <column name="voucher" precision="10" not-null="true">
-                <comment>本次转让的代金券</comment>
+                <comment>本次转让的奖金</comment>
             </column>
         </property>
         <!--转货类型-->

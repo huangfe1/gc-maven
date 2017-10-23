@@ -2,6 +2,7 @@ package com.dreamer.service.mobile;
 
 import com.dreamer.domain.mall.delivery.DeliveryNote;
 import com.dreamer.domain.user.AddressMy;
+import com.dreamer.domain.user.Agent;
 import com.dreamer.domain.user.User;
 import ps.mx.otter.utils.SearchParameter;
 
@@ -25,6 +26,8 @@ public interface DeliveryNoteHandler extends BaseHandler<DeliveryNote> {
     List<Object[]> getOrdersItemCount(Integer limit);
 
     void  delivery(Integer noteId, String company, String code, Double actual_logisticsFee);
+
+    List<DeliveryNote> findByChlidrens(List<Agent> chlidrens,String startTime,String endTime);
 
 
 }

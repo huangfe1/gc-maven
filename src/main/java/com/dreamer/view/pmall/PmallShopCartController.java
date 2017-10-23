@@ -161,7 +161,7 @@ public class PmallShopCartController {
         return "<xml>\n" + "  <return_code><![CDATA[SUCCESS]]></return_code>\n" + "  <return_msg><![CDATA[OK]]></return_msg>\n" + "</xml>";
     }
 
-    //代金券支付完成后  回调支付方法
+    //奖金支付完成后  回调支付方法
     @RequestMapping("/accountsPay.json")
     @ResponseBody
     public Message accountsPay(Integer id, Integer accountsType, HttpServletRequest request) {

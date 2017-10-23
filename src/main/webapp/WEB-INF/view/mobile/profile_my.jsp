@@ -270,7 +270,7 @@
 
     <%--<div class="moreInfo">--%>
         <%--<div class="address label">--%>
-            <%--<h3>代金券</h3>--%>
+            <%--<h3>奖金</h3>--%>
             <%--<span>${voucher}</span>--%>
         <%--</div>--%>
         <%--<div class="address label">--%>
@@ -299,7 +299,7 @@
             <%--<li>--%>
             <%--<img src="http://www.zmz365.com:8081/dreamer/dmz/img/goods/2e50bb48461343269a7377c5f9766302.jpg" alt="">--%>
             <%--<div class="accountsInfo">--%>
-            <%--<h3>芝德堂雪莲</h3>--%>
+            <%--<h3>高臣药业雪莲</h3>--%>
             <%--<h4>库存:30</h4>--%>
             <%--</div>--%>
             <%--</li>--%>
@@ -321,7 +321,7 @@
 
     <!--<div class="transferGoods"><span>给他拨货</span></div>-->
     <!--<div class="transferGoods"><span>给他发货</span></div>-->
-    <!--<div class="transferVoucher"><span>转代金券</span></div>-->
+    <!--<div class="transferVoucher"><span>转奖金</span></div>-->
     <!--<div class="transferPay"><span>转进货券</span></div>-->
     <!--<div class="transferPay"><span>录防伪码</span></div>-->
 

@@ -42,7 +42,7 @@
                     <div class="navbar-form navbar-left">
                         <div class="form-group">
                             <label class="">产品名称</label> <input required type="text"
-                                                                value="芝德堂雪莲护理贴小礼盒" name="goodsName" id="goodsName"
+                                                                value="高臣药业雪莲护理贴小礼盒" name="goodsName" id="goodsName"
                                                                 autofocus class="typeahead form-control"
                                                                 placeholder="产品名称">
                             <label class="">货物持有人</label> <input required type="text" value="${param.owner}"

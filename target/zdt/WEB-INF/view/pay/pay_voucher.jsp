@@ -92,8 +92,8 @@ function onBridgeReady(){
        'getBrandWCPayRequest', ${jsapiParamJson},
        function(res){
            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-        	   alert("代金券充值功");
-        	   $("#winMessageBody").empty().html("<h4>代金券充值成功,系统将回到商城首页</h4>").addClass("text-primary");
+        	   alert("奖金充值功");
+        	   $("#winMessageBody").empty().html("<h4>奖金充值成功,系统将回到商城首页</h4>").addClass("text-primary");
 				$("#winModal").modal({backdrop:"static",show:true});
 				window.setTimeout(function() {
 					window.location.replace("<c:url value='/dmz/vmall/index.html'/>");
@@ -125,7 +125,7 @@ if (typeof WeixinJSBridge == "undefined"){
 		<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-			<h4 class="text-warning">你正在与筑美芝德堂进行微信支付,请核对订单金额完成支付</h4>
+			<h4 class="text-warning">你正在与筑美高臣药业进行微信支付,请核对订单金额完成支付</h4>
 			<h6>订单编号：${order.out_trade_no}</h6>
 			<h3>付款金额：${order.voucher}元</h3>
 			</div>
@@ -149,7 +149,7 @@ if (typeof WeixinJSBridge == "undefined"){
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="winModalLabel">芝德堂代金券充值</h4>
+					<h4 class="modal-title" id="winModalLabel">高臣药业奖金充值</h4>
 				</div>
 				<div class="modal-body" id="winMessageBody"></div>
 			</div>

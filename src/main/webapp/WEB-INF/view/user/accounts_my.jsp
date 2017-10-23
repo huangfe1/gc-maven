@@ -74,7 +74,7 @@
 							<dl class="dl-horizontal">
   								<dt>积分余额</dt>
   								<dd>${}</dd>
-  								<dt>代金券</dt>
+  								<dt>奖金</dt>
   								<dd>${}</dd>
 							</dl>
 						</div>

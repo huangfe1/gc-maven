@@ -69,10 +69,12 @@
 
     </a>
     <a class="item" href="<c:url value="/mobile/contacts.html"/>">
+    <%--<a class="item" href="<c:url value="#"/>">--%>
             <span class="txl" >&nbsp;</span>
-            <p>通讯录</p>
+            <p>团队</p>
     </a>
-    <a class="item" href="<c:url value="/mobile/find.html"/>">
+    <%--<a class="item" href="<c:url value="/mobile/find.html"/>">--%>
+    <a class="item" href="<c:url value="#"/>">
             <span class="fx" >&nbsp;</span>
             <p>发现</p>
     </a>

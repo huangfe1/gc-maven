@@ -28,7 +28,7 @@ public class VoucherPayController {
 	public Message commit( VoucherTransfer voucherTransfer ){
         try {
             User user=(User)WebUtil.getCurrentUser(request);
-            agentHandler.addVoucher(agentDAO.findById(user.getId()),voucherTransfer);//充值代金券
+            agentHandler.addVoucher(agentDAO.findById(user.getId()),voucherTransfer);//充值奖金
             String uri;
             String backUrl= ServletUriComponentsBuilder.fromContextPath(request).path("/voucher/pay/pay.html").queryParam("orderId",voucherTransfer.getId()).build().toUriString();
 //            if(Objects.nonNull(user.getWxOpenid())&&!user.getWeixin().isEmpty()){//有OpenID直接去下单
@@ -48,8 +48,8 @@ public class VoucherPayController {
     public Message alicommit( VoucherTransfer voucherTransfer ){
         try {
             User user=(User)WebUtil.getCurrentUser(request);
-//            advanceTransfer.setUseVoucher(0.0);//不使用代金券
-            agentHandler.addVoucher(agentDAO.findById(user.getId()),voucherTransfer);//提交充值代金券订单
+//            advanceTransfer.setUseVoucher(0.0);//不使用奖金
+            agentHandler.addVoucher(agentDAO.findById(user.getId()),voucherTransfer);//提交充值奖金订单
             String backUrl= ServletUriComponentsBuilder.fromContextPath(request).path("/voucher/pay/alipay.html").queryParam("orderId",voucherTransfer.getId()).build().toUriString();
             response.setHeader("Location",backUrl);
             return Message.createSuccessMessage("操作成功");

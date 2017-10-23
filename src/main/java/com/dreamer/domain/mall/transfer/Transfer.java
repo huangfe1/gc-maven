@@ -30,7 +30,7 @@ public class Transfer implements java.io.Serializable {
 	private Date updateTime;// 更新时间
 	private String remittance;//类型
 	private String remark;//代理备注
-	private Double voucher;//代金券
+	private Double voucher;//奖金
     private Double purchase;//进货券
 	private Integer quantity;//总数
 	private Double amount;//总金额
@@ -150,7 +150,7 @@ public class Transfer implements java.io.Serializable {
 
 //	public void calculate(){
 //		quantity=caculateQuantity();
-//        if(getUseVoucher()!=null&&getUseVoucher()) {//使用代金券
+//        if(getUseVoucher()!=null&&getUseVoucher()) {//使用奖金
 //            voucher = voucherAmountPayable();
 //        }else {
 //            voucher=0.0;
@@ -160,7 +160,7 @@ public class Transfer implements java.io.Serializable {
 
 
 //	/**
-//	 * 代金券可支付金额
+//	 * 奖金可支付金额
 //	 * @return
 //	 */
 //	public Double voucherAmountPayable(){
@@ -211,10 +211,10 @@ public class Transfer implements java.io.Serializable {
 //        setPurchase(purchaseAmountPayable());//扣减可用的进货券
 //		//先扣减预存款
 //        userByToAgent.getAccounts().payPurchaseTo(userByFromAgent.getAccounts(), purchaseAmountPayable());
-//        //支付代金券
+//        //支付奖金
 //        BigDecimal b1= BigDecimal.valueOf(getAmount());
 //        BigDecimal b2= BigDecimal.valueOf(getPurchase());
-//        setVoucher(b1.subtract(b2).doubleValue());//设置还需扣减的代金券
+//        setVoucher(b1.subtract(b2).doubleValue());//设置还需扣减的奖金
 //		userByToAgent.getAccounts().payVoucherTo(userByFromAgent.getAccounts(), getVoucher());
 //        confirm();//转货
 //	}
@@ -260,7 +260,7 @@ public class Transfer implements java.io.Serializable {
 //            }
 //            accFrom.transferGoodsToBack(accFrom,accTo, v.getQuantity());
 //        });
-//        String more="退货返还代金券给"+userByFromAgent.getRealName();
+//        String more="退货返还奖金给"+userByFromAgent.getRealName();
 //        userByToAgent.getAccounts().payVoucherTo(userByFromAgent.getAccounts(),getAmount(),more);
 //	}
 	

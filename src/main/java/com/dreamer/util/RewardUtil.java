@@ -37,8 +37,8 @@ public class RewardUtil {
      * @return
      */
     public static Double getVipVoucher( Double[] vs , int index, Integer quantity) {
-        Integer tVipSize = AgentLevelName.values().length-1;
-        int start = tVipSize + index;
+//        Integer tVipSize = AgentLevelName.values().length-1;
+        int start = index;
         if (start < vs.length) {
             return PreciseComputeUtil.round(vs[start] * quantity);
         }

@@ -35,7 +35,7 @@
 		<property generated="never" lazy="false" name="voucherBalance"
 			type="java.lang.Double">
 			<column name="voucher_balance" precision="10">
-				<comment>代金券余额</comment>
+				<comment>奖金余额</comment>
 			</column>
 		</property>
 		<!--进货券-->

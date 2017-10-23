@@ -319,8 +319,8 @@
         <span>会员价:</span>
         <span class="totalPrice">￥${shopcart.amount}</span>
         <c:if test="${isVip}">
-            <span class="toDelivery st-trigger-effects" data-effect="st-effect-1">直接发货</span>
-            <span class="toTransfer">转入库存</span>
+            <span class="toDelivery st-trigger-effects" data-effect="st-effect-1">提交订单</span>
+            <%--<span class="toTransfer">转入库存</span>--%>
         </c:if>
         </c:if>
         <c:if test="${shopcart==null or  empty shopcart or shopcart.quantity<1}">

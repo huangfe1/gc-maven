@@ -2,12 +2,13 @@ package com.dreamer.view.mobile;
 
 import com.dreamer.domain.account.GoodsAccount;
 import com.dreamer.domain.mall.goods.Goods;
-import com.dreamer.domain.mall.goods.GoodsType;
+import com.dreamer.domain.mall.goods.Price;
 import com.dreamer.domain.mall.transfer.Transfer;
 import com.dreamer.domain.user.*;
 import com.dreamer.domain.user.dto.UserDto;
 import com.dreamer.domain.user.enums.AccountsTransferStatus;
 import com.dreamer.domain.user.enums.AccountsType;
+import com.dreamer.domain.user.enums.AgentStatus;
 import com.dreamer.domain.wechat.WxConfig;
 import com.dreamer.service.mobile.*;
 import com.dreamer.service.mobile.factory.WxConfigFactory;
@@ -18,13 +19,13 @@ import com.wxjssdk.JSAPI;
 import com.wxjssdk.dto.SdkResult;
 import com.wxjssdk.util.DateUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ps.mx.otter.exception.ApplicationException;
 import ps.mx.otter.utils.WebUtil;
@@ -76,7 +77,7 @@ public class MobileController {
         //以统一Id为标准登陆
         Agent findAgent = agentHandler.get("wxUnionID", unionid);
         String redirectUrl = (String) request.getSession().getAttribute("redirectUrl");
-        if (findAgent != null) {//系统存在这个用户
+        if (findAgent != null && findAgent.getAgentStatus().equals(AgentStatus.ACTIVE)) {//系统存在这个用户
             //登录
             WebUtil.addCurrentUser(request, findAgent);
             WebUtil.login(request);
@@ -145,19 +146,28 @@ public class MobileController {
             model.addAttribute("s_openid", s_openid);
             model.addAttribute("refCode", refCode);//推荐过来的
         }
+        Agent agent = agentHandler.get("agentCode", refCode);
+        String levelName = agentHandler.getLevelName(agent);
+        if (levelName.contains(AgentLevelName.分公司.toString())) {
+            model.addAttribute("isF", true);
+        }
+        if (levelName.contains(AgentLevelName.业务员.toString())) {
+            model.addAttribute("isY", true);
+        }
+
         return "mobile/register";
     }
 
     //注册并且绑定上级
     @RequestMapping("/mobile/register.json")
     @ResponseBody
-    public Message register(Agent agent, HttpServletRequest request, HttpServletResponse response, String refCode) {
+    public Message register(Agent agent, HttpServletRequest request, HttpServletResponse response, String refCode, @RequestParam(required = false) MultipartFile img) {
 
 //        String refCode = (String) request.getSession().getAttribute("refCode");
         if (refCode == null) return Message.createFailedMessage("没有推荐人，请联系管理员");
         if (agent.getWxUnionID() == null) return Message.createSuccessMessage("没有WxUnionID，联系管理员");
         try {
-            Agent newAgent = agentHandler.selfRegister(agent, refCode);
+            Agent newAgent = agentHandler.selfRegister(agent, refCode, img);
             String redirectUrl = (String) request.getSession().getAttribute("redirectUrl");
             if (redirectUrl == null) {
                 redirectUrl = ServletUriComponentsBuilder.fromContextPath(request).path("/mobile/my.html").build().toString();
@@ -194,6 +204,16 @@ public class MobileController {
     @RequestMapping({"/dmz/mobile/index.html", "/dmz/mobile/{refCode}/index.html"})
     public String mallIndex(Model model, HttpServletRequest request, @PathVariable(name = "refCode", required = false) String refCode, @RequestParam(required = false) Integer cid) {
 
+        //只有登陆的用户才能访问
+        if (!WebUtil.isLogin(request)) {
+            return "redirect:login.html";
+        }
+
+        User user = (User) WebUtil.getCurrentUser(request);
+        Agent agent = agentHandler.get(user.getId());
+        Agent fAgent = agentHandler.findVip(agent);//找出分公司
+
+
         if (refCode != null) {
             request.getSession().setAttribute("refCode", refCode);
 //            Agent refAgent = agentDAO.findByAgentCode(refCode);
@@ -204,13 +224,26 @@ public class MobileController {
         //所有大类
         model.addAttribute("categorys", categoryHandler.getList("type", 0));
         //查询所有产品
-        Map<String, Object> map = new HashedMap();
-        map.put("goodsType", GoodsType.MALL);
-        if (cid != null) {
-            map.put("category.id", cid);
+//        Map<String, Object> map = new HashedMap();
+//        map.put("goodsType", GoodsType.MALL);
+//        if (cid != null) {
+//            map.put("category.id", cid);
+//        }
+//        map.put("ASC", "order");//排序
+//        List<Goods> goodss = goodsHandler.getList(map);
+        //查询所有产品  显示当前分公司的价格
+        List<Goods> tems = new ArrayList<>();
+        //找出当前用户的分公司
+        List<Goods> goodss = new ArrayList<>();
+        for (GoodsAccount g : fAgent.getGoodsAccounts()) {
+            if (g.getCurrentBalance() > 0) {
+                Price price = priceHandler.getPrice(fAgent, g.getGoods());
+                g.getGoods().setRetailPrice(price.getPrice());
+                goodss.add(g.getGoods());
+            }
+
         }
-        map.put("ASC", "order");//排序
-        List<Goods> goodss = goodsHandler.getList(map);
+
         model.addAttribute("goodss", goodss);
 
         return "mobile/index";
@@ -248,7 +281,7 @@ public class MobileController {
         Agent agent = agentHandler.get(user.getId());
         model.addAttribute("agent", agent);
         Boolean isVip = agentHandler.isVip(agent);
-        model.addAttribute("isVip", isVip);
+        model.addAttribute("isVip", !isVip);
         if (isVip) {
             List<AddressMy> addressMies = addressMyHandler.findAddressByAgent(agent);
             model.addAttribute("addresses", addressMies);
@@ -290,6 +323,7 @@ public class MobileController {
 
         model.addAttribute("levelName", agentHandler.getLevelName(agent));
         model.addAttribute("agent", agent);
+        model.addAttribute("isVip", agentHandler.isVip(agent));
         return "/mobile/my";
     }
 
@@ -330,7 +364,17 @@ public class MobileController {
         User user = (User) WebUtil.getCurrentUser(request);
         Agent agent = agentHandler.get(user.getId());
         //找出自己的下级
-        List agents = agentHandler.getList("parent.id", user.getId());
+        List<Agent> agents = agentHandler.getList("parent.id", user.getId());
+        //找出自己的二级代理 药店
+        List<Object> ids = new ArrayList<>();
+        for (Agent a : agents) {
+            ids.add(a.getId());
+        }
+        if(!ids.isEmpty()){
+            List<Agent> yAgent = agentHandler.getListIn("parent.id", ids);
+            agents.addAll(yAgent);
+        }
+
 //        List<Agent> agents = agentHandler.findByParentHasUnionId(user.getId());
         MutedUser mutedUser = muteUserHandler.getMuteUser();
         model.addAttribute("mutedUserId", mutedUser.getId());
@@ -458,10 +502,10 @@ public class MobileController {
     //提现业务
     @RequestMapping("/mobile/withdraw.json")
     @ResponseBody
-    public Message withdraw(Double amount, Integer cid,String remark, HttpServletRequest request,Boolean isAdvance) {
+    public Message withdraw(Double amount, Integer cid, String remark, HttpServletRequest request, Boolean isAdvance) {
         try {
             User user = (User) WebUtil.getCurrentUser(request);
-            accountsTransferHandler.withDraw(user.getId(), amount, cid,remark,isAdvance);//提现
+            accountsTransferHandler.withDraw(user.getId(), amount, cid, remark, isAdvance);//提现
             return Message.createSuccessMessage();
         } catch (Exception e) {
             return Message.createFailedMessage(e.getMessage());
@@ -504,13 +548,13 @@ public class MobileController {
 
 
     @RequestMapping("/mobile/addCard.html")
-    public String addCard(){
+    public String addCard() {
         return "/mobile/addCard";
     }
 
     @RequestMapping("/mobile/addCard.json")
     @ResponseBody
-    public Message addCard(Card card,HttpServletRequest request) {
+    public Message addCard(Card card, HttpServletRequest request) {
         try {
             User user = (User) WebUtil.getCurrentUser(request);
             Agent agent = agentHandler.get(user.getId());
@@ -747,18 +791,18 @@ public class MobileController {
         model.addAttribute("voucher", agent.getAccounts().getAccount(AccountsType.VOUCHER));
         model.addAttribute("advance", agent.getAccounts().getAccount(AccountsType.ADVANCE));
         model.addAttribute("benefit", agent.getAccounts().getAccount(AccountsType.BENEFIT));
-        //今日代金券进账
+        //今日奖金进账
         List<AccountsRecord> records = accountsRecordHandler.findAccountsRecords(user.getId(), null, null, AccountsType.VOUCHER.getState());
         Map<Integer, Double> map = accountsRecordHandler.countRecordsAmount(records);
         model.addAttribute("todayVoucher", map.get(AccountsRecord.ADD));//进账
         //直属代理总业绩
-        List<Agent> cs = agentHandler.getList("parent.id",user.getId());
+        List<Agent> cs = agentHandler.getList("parent.id", user.getId());
         Double sumB = 0.0;
-        for(Agent a:cs){
-            sumB+=a.getAccounts().getAccount(AccountsType.BENEFIT);
+        for (Agent a : cs) {
+            sumB += a.getAccounts().getAccount(AccountsType.BENEFIT);
         }
-        sumB  = PreciseComputeUtil.round(sumB);
-        model.addAttribute("sumB",sumB);
+        sumB = PreciseComputeUtil.round(sumB);
+        model.addAttribute("sumB", sumB);
         return "/mobile/wallet";
     }
 
@@ -804,6 +848,9 @@ public class MobileController {
 
     @Autowired
     private CardHandler cardHandler;
+
+    @Autowired
+    private PriceHandler priceHandler;
 
 //    @Autowired
 //    private WxConfigFactory wxConfigFactory;

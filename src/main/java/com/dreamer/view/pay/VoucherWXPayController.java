@@ -70,7 +70,7 @@ public class VoucherWXPayController{
 			//}
 			//String notifyUrl = ServletUriComponentsBuilder.fromContextPath(request).path("/voucher/pay/notify.html").build().toUriString();
             String notifyUrl ="http://www.zmz365.com/dreamer/voucher/pay/dmz/notify.html";
-            UnifiedOrderResData unifiedOrder = unifiedOrderHandler.unifiedOrder(notifyUrl, voucherTransfer.getOut_trade_no(), voucherTransfer.getVoucher(), null, agent, "芝德堂生物科技代金券充值");
+            UnifiedOrderResData unifiedOrder = unifiedOrderHandler.unifiedOrder(notifyUrl, voucherTransfer.getOut_trade_no(), voucherTransfer.getVoucher(), null, agent, "高臣药业生物科技奖金充值");
 
 			if (unifiedOrder.getReturn_code().equals("FAIL")) {
 				model.addAttribute("errorMsg", "统一下单支付失败,请稍后重试");

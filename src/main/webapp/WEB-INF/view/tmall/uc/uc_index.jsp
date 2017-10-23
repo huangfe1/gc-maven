@@ -229,7 +229,7 @@ nav .thumbnail {
 								<%--积分余额--%>
 								<%--</li>--%>
 								<li class="list-group-item"><span class="badge">${my.accounts.voucherBalance}</span>
-								拥有代金券
+								拥有奖金
 								</li>
 								<li class="list-group-item"><span class="badge">${my.accounts.benefitPointsBalance}</span>
 								拥有福利积分

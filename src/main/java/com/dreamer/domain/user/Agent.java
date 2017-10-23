@@ -6,7 +6,6 @@ import com.dreamer.domain.authorization.AuthorizationType;
 import com.dreamer.domain.mall.goods.Goods;
 import com.dreamer.domain.mall.goods.GoodsType;
 import com.dreamer.domain.mall.goods.Price;
-import com.dreamer.domain.mall.transfer.Transfer;
 import com.dreamer.domain.system.Module;
 import com.dreamer.domain.user.enums.AgentStatus;
 import com.dreamer.domain.user.enums.UserStatus;
@@ -24,10 +23,36 @@ public class Agent extends User {
 	private String remittance;
 	private AgentStatus agentStatus;
 	private Accounts accounts;//账户
-	private Set<Authorization> authorizations = new HashSet<>();
+	private Set<Authorization> authorizations = new HashSet<>();//授权
+	private String registerAddress;//注册地址
+	private String imgFile;//营业执照
+    private Date buyTime;//需要重新购买的时间，每次购物更新
 
+    public Date getBuyTime() {
+        return buyTime;
+    }
 
-    public Boolean getNeedCheck() {
+    public void setBuyTime(Date buyTime) {
+        this.buyTime = buyTime;
+    }
+
+    public String getImgFile() {
+		return imgFile;
+	}
+
+	public void setImgFile(String imgFile) {
+		this.imgFile = imgFile;
+	}
+
+	public String getRegisterAddress() {
+		return registerAddress;
+	}
+
+	public void setRegisterAddress(String registerAddress) {
+		this.registerAddress = registerAddress;
+	}
+
+	public Boolean getNeedCheck() {
         return needCheck;
     }
 
@@ -68,28 +93,25 @@ public class Agent extends User {
 		return optional.orElse(this.addGoodsAccount(goods));
 	}
 
-//	public GoodsAccount loadAccountForGoods(Goods goods) {
-//		Optional<GoodsAccount> optional = getGoodsAccounts().stream()
-//				.filter((g) -> Objects.equals(g.getGoods(), goods)).findFirst();
-//		return optional.orElse(null);
-//	}
-//	/**
-//	 * add by hf  获取某种授权产品的等级
-//	 * @param type
-//	 * @return
-//	 */
-//	public GoodsAccount loadAccountForGoodsType(GoodsType type) {
-//		Optional<GoodsAccount> optional = getGoodsAccounts().stream()
-//				.filter((g) -> Objects.equals(g.getGoods().getGoodsType(), type)).findFirst();
-//		return optional.orElse(null);
-//	}
+
+	//是否需要买
+	public boolean isNeedBuy(){
+        if(buyTime==null) return false;//没有的就不用提醒 也就是新公司
+        Date date = new Date();
+        //今天超过补货时间 需要补货
+        if(buyTime.equals(date))return true;
+        if(buyTime.before(date)) return true;
+
+        return false;
+    }
+
 
 	/**
 	 * 是否是特权商城的Vip 品牌代言/发起者
 	 * @return true or false
      */
 	public boolean isTeqVip(){
-		String name1=AgentLevelName.品牌代言.toString();
+		String name1=AgentLevelName.分公司.toString();
 //		String name2=AgentLevelName.联盟单位.toString();
 //		String name3=AgentLevelName.董事.toString();
 //		String name4=AgentLevelName.金董.toString();
@@ -99,18 +121,14 @@ public class Agent extends User {
 	}
 
 
+//	//是否需要补货
+//	public boolean needBuy(){
+//        Date today =
+//    }
+//
 
-    /**
-	 * 是否是代理vip
-	 * @return true or false
-	 */
-	public boolean isVip(){
-//		String name1=AgentLevelName.官方.toString();
-//		String name2=AgentLevelName.发起者.toString();
-//		GoodsAccount account=getGoodsAccounts().stream().filter(g->g.getGoods().getGoodsType().equals(GoodsType.MALL)&&(g.getAgentLevel().getName().contains(name1)||g.getAgentLevel().getName().contains(name2))).findFirst().orElse(null);
-//		return !Objects.isNull(account);
-		return false;
-	}
+
+
 
 	public GoodsAccount loadAccountForGoodsId(Integer goodsId) {
 		Optional<GoodsAccount> optional = getGoodsAccounts().stream()
@@ -126,130 +144,12 @@ public class Agent extends User {
 		return account.getCurrentBalance() < quantity;
 	}
 
-//	public void delivery(DeliveryNote note) {
-//		Iterator<DeliveryItem> its = note.getDeliveryItems().iterator();
-//		while (its.hasNext()) {
-//			DeliveryItem item = its.next();
-//			GoodsAccount gac = loadAccountForGoodsNotNull(item.getGoods());
-//			gac.deductBalance(item.getQuantity());
-//		}
-//		deductPoints(note.caculatePoints());
-//	}
 
-//	@Override
-//	public boolean hasMainGoodsAuthorization(GoodsType gt) {
-//		// TODO Auto-generated method stub
-//		List<GoodsAccount> mainAccs = mainGoodsAccount(gt);
-//		return Objects.nonNull(mainAccs) && mainAccs.size() > 0;
-//	}
 
-//	/**
-//	 * 获取已授权的主打产品账户
-//	 *
-//	 * @return
-//	 */
-//	public List<GoodsAccount> mainGoodsAccount(GoodsType gt) {
-//		// TODO Auto-generated method stub
-//		List<GoodsAccount> accs = new ArrayList<>();
-//		loadActivedAuthorizedGoodses().forEach(goods -> {
-//            GoodsAccount acc = null;
-//            if(Objects.isNull(gt)){//如果传入的参数为空
-//                if(goods.isMainGoods()){
-//                     acc = loadAccountForGoods(goods);
-//                }
-//            }else {
-//                if (goods.isMainGoods()&&goods.getGoodsType()==gt) {
-//                     acc = loadAccountForGoods(goods);
-//				}
-//            }
-//            if (Objects.nonNull(acc)) {
-//                accs.add(acc);
-//            }
-//		});
-//		return accs;
-//	}
-	
-	
-//	/**
-//	 * 获取指定产品的所处等级
-//	 * <ul>
-//	 * <li>不存在主打产品账户,取当前产品等级</li>
-//	 * <li>当前产品等级低于或等于主打产品等级,取主打产品等级</li>
-//	 * <li>当前产品等级高于主打产品等级,取当前产品等级</li>
-//	 * </ul>
-//	 *
-//	 * @param goods
-//	 * @return
-//	 */
-//	public AgentLevel getGoodsLowestAgentLevel(Goods goods) {
-//		GoodsAccount gac = this.loadAccountForGoodsNotNull(goods);
-//		if (Objects.isNull(gac)) {
-//			gac = this.addGoodsAccount(goods);
-//		}
-//		AgentLevel mainGoodsLevel = mainGoodsTopAgentLevel(goods.getGoodsType());//获取当前主打产品的等级
-//		if (Objects.isNull(mainGoodsLevel)) {
-//			return gac.getAgentLevel();
-//		}
-//		return gac.getAgentLevel().higherThanMe(mainGoodsLevel) ? mainGoodsLevel
-//				: gac.getAgentLevel();
-//	}
 
-//	/**
-//	 * 获取某种产品最高价格等级的主打产品价格等级
-//	 *
-//	 * @return
-//	 */
-//	public AgentLevel mainGoodsTopAgentLevel(GoodsType goodsType) {
-//		List<GoodsAccount> accs = mainGoodsAccount(goodsType);
-//        AgentLevel tempLevel = null;
-//        accs=accs.stream().filter(g->{return g.getGoods().getGoodsType()==goodsType;}).collect(Collectors.toList());//找到对应的主打产品
-//        for (GoodsAccount acc : accs) {
-//			if (acc.getAgentLevel().lowerThanMe(tempLevel)) {
-//				tempLevel = acc.getAgentLevel();
-//			}
-//		}
-//		return tempLevel;
-//	}
 
-	public void transferGoodsToAnother(Agent user, Transfer transfer) {
-		// TODO Auto-generated method stub
-//		transfer.getItems().forEach((k, v) -> {
-//			GoodsAccount accTo = user.loadAccountForGoodsId(k);
-//			if (Objects.isNull(accTo)) {
-//				throw new DataNotFoundException("转入方对应货物账户不存在");
-//			}
-//			GoodsAccount accFrom = this.loadAccountForGoodsId(k);
-//			if (Objects.isNull(accFrom)) {
-//				throw new DataNotFoundException("转出方对应货物账户不存在");
-//			}
-//			accFrom.transferGoodsToAnother(accTo, v.getQuantity(),transfer.getApplyOrigin());//不同来源的订单不同的处理
-//		});
-	}
 
-//	public Price caculatePrice(Goods goods) {
-//		GoodsAccount gac = loadAccountForGoodsNotNull(goods);
-//		AgentLevel mainAgentLevel = getMainLevel(goods);
-//		if (Objects.isNull(gac)) {
-//			gac = this.addGoodsAccount(goods);
-//			if (Objects.isNull(mainAgentLevel)) {
-//				// throw new ApplicationException("代理商没有该商品以及主打商品账户");
-//				return goods.getLowestPrice();
-//			}
-//			return goods.getPrice(mainAgentLevel);
-//		}
-//
-//		Price price = null;
-//		if (gac.mainGoodsAgentLevelHigherThanMe(mainAgentLevel)) {
-//			price = goods.getPrice(mainAgentLevel);
-//		} else {
-//			price = goods.getPrice(gac.getAgentLevel());
-//		}
-//
-//		if (Objects.isNull(price)) {
-//			price = goods.getLowestPrice();
-//		}
-//		return price;
-//	}
+
 
 	//获取主打产品账户
     public GoodsAccount getMainGoodsAccount(GoodsType gt){
@@ -257,11 +157,13 @@ public class Agent extends User {
         return gs.get(0);
     }
 
-	//获取主打产品级别的价格
+	//获取主打产品级别的价格 就是分公司的价格
 	public Price getMainLevelPrice(Goods goods){
 		loadAccountForGoodsNotNull(goods);//防止为空
 		 return goods.getPrice(getMainLevel(goods));
 	}
+
+
 
     //获取主打产品级别
     public AgentLevel getMainLevel(Goods goods){
@@ -278,67 +180,7 @@ public class Agent extends User {
 
 
 
-//	public Price caculatePrice(Goods goods, Integer quantity) {
-//		GoodsAccount gac = loadAccountForGoodsNotNull(goods);
-//		if (Objects.isNull(gac)) {
-//			gac = this.addGoodsAccount(goods);
-//		}
-//		Integer amount = gac.getCumulative() + quantity;
-//		Price currentPriceLevel = goods.getPrice(gac.getAgentLevel());
-//        AgentLevel tempLevel = currentPriceLevel.getAgentLevel().getParent();
-//		while (tempLevel != null && tempLevel.canAutoPromotion()) {
-//			Price tempPriceLevel = goods.getPrice(tempLevel);
-//			if (tempPriceLevel.thresholdLowerThan(amount)) {
-//				currentPriceLevel = tempPriceLevel;
-//				tempLevel = tempLevel.getParent();
-//			} else {
-//				break;
-//			}
-//		}
-//
-//		if (this.hasMainGoodsAuthorization(goods.getGoodsType())) {
-//			AgentLevel mainAgentLevel = caculateMainGoodsPriceLevel(goods.getGoodsType()).getAgentLevel();
-//            if (currentPriceLevel.getAgentLevel().higherThanMe(mainAgentLevel)) {
-//				currentPriceLevel = goods.getPrice(mainAgentLevel);
-//			}
-//		}
-//
-//		if (Objects.isNull(currentPriceLevel)) {
-//			currentPriceLevel = goods.getLowestPrice();
-//		}
-//        return currentPriceLevel;
-//	}
 
-//	/**
-//	 * 动态累积计算出当前代理主打产品所处等级
-//	 *
-//	 * @return
-//	 */
-//	public Price caculateMainGoodsPriceLevel(GoodsType gt) {
-//		GoodsAccount gac = this.mainGoodsAccount(gt).get(0);
-//		if (Objects.isNull(gac)) {
-//			throw new DataNotFoundException("主打产品账户不存在,无法计算主打产品所处等级");
-//		}
-//		Goods goods = gac.getGoods();
-//        Integer amount = gac.getCumulative();
-//
-//		Price currentPriceLevel = goods.getPrice(gac.getAgentLevel());
-//		AgentLevel tempLevel = currentPriceLevel.getAgentLevel().getParent();
-//		while (tempLevel != null && tempLevel.canAutoPromotion()) {
-//			Price tempPriceLevel = goods.getPrice(tempLevel);
-//			if (tempPriceLevel.thresholdLowerThan(amount)) {
-//				currentPriceLevel = tempPriceLevel;
-//				tempLevel = tempLevel.getParent();
-//			} else {
-//				break;
-//			}
-//		}
-//
-//		if (Objects.isNull(currentPriceLevel)) {
-//			currentPriceLevel = goods.getLowestPrice();
-//		}
-//		return currentPriceLevel;
-//	}
 
 	public Accounts generateAccounts() {
 		if(getAccounts()==null){
@@ -360,17 +202,7 @@ public class Agent extends User {
 		getAccounts().transferPointsToAnoher(toAgent.getAccounts(), points);
 	}
 	
-//	public void transferVoucher(Agent toAgent, Double voucher) {
-//		getAccounts().transferVoucherToAnoher(toAgent.getAccounts(), voucher);
-//	}
 
-//    public void transferPurchase(Agent toAgent, Double purchase) {
-//        getAccounts().transferPurchaseToAnother(toAgent.getAccounts(), purchase);
-//    }
-
-//    public void transferAdvance(Agent toAgent,Double advance){
-//        getAccounts().transferAdvanceToAnother(toAgent.getAccounts(),advance);
-//    }
 
 	public void removeAuthorization(Authorization auth) {
 		if (authorizations.remove(auth)) {
@@ -435,45 +267,7 @@ public class Agent extends User {
 	}
 
 
-//	/**
-//	 * 增加代金券变动记录
-//	 */
-//	public void addVoucherRecord(Integer type,String more,Double voucher){
-//		Timestamp updateTime = new Timestamp(System.currentTimeMillis());
-//		VoucherRecord v=new VoucherRecord(type, voucher, more, updateTime,getAccounts().getVoucherBalance());
-//		v.setAgent(this);//增加自己
-//		voucherRecords.add(v);//增加一条记录
-//	}
 
-
-
-
-//    /**
-//     * 增加预存款变动记录
-//     * @param type
-//     * @param more
-//     * @param advance
-//     */
-//
-//    @Override
-//    public void addAdvanceRecord(Integer type, String more, Double advance) {
-//        Timestamp updateTime = new Timestamp(System.currentTimeMillis());
-//        AdvanceRecord a = new AdvanceRecord(type,this,advance,more,getAccounts().getAdvanceBalance(),updateTime);
-//		advanceRecords.add(a);
-//    }
-
-//    /**
-//     * 增加预存款变动记录
-//     * @param type
-//     * @param more
-//     * @param advance
-//     */
-//    @Override
-//    public void addPurchaseRecord(Integer type, String more, Double purchase) {
-//        Timestamp updateTime = new Timestamp(System.currentTimeMillis());
-//        PurchaseRecord a = new PurchaseRecord(type,this,purchase,more,getAccounts().getPurchaseBalance(),updateTime);
-//        purchaseRecords.add(a);
-//    }
 
     /**
 	 * 增加授权类型
@@ -514,13 +308,7 @@ public class Agent extends User {
 		}
 	}
 
-//	public Set<AdvanceRecord> getAdvanceRecords() {
-//		return advanceRecords;
-//	}
 
-//	public void setAdvanceRecords(Set<AdvanceRecord> advanceRecords) {
-//		this.advanceRecords = advanceRecords;
-//	}
 
 	public boolean alreadyAuthorizated(Authorization auth) {
 		return authorizations.contains(auth);
@@ -538,13 +326,7 @@ public class Agent extends User {
 		return agentStatus != null && agentStatus == AgentStatus.REORGANIZE;
 	}
 
-//    public Set<Address> getAddresses() {
-//        return addresses;
-//    }
 
-//    public void setAddresses(Set<Address> addresses) {
-//        this.addresses = addresses;
-//    }
 
     public List<AuthorizationType> allActivedAuthorizationType() {
 		List<AuthorizationType> authTypes = new ArrayList<AuthorizationType>();

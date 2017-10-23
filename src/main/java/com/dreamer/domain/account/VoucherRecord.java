@@ -20,13 +20,13 @@ public class VoucherRecord implements java.io.Serializable{
 	
 	private Agent agent;//谁变动
 	
-	private Double voucher;//代金券
+	private Double voucher;//奖金
 	
 	private Date updateTime;//更新时间
 	
 	private Integer version;//数据版本
 
-	private Double voucher_now;//变更后的代金券
+	private Double voucher_now;//变更后的奖金
 
 	private Integer hasNoticed;//0需要通知  1已经通知
 

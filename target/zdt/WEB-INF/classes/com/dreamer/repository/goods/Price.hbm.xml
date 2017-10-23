@@ -27,6 +27,19 @@
                 <comment>价格</comment>
             </column>
         </property>
+
+        <property name="buyAmount" type="java.lang.Integer">
+            <column name="buyAmount">
+                <comment>每天要求销售量</comment>
+            </column>
+        </property>
+
+      <property name="voucherStr" type="java.lang.String">
+          <column name="voucherStr">
+              <comment>返利比例</comment>
+          </column>
+      </property>
+
         <property name="threshold" type="java.lang.Integer">
             <column name="threshold" not-null="true">
                 <comment>晋升到本等级需要购买的货物量</comment>

@@ -94,10 +94,10 @@
 												<td><select class="form-control priceLevel" <c:if test="${user.agent}"> readonly="readonly"
 												 disabled="disabled"</c:if>
 												id="priceLevel" name="priceLevel" data-goods="${accounts.goods.id}">
-												<c:forEach items="${accounts.goods.prices}" var="priceLevel">
-													<option value="${priceLevel.agentLevel.id}"
-													<c:if test="${priceLevel.agentLevel.id  eq accounts.agentLevel.id}">
-													 selected="selected" </c:if>>${priceLevel.agentLevel.name}</option>
+												<c:forEach items="${levels}" var="level">
+													<option value="${level.id}"
+													<c:if test="${level.id  eq accounts.agentLevel.id}">
+													 selected="selected" </c:if>>${level.name}</option>
 												</c:forEach>
 												</select></td>
 											</tr>

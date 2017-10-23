@@ -205,7 +205,7 @@
         <form method="post" action="">
 
             <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-credit-card" aria-hidden="true"></i>芝德堂收银台</div>
+                <div class="panel-heading"><i class="fa fa-credit-card" aria-hidden="true"></i>高臣药业收银台</div>
                 <ul class="list-group">
                     <li class="list-group-item">
                         总金额:<span style="font-size: 1.2em;color: red"> ${order.amount}￥</span>
@@ -234,7 +234,7 @@
                         <%--<div class="radio ">--%>
                             <%--<label>--%>
                                 <%--<input aria-selected="true" type="radio" name="payWay" class="payWay" value="1">--%>
-                                <%--代金券支付(${agent.accounts.voucherBalance})--%>
+                                <%--奖金支付(${agent.accounts.voucherBalance})--%>
                             <%--</label>--%>
                         <%--</div>--%>
                     <%--</li>--%>
@@ -280,7 +280,7 @@
             var payWay = $('input:radio:checked').val();
             if (payWay == 0) {//微信支付
                 callPay();
-            } else if (payWay == 1) {//代金券支付
+            } else if (payWay == 1) {//奖金支付
                 payByAccounts(0);
             } else if (payWay == 4) {//预存款支付
                 payByAccounts(2);

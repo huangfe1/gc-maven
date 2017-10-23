@@ -2,7 +2,8 @@ package com.dreamer.domain.user;
 
 public enum AgentLevelName {
 
-    钻石大咖,铂金大咖,黄金大咖,品牌代言;
+//    分公司,业务员,药店;
+    分公司,业务员;
 
     public static boolean contains(String name){
         for(AgentLevelName s : values()){

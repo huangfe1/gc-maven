@@ -90,7 +90,7 @@ public class WXPayController {
 //				agent.setWxOpenid(openid);
 //				agentHandler.setWxOpenIdTo(agent, openid);
 //			}
-//			UnifiedOrderResData unifiedOrder=unifiedOrderHandler.unifiedOrder(wxConfig,agent, order, "芝德堂优惠商城订单");
+//			UnifiedOrderResData unifiedOrder=unifiedOrderHandler.unifiedOrder(wxConfig,agent, order, "高臣药业优惠商城订单");
 //			if(unifiedOrder.getReturn_code().equals("FAIL")){
 //				LOG.error("统一下单调用失败 {}",unifiedOrder.getReturn_msg());
 //				model.addAttribute("errorMsg", "统一下单支付失败,请稍后重试"+unifiedOrder.getReturn_msg());
@@ -121,7 +121,7 @@ public class WXPayController {
 //				model.addAttribute("errorMsg", "统一下单支付失败,订单已支付完成");
 //				return "pay/pay_error";
 //			}
-//			UnifiedOrderResData unifiedOrder=unifiedOrderHandler.unifiedOrder(wxConfig,agent, order, "芝德堂优惠商城订单");
+//			UnifiedOrderResData unifiedOrder=unifiedOrderHandler.unifiedOrder(wxConfig,agent, order, "高臣药业优惠商城订单");
 //			if(unifiedOrder.getReturn_code().equals("FAIL")){
 //				LOG.error("统一下单调用失败 {}",unifiedOrder.getReturn_msg());
 //				model.addAttribute("errorMsg", "统一下单支付失败,请稍后重试");

@@ -125,7 +125,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<h4 class="text-warning">你正在与筑美芝德堂进行微信支付,请核对订单金额完成支付</h4>
+				<h4 class="text-warning">你正在与筑美高臣药业进行微信支付,请核对订单金额完成支付</h4>
 				<h6>订单编号：${order.out_trade_no}</h6>
 				<h3>付款金额：${order.advance}元</h3>
 			</div>
@@ -149,7 +149,7 @@
 						aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="winModalLabel">芝德堂预存款充值</h4>
+				<h4 class="modal-title" id="winModalLabel">高臣药业预存款充值</h4>
 			</div>
 			<div class="modal-body" id="winMessageBody"></div>
 		</div>

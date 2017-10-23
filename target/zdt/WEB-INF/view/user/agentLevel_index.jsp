@@ -62,9 +62,9 @@
 								<tr>
 									<th>选择</th>
 									<th>等级名称</th>
-									<th>产品类型</th>
-									<th>上一等级</th>
-									<th>允许自动升级</th>
+									<%--<th>产品类型</th>--%>
+									<%--<th>上一等级</th>--%>
+									<%--<th>允许自动升级</th>--%>
 									<th>显示顺序</th>
 									<th>操作</th>
 								</tr>
@@ -75,16 +75,16 @@
 										<td><input type="checkbox" value="${l.id}"></td>
 										<td style="padding-left:${l.level*10}px;"><a class="btn btn-link goodsBtn"
 											href="<c:url value='/agentLevel/goods.html?id=${l.id}' /> ">${l.name}</a></td>
-										<td>${l.goodsType.desc}</td>
-										<td>${l.parent.name}</td>
-										<td>${l.auto_promotion ? '允许' : '不允许' }</td>
+										<%--<td>${l.goodsType.desc}</td>--%>
+										<%--<td>${l.parent.name}</td>--%>
+										<%--<td>${l.auto_promotion ? '允许' : '不允许' }</td>--%>
 										<td>${l.order}</td>
 										<td><a class="btn btn-success default editBtn"
 											href="<c:url value='/agentLevel/edit.html?id=${l.id}' /> "><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>修改</a>
-											<a class="btn btn-info goodsBtn"
-											href="<c:url value='/agentLevel/goods.html?id=${l.id}' /> "><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>价格详情</a>
-											<a class="btn btn-primary default editBtn"
-											href="<c:url value='/agentLevel/edit.html?parent=${l.id}' /> "><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增子等级</a>
+											<%--<a class="btn btn-info goodsBtn"--%>
+											<%--href="<c:url value='/agentLevel/goods.html?id=${l.id}' /> "><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>价格详情</a>--%>
+											<%--<a class="btn btn-primary default editBtn"--%>
+											<%--href="<c:url value='/agentLevel/edit.html?parent=${l.id}' /> "><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增子等级</a>--%>
 											<a class="ajaxLink btn btn-danger default" data-role="delete"
 											href="<c:url value='/agentLevel/remove.json?id=${l.id}' /> "><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>删除</a>
 										</td>

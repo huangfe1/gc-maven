@@ -32,14 +32,14 @@ public class AdvancePayController {
             User user=(User)WebUtil.getCurrentUser(request);
             Agent agent = agentHandler.findAgentById(user.getId());
             Double agent_voucher=agent.getAccounts().getVoucherBalance();
-            if(Objects.nonNull(isUseVoucher)&&isUseVoucher){//如果使用代金券
+            if(Objects.nonNull(isUseVoucher)&&isUseVoucher){//如果使用奖金
                 advanceTransfer.setUseVoucher(agent_voucher<advanceTransfer.getAdvance()?agent_voucher:advanceTransfer.getAdvance());
             }else {
-                advanceTransfer.setUseVoucher(0.0);//不使用代金券
+                advanceTransfer.setUseVoucher(0.0);//不使用奖金
             }
             agentHandler.addAdvance(user,advanceTransfer);//提交充值预存款定订单
-                //代金券充足  直接提交
-                if(advanceTransfer.getUseVoucher()==advanceTransfer.getAdvance()){//代金券充足
+                //奖金充足  直接提交
+                if(advanceTransfer.getUseVoucher()==advanceTransfer.getAdvance()){//奖金充足
                     String uri= ServletUriComponentsBuilder.fromContextPath(request).path("/advance/pay/dmz/paybyvoucher.html").queryParam("transferId",advanceTransfer.getId()).build().toUriString();
                     response.setHeader("Location",uri);
                     return Message.createSuccessMessage("正在充值..请稍等..");
@@ -63,7 +63,7 @@ public class AdvancePayController {
     public Message alicommit( AdvanceTransfer advanceTransfer ){
         try {
             User user=(User)WebUtil.getCurrentUser(request);
-            advanceTransfer.setUseVoucher(0.0);//不使用代金券
+            advanceTransfer.setUseVoucher(0.0);//不使用奖金
             agentHandler.addAdvance(user,advanceTransfer);//提交充值预存款定订单
             String backUrl= ServletUriComponentsBuilder.fromContextPath(request).path("/advance/pay/alipay.html").queryParam("orderId",advanceTransfer.getId()).build().toUriString();
             response.setHeader("Location",backUrl);

@@ -193,7 +193,7 @@ width:auto !important;
 
 		<%--<div class="row">--%>
 		<%--<div align="center" class="col-md-12 col-xs-12">--%>
-			<%--<input type="checkbox" name="useVoucher"  id="useVoucher"> <span>请勾选是否使用代金券(公司直接发货不可使用代金券!!)</span>--%>
+			<%--<input type="checkbox" name="useVoucher"  id="useVoucher"> <span>请勾选是否使用奖金(公司直接发货不可使用奖金!!)</span>--%>
 		<%--</div>--%>
 	<%--</div>--%>
 		<%--<br>--%>
@@ -314,7 +314,7 @@ width:auto !important;
                                             <ul class="list-group" id="djqPay">
                                                 <li class="list-group-item"><div class="radio">
                                                     <label> <input type="checkbox" onclick="return false" name="useVoucher" checked="true"
-                                                                   id="useVoucher" value="WX"> 代金券支付
+                                                                   id="useVoucher" value="WX"> 奖金支付
                                                     </label>
                                                 </div></li>
                                             </ul>

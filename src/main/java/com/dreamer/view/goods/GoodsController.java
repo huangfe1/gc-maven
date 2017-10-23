@@ -22,7 +22,7 @@ public class GoodsController {
 
 	@RequestMapping(value = "/edit.json", method = RequestMethod.POST)
 	public Message edit(@ModelAttribute("parameter") Goods goods, MultipartHttpServletRequest request,
-						Double[] levelPrice, Integer[] levelThreshold,
+						Double[] levelPrice, String[] voucherStrs,Integer[] buyAmounts,
 						Integer[] levelId, Integer[] priceId, Integer cId) {
 		try {
 			if (goods.getAuthorizationType() != null) {
@@ -41,7 +41,7 @@ public class GoodsController {
 			GoodsCategory category = new GoodsCategory();
 			category.setId(cId);
 			goods.setCategory(category);
-			goodsHandler.saveOrUpdateGoods(goods, levelPrice, levelThreshold, levelId, priceId);
+			goodsHandler.saveOrUpdateGoods(goods, levelPrice, voucherStrs,buyAmounts, levelId, priceId);
 			return Message.createSuccessMessage();
 		} catch (Exception exp) {
 			exp.printStackTrace();

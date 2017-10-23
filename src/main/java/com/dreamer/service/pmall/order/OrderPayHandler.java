@@ -74,7 +74,7 @@ public class OrderPayHandler {
     }
 
     /**
-     * 返还代金券
+     * 返还奖金
      */
     private List<AccountsRecord> fireVoucher(OrderItem item, User user) {
 //        List<AccountsRecord> records = new ArrayList<>();

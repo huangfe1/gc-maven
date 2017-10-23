@@ -3,7 +3,6 @@ package com.dreamer.domain.user;
 import com.dreamer.domain.account.GoodsAccount;
 import com.dreamer.domain.authorization.AuthorizationType;
 import com.dreamer.domain.mall.goods.Goods;
-import com.dreamer.domain.mall.transfer.Transfer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
@@ -19,19 +18,19 @@ public class MutedUser extends Agent {
 		toAgent.getAccounts().increasePoints(points);
 	}
 
-	@Override
-	public void transferGoodsToAnother(Agent user, Transfer transfer) {
-		// TODO Auto-generated method stub
-//		transfer.getItems().forEach((k,v)->{
-//			GoodsAccount accTo = user.loadAccountForGoodsId(k);
-//			if (Objects.isNull(accTo)) {
-//				throw new DataNotFoundException("转入方对应货物账户不存在");
-//			}
-//			GoodsAccount accFrom = loadAccountForGoodsId(k);
-//			//管理员转货
-////			accFrom.transferGoodsToAnother(accTo, v.getQuantity(),transfer.getApplyOrigin());
-//		});
-	}
+//	@Override
+//	public void transferGoodsToAnother(Agent user, Transfer transfer) {
+//		// TODO Auto-generated method stub
+////		transfer.getItems().forEach((k,v)->{
+////			GoodsAccount accTo = user.loadAccountForGoodsId(k);
+////			if (Objects.isNull(accTo)) {
+////				throw new DataNotFoundException("转入方对应货物账户不存在");
+////			}
+////			GoodsAccount accFrom = loadAccountForGoodsId(k);
+////			//管理员转货
+//////			accFrom.transferGoodsToAnother(accTo, v.getQuantity(),transfer.getApplyOrigin());
+////		});
+//	}
 	
 	public GoodsAccount addGoodsAccount(Goods goods){
 		if (!hasGoodsAccount(goods)) {

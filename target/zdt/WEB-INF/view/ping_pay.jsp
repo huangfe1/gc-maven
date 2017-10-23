@@ -25,7 +25,7 @@
                 // 壹收款页面上需要展示的渠道，数组，数组顺序即页面展示出的渠道的顺序
                 // upmp_wap 渠道在微信内部无法使用，若用户未安装银联手机支付控件，则无法调起支付
                 channel:['wx_pub'],
-                charge_url:'http://ht.52zdt.com/zdt/pingplus/onePay',  //商户服务端创建订单的 url
+                charge_url:'http://ht.gcyy365.com/gc/pingplus/onePay',  //商户服务端创建订单的 url
                 charge_param:{a:1,b:2},                      //(可选，用户自定义参数，若存在自定义参数则壹收款会通过 POST 方法透传给 charge_url)
                 open_id:'wx1234567890',                      //(可选，使用微信公众号支付时必须传入)
                 debug:true                                   //(可选，debug 模式下会将 charge_url 的返回结果透传回来)
@@ -60,7 +60,7 @@
                         //例如：若你需要点击“继续购物”按钮跳转到你的购买页，
                         //则在该方法内写入 window.location.href = "你的购买页面 url"
 
-                        window.location.href='http://ht.52zdt.com/zdt';//示例
+                        window.location.href='http://ht.gcyy365.com/gc';//示例
                     });
                 }
             });

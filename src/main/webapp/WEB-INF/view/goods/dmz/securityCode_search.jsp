@@ -88,7 +88,7 @@
 		<div class="row">
 				<div
 					class="col-md-12 col-sm-12 col-xs-12">
-					<div class="alert alert-warning text-center" role="alert">未查询到芝德堂商品信息<a href="http://ht.zmz365.com/dreamer/dmz/securityCode/search.html?code=${param.code}">点我去筑美查询看看</a></div>
+					<div class="alert alert-warning text-center" role="alert">未查询到高臣药业商品信息<a href="http://ht.zmz365.com/dreamer/dmz/securityCode/search.html?code=${param.code}">点我去筑美查询看看</a></div>
 				</div>
 		</div>
 		</c:if>

@@ -18,7 +18,7 @@ public class PayHandlerImpl implements PayHandler {
     @Override
     public String toWxPay(WxConfig wxConfig, String openId, String orderNo,Double amount,String noticeUrl) {
         //统一下单
-        WxResult<UnifiedOrderResData> resDataWxResult = WxPay.unifiedOrder(wxConfig.getAppid(), wxConfig.getMchID(), openId, "芝德堂商城", orderNo, amount, noticeUrl, "JSAPI", wxConfig.getKey());
+        WxResult<UnifiedOrderResData> resDataWxResult = WxPay.unifiedOrder(wxConfig.getAppid(), wxConfig.getMchID(), openId, "高臣药业商城", orderNo, amount, noticeUrl, "JSAPI", wxConfig.getKey());
         if (!resDataWxResult.isSuccess()) {
             logger.error("统一下单失败-message:{}",resDataWxResult.getError());
             throw new ApplicationException("统一下单失败:"+resDataWxResult.getError());

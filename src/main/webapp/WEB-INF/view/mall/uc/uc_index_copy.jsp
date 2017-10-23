@@ -70,7 +70,7 @@ nav .thumbnail {
 																						 src="<c:url value='/resources/images/user.jpg'/>"
 																						 data-holder-rendered="true">
 					<div class="caption">
-						<h6 class="text-center">芝德堂商城</h6>
+						<h6 class="text-center">高臣药业商城</h6>
 					</div>
 				</a>
 			</div>
@@ -174,28 +174,28 @@ nav .thumbnail {
 		</div>
 		<br>
 
-		<!--代金券充值 -->
+		<!--奖金充值 -->
 		<%--<div class="row">--%>
 			<%--<div class="col-xs-12">--%>
 				<%--<a class="btn btn-info btn-block btn-lg" href="<c:url value='/voucher/pay/index.html'/>" id="sw">--%>
-					<%--<span class="glyphicon glyphicon-usd"></span>&nbsp代金券充值--%>
+					<%--<span class="glyphicon glyphicon-usd"></span>&nbsp奖金充值--%>
 				<%--</a>--%>
 			<%--</div>--%>
 		<%--</div>--%>
 		<%--<br>--%>
 
-		<!--转让代金券 -->
+		<!--转让奖金 -->
 		<div class="row">
 			<div class="col-xs-12">
 				<a class="btn btn-info btn-block btn-lg" href="<c:url value='/voucher/my.html'/>" id="sw">
-					<span class="glyphicon glyphicon-usd"></span>&nbsp转让代金券
+					<span class="glyphicon glyphicon-usd"></span>&nbsp转让奖金
 				</a>
 			</div>
 		</div>
 		<br>
 
 
-		<!--转让代金券 -->
+		<!--转让奖金 -->
 		<div class="row">
 			<div class="col-xs-12">
 				<a class="btn btn-info btn-block btn-lg" href="<c:url value='/transfer/my.html'/>" id="sw">
@@ -270,7 +270,7 @@ nav .thumbnail {
 				<div class="row">
 			<div class="col-xs-12">
 				<a class="btn btn-success btn-block btn-lg" href="<c:url value='/agent/children.html?from=${user.id}'/>" id="sw">
-					<span class="fa fa-truck"></span>代理商城客户
+					<span class="fa fa-truck"></span>商城客户
 				</a>
 			</div>
 		</div>
@@ -298,7 +298,7 @@ nav .thumbnail {
 		<div class="row">
 			<div class="col-xs-12">
 				<a class="btn btn-primary btn-block btn-lg" href="<c:url value='/voucher/record.html'/>" id="sw">
-					<span class="fa fa-desktop"></span>代金券详情
+					<span class="fa fa-desktop"></span>奖金详情
 				</a>
 			</div>
 		</div>
@@ -350,7 +350,7 @@ nav .thumbnail {
 								<%--积分余额--%>
 								<%--</li>--%>
 								<li class="list-group-item"><span class="badge">${my.accounts.voucherBalance}</span>
-								拥有代金券
+								拥有奖金
 								</li>
 								<li class="list-group-item"><span class="badge">${my.accounts.benefitPointsBalance}</span>
 								拥有福利积分

@@ -13,7 +13,7 @@
     <meta http-equiv="expires" content="0">
     <meta http-equiv="keywords" content="${keywords}">
     <meta http-equiv="description" content="">
-    <title>芝德堂特权商城</title>
+    <title>高臣药业特权商城</title>
     <%@include file="/WEB-INF/view/common/head_css.jsp" %>
     <%@include file="/WEB-INF/view/common/head_css_typeahead.jsp" %>
     <%@include file="/WEB-INF/view/common/head_css_fav.jsp" %>
@@ -189,10 +189,10 @@
     <p class="header-title">
         <c:choose>
             <c:when test="${ not empty owner}">
-                <%-- ${owner}的小店 --%>芝德堂的小店
+                <%-- ${owner}的小店 --%>高臣药业的小店
             </c:when>
             <c:otherwise>
-                芝德堂的小店
+                高臣药业的小店
             </c:otherwise>
         </c:choose>
     </p>

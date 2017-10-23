@@ -2,9 +2,9 @@ package com.dreamer.domain.wechat;
 
 public class WxConfig {
 
-    public final static String RECHARGE_NOTICE_URL = "http://ht.52zdt.com/zdt/dmz/mobile/accounts/recharge.json";
+    public final static String RECHARGE_NOTICE_URL = "http://ht.gcyy365.com/gc/dmz/mobile/accounts/recharge.json";
 
-    public final static String PMALL_NOTICE_URL = "http://ht.52zdt.com/zdt/dmz/pmall/shopcart/wxPay.json";
+    public final static String PMALL_NOTICE_URL = "http://ht.gcyy365.com/gc/dmz/pmall/shopcart/wxPay.json";
 
     private Integer id;
 

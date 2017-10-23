@@ -14,17 +14,17 @@
         </version>
         <many-to-one name="userByToAgent" class="com.dreamer.domain.user.User" fetch="select" not-found="ignore">
             <column name="to_agent" not-null="true">
-                <comment>代金券转入方</comment>
+                <comment>奖金转入方</comment>
             </column>
         </many-to-one>
         <many-to-one name="userByFromAgent" class="com.dreamer.domain.user.User" fetch="select" not-found="ignore">
             <column name="from_agent" not-null="true">
-                <comment>代金券转出方</comment>
+                <comment>奖金转出方</comment>
             </column>
         </many-to-one>
         <property name="transferTime" type="java.util.Date">
             <column name="transfer_time" length="19">
-                <comment>代金券让操作时间</comment>
+                <comment>奖金让操作时间</comment>
             </column>
         </property>
         <property name="updateTime" type="java.util.Date">
@@ -39,13 +39,13 @@
         </property>
         <property name="advance" type="java.lang.Double">
             <column name="advance" precision="10" not-null="true">
-                <comment>本次转让的代金券</comment>
+                <comment>本次转让的奖金</comment>
             </column>
         </property>
 
         <property name="useVoucher" type="java.lang.Double">
             <column name="useVoucher" precision="10" scale="2" not-null="false" default="0">
-                <comment>使用的代金券</comment>
+                <comment>使用的奖金</comment>
             </column>
         </property>
         <!--转货类型-->

@@ -76,7 +76,7 @@ font-family: Tahoma, Helvetica, Arial, "Microsoft Yahei", STXihei,
 					src="<c:url value='/resources/images/tuiguang.jpg'/>"
 					data-holder-rendered="true">
 					<div class="caption">
-						<h6 class="text-center">代理商城</h6>
+						<h6 class="text-center">商城</h6>
 					</div>
 				</a>
 			</div>
@@ -245,7 +245,7 @@ font-family: Tahoma, Helvetica, Arial, "Microsoft Yahei", STXihei,
 					<%--<li class="list-group-item"><span class="badge">${agent.accounts.pointsBalance}</span>--%>
 						<%--积分余额</li>--%>
 					<li class="list-group-item"><span class="badge">${agent.accounts.voucherBalance}</span>
-						拥有代金券</li>
+						拥有奖金</li>
 					<li class="list-group-item"><span class="badge">${agent.accounts.benefitPointsBalance}</span>
 						拥有福利积分</li>
 				</ul>

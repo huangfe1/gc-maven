@@ -4,7 +4,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="zmz-maven" />
+          <element id="module-output" name="gc-maven" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: Pingplusplus:pingpp-java:2.2.3" />
@@ -85,7 +85,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/kam/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="zmz-maven/web/Web" />
+      <element id="javaee-facet-resources" facet="gc-maven/web/Web" />
     </root>
   </artifact>
 </component>

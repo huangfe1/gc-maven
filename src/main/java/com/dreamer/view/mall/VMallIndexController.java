@@ -208,7 +208,7 @@ public class VMallIndexController {
 	public SearchParameter<Goods> preprocessing() {
 		SearchParameter<Goods> param = new SearchParameter<Goods>();
 		Goods goods = new Goods();
-		//代理商城
+		//商城
 		goods.setGoodsType(GoodsType.MALL);
 		param.setEntity(goods);
 		return param;

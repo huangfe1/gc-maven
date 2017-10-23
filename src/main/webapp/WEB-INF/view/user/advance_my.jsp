@@ -25,7 +25,7 @@
   width: inherit !important;
 }
 </style>
-<title>代金券转让</title>
+<title>奖金转让</title>
 </head>
 <body>
 	<div id="wrapper">

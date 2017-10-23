@@ -1,15 +1,14 @@
 package com.dreamer.view.goods;
 
-import com.dreamer.domain.account.GoodsAccount;
 import com.dreamer.domain.mall.delivery.DeliveryNote;
 import com.dreamer.domain.mall.goods.Goods;
 import com.dreamer.domain.mall.goods.GoodsType;
 import com.dreamer.domain.mall.goods.Price;
-import com.dreamer.domain.user.Agent;
 import com.dreamer.domain.user.AgentLevel;
 import com.dreamer.domain.user.User;
 import com.dreamer.service.mobile.*;
 import com.dreamer.view.mall.goods.GoodsDTO;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,23 +122,23 @@ public class GoodsQueryController {
             @ModelAttribute("parameter") SearchParameter<Goods> parameter,
             HttpServletRequest request) {
         DatatableDTO<GoodsDTO> dto = new DatatableDTO();
-        User user = (User) WebUtil.getCurrentUser(request);
-        Agent agent;
-        if (user.isAdmin()) {
-            agent = muteUserHandler.getMuteUser();
-        } else {
-            agent = muteUserHandler.get(user.getId());
-        }
-
-        //找出代理的所有账户
-        Set<GoodsAccount> goodsAccount = agent.getGoodsAccounts();
-        List<GoodsDTO> goodss = goodsAccount.stream().filter(gc -> gc.getCurrentBalance() > 0).map(gc -> {
+//        User user = (User) WebUtil.getCurrentUser(request);
+//        Agent agent;
+//        if (user.isAdmin()) {
+//            agent = muteUserHandler.getMuteUser();
+//        } else {
+//            agent = muteUserHandler.get(user.getId());
+//        }
+        Map<String, Object> map = new HashedMap();
+        map.put("ASC", "order");//排序
+        List<Goods> goodsstem = goodsHandler.getList(map);
+        List<GoodsDTO> goodss = goodsstem.stream().filter(gc -> gc.getCurrentBalance() > 0).map(gc -> {
             GoodsDTO d = new GoodsDTO();
-            d.setId(gc.getGoods().getId());
-            d.setName(gc.getGoods().getName());
+            d.setId(gc.getId());
+            d.setName(gc.getName());
             return d;
         }).skip(parameter.caculateFirstIndexForCurrentPage()).limit(parameter.rowsOfPerPage()).collect(Collectors.toList());
-        parameter.setTotalRows(goodsAccount.size());
+        parameter.setTotalRows(goodsstem.size());
         dto.setData(goodss);
         dto.setRecordsFiltered(parameter.getTotalRows());
         dto.setRecordsTotal(parameter.getTotalRows());

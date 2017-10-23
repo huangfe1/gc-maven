@@ -24,14 +24,14 @@
 		<property generated="never" lazy="false" name="voucher"
 			type="java.lang.Double">
 			<column name="voucher" not-null="true">
-				<comment>代金券数量</comment>
+				<comment>奖金数量</comment>
 			</column>
 		</property>
 		
 		<property generated="never" lazy="false" name="voucher_now"
 			type="java.lang.Double">
 			<column name="voucher_now" not-null="true">
-				<comment>变更后代金券数量</comment>
+				<comment>变更后奖金数量</comment>
 			</column>
 		</property>
 	

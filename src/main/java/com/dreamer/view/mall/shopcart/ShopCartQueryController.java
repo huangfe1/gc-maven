@@ -30,7 +30,7 @@ public class ShopCartQueryController {
 	}
 
 ////	/**
-////	 * 代理商城直接发货页面  调用授权接口
+////	 * 商城直接发货页面  调用授权接口
 ////	 * @param agentCode
 ////	 * @param ref
 ////	 * @param request

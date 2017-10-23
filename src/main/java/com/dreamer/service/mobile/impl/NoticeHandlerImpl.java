@@ -43,13 +43,13 @@ public class NoticeHandlerImpl implements NoticeHandler {
         String template_id = "3JfLagPhXX7Ngbt3fcGJPHBe2_jCtyj13YU_rMl1yNs";
         Map<String, Object> data;
         for (AccountsRecord record : records) {
-            String url = "http://ht.52zdt.com/zdt/mobile/accounts/records.html?stateType=" + record.getAccountsType().getState();
+            String url = "http://ht.gcyy365.com/gc/mobile/accounts/records.html?stateType=" + record.getAccountsType().getState();
             data = new HashMap<>();
             data.put("first", createItemMap(record.getInfo()));//变动原因
             data.put("keyword2", createItemMap(record.getAmount()));
             data.put("keyword1", createItemMap(DateUtil.formatDate(record.getUpdateTime())));
             data.put("keyword3", createItemMap(record.getNowAmount()));
-            data.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！"));
+            data.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！"));
             sendTemplateMessage(record.getAgent().getWxOpenid(), template_id, url, data);
 
         }
@@ -61,7 +61,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
      * @param records
      */
     public void noticeTransfer(Transfer transfer) {
-        String url = "http://ht.52zdt.com/zdt/mobile/transfer/records.html";
+        String url = "http://ht.gcyy365.com/gc/mobile/transfer/records.html";
         Agent fromAgent = transfer.getFromAgent();
         Agent toAgent = transfer.getToAgent();
         //入库通知
@@ -78,7 +78,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         });
         toData.put("keyword1", createItemMap(stringBuffer.toString()));
         toData.put("keyword2", createItemMap("请前往系统查看!"));
-        toData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品!感谢您的使用！"));
+        toData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品!感谢您的使用！"));
         sendTemplateMessage(toAgent.getWxOpenid(), template_id, url, toData);
         //出库通知
 
@@ -86,7 +86,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         fromData.put("first", createItemMap("您好，您有一批产品出库，请查看!"));
         fromData.put("keyword1", createItemMap(transfer.getId()));
         fromData.put("keyword2", createItemMap(stringBuffer.toString()));
-        fromData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品!感谢您的使用！"));
+        fromData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品!感谢您的使用！"));
         sendTemplateMessage(fromAgent.getWxOpenid(), template_id, url, fromData);
     }
 
@@ -99,7 +99,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         Agent fromAgent = note.getFromAgent();
         Agent toAgent = note.getToAgent();
         String template_id = "EcEZbfHDASd6uewH3gjPSFLq4XY-PtTClorlyp-wwms";
-        String url = "http://ht.52zdt.com/zdt/mobile/delivery/records.html";
+        String url = "http://ht.gcyy365.com/gc/mobile/delivery/records.html";
         Map<String, Object> fromAgentData = new HashedMap();
         Map<String, Object> toAgentData = new HashedMap();
         //出货人
@@ -109,14 +109,14 @@ public class NoticeHandlerImpl implements NoticeHandler {
 
         fromAgentData.put("keyword1", createItemMap(stringBuffer));
         fromAgentData.put("keyword2", createItemMap(DateUtil.formatDate(note.getUpdateTime())));
-        fromAgentData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
+        fromAgentData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
         sendTemplateMessage(fromAgent.getWxOpenid(), template_id, url, fromAgentData);
         if (fromAgent.getId().equals(toAgent.getId())) return;//如果是自己给自己发货就不用提醒了
         //收货人
         toAgentData.put("first", createItemMap("您好," + note.getApplyAgent().getRealName() + "给您的发货订单已经提交，即将发货！"));
         toAgentData.put("keyword1", createItemMap(stringBuffer));
         toAgentData.put("keyword2", createItemMap(DateUtil.formatDate(note.getUpdateTime())));
-        toAgentData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！请耐心等待发货^.^"));
+        toAgentData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！请耐心等待发货^.^"));
         sendTemplateMessage(toAgent.getWxOpenid(), template_id, url, toAgentData);
     }
 
@@ -144,7 +144,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         Agent fromAgent = note.getFromAgent();
         Agent toAgent = note.getToAgent();
         String template_id = "azqhgvIvoVyVnuM8vFNhMlqZKuEefQHMj7dD1ottlV0";
-        String url = "http://ht.52zdt.com/zdt/mobile/delivery/records.html";
+        String url = "http://ht.gcyy365.com/gc/mobile/delivery/records.html";
         Map<String, Object> fromAgentData = new HashedMap();
         Map<String, Object> toAgentData = new HashedMap();
         //出货人
@@ -154,13 +154,13 @@ public class NoticeHandlerImpl implements NoticeHandler {
 
         fromAgentData.put("keyword1", createItemMap(stringBuffer));
         fromAgentData.put("keyword2", createItemMap(DateUtil.formatDate(note.getUpdateTime())));
-        fromAgentData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
+        fromAgentData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
         sendTemplateMessage(fromAgent.getWxOpenid(), template_id, url, fromAgentData);
         //收货人
         toAgentData.put("first", createItemMap("您好," + fromAgent.getRealName() + "给您的发货订单已经取消，不会发货！"));
         toAgentData.put("keyword1", createItemMap(stringBuffer));
         toAgentData.put("keyword2", createItemMap(DateUtil.formatDate(note.getUpdateTime())));
-        toAgentData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！请耐心等待发货^.^"));
+        toAgentData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！请耐心等待发货^.^"));
         sendTemplateMessage(toAgent.getWxOpenid(), template_id, url, toAgentData);
     }
 
@@ -174,7 +174,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         Agent fromAgent = note.getFromAgent();
         Agent toAgent = note.getToAgent();
         String template_id = "azqhgvIvoVyVnuM8vFNhMlqZKuEefQHMj7dD1ottlV0";
-        String url = "http://ht.52zdt.com/zdt/mobile/delivery/records.html";
+        String url = "http://ht.gcyy365.com/gc/mobile/delivery/records.html";
         Map<String, Object> fromAgentData = new HashedMap();
         Map<String, Object> toAgentData = new HashedMap();
         //出货人
@@ -185,7 +185,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         fromAgentData.put("keyword2", createItemMap(note.getLogistics()));
         fromAgentData.put("keyword3", createItemMap(note.getLogisticsCode()));
         fromAgentData.put("keyword4", createItemMap(note.getAddress().getAddress()));
-        fromAgentData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
+        fromAgentData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
         sendTemplateMessage(fromAgent.getWxOpenid(), template_id, url, fromAgentData);
         if (fromAgent.getId().equals(toAgent.getId())) return;
         //收货人
@@ -194,7 +194,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         toAgentData.put("keyword2", createItemMap(DateUtil.formatDate(note.getUpdateTime())));
         fromAgentData.put("keyword3", createItemMap(note.getLogisticsCode()));
         fromAgentData.put("keyword4", createItemMap(note.getAddress().getProvince() + note.getAddress().getCity() + note.getAddress().getCounty() + note.getAddress().getAddress()));
-        toAgentData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！请耐心等待配送哦^.^"));
+        toAgentData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！请耐心等待配送哦^.^"));
         sendTemplateMessage(toAgent.getWxOpenid(), template_id, url, toAgentData);
     }
 
@@ -205,7 +205,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         AddressClone addressClone = order.getAddressClone();
         String name = addressClone.getConsignee();
         String template_id = "azqhgvIvoVyVnuM8vFNhMlqZKuEefQHMj7dD1ottlV0";
-        String url = "http://ht.52zdt.com/zdt/pm/order/myOrder.html";
+        String url = "http://ht.gcyy365.com/gc/pm/order/myOrder.html";
         Map<String, Object> fromAgentData = new HashedMap();
         //出货人
         fromAgentData.put("first", createItemMap("您好，您发给" + name + "订单已经发货！"));
@@ -215,19 +215,19 @@ public class NoticeHandlerImpl implements NoticeHandler {
         fromAgentData.put("keyword2", createItemMap(order.getLogistics()));
         fromAgentData.put("keyword3", createItemMap(order.getLogisticsCode()));
         fromAgentData.put("keyword4", createItemMap(addressClone.getProvince() + addressClone.getCity() + addressClone.getCounty() + addressClone.getAddress()));
-        fromAgentData.put("remark", createItemMap("芝德堂一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
+        fromAgentData.put("remark", createItemMap("高臣药业一站式购物，让更多的人用上优惠的好产品！如果多收了物流费，系统会在发货的时候退还！"));
         sendTemplateMessage(toAgent.getWxOpenid(), template_id, url, fromAgentData);
     }
 
     @Override
     public void noticeNewUser(Agent agent) {
         String template_id = "nxNXI49969JK_ZIggseBpy3zQ-Y9YKvukCwMuER6bOw";
-        String url = "http://ht.52zdt.com/zdt/mobile/contacts.html";
+        String url = "http://ht.gcyy365.com/gc/mobile/contacts.html";
         Map<String, Object> data = new HashedMap();
         data.put("first", createItemMap("您好，您新增了一位新的客户，请跟进服务！"));
         data.put("keyword1", createItemMap(agent.getRealName()));
         data.put("keyword2", createItemMap(DateUtil.formatDate(new Date())));
-        data.put("remark", createItemMap("娱乐微商，芝德堂！"));
+        data.put("remark", createItemMap("娱乐微商，高臣药业！"));
         sendTemplateMessage(agent.getParent().getWxOpenid(), template_id, url, data);
     }
 

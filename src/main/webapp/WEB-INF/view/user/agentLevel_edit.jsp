@@ -60,7 +60,7 @@
 								<div class="col-md-4 col-xs-4 text-error"></div>
 							</div>
 							
-							<div class="form-group">
+							<div class="form-group" style="display: none">
 								<label for="editOrder" class="col-sm-2 control-label">允许自动升级</label>
 								<div class="col-sm-10">
 									<label class="radio-inline"> <input type="radio"

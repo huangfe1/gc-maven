@@ -49,12 +49,12 @@
 
 <div class="footer">
     <ul>
-        <li><a href="<c:url value='/dmz/pmall/show.html'/>">商城入口</a></li>
-        <li><a href="<c:url value='/dmz/mobile/index.html'/>">特权商城</a></li>
+        <li><a href="<c:url value='/dmz/pmall/show.html'/>">首页</a></li>
         <li><a href="<c:url value='/mobile/shopcart/index.html'/>">购物车</a></li>
+        <li><a href="<c:url value='/mobile/contacts.html'/>">团队</a></li>
         <li><a href="<c:url value='/mobile/my.html'/>">个人中心</a></li>
         <%--<li><a href="<c:url value="/dmz/pmall/show.html"/>">优惠</a></li>--%>
     </ul>
-    <p>© 2015-2017 芝德堂 版权所有，并保留所有权利。</p>
+    <p>© 2015-2017 高臣药业 版权所有，并保留所有权利。</p>
     <!--<div align="center">a</div>-->
 </div>

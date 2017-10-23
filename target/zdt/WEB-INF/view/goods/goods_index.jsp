@@ -65,10 +65,10 @@
 								<tr>
 									<th>选择</th>
 									<th>产品名称</th>
-									<th>当前库存</th>
-									<th>当前余额</th>
-									<th>当前积分</th>
-									<th>积分系数</th>
+									<th>公司库存</th>
+									<th>公司余额</th>
+									<%--<th>当前积分</th>--%>
+									<%--<th>积分系数</th>--%>
 									<th>是否主打产品</th>
 									<th>显示顺序</th>
 									<th>操作</th>
@@ -82,8 +82,8 @@
 											href="<c:url value='/goods/edit.html?id=${g.id}' /> ">${g.name}</a></td>
 										<td>${g.currentStock}</td>
 										<td>${g.currentBalance}</td>
-										<td><fmt:formatNumber value="${g.currentPoint}"/></td>
-										<td>${g.pointFactor}</td>
+										<%--<td><fmt:formatNumber value="${g.currentPoint}"/></td>--%>
+										<%--<td>${g.pointFactor}</td>--%>
 										<td>${g.benchmark ? "是" : "否" }</td>
 										<td>${g.order}</td>
 										<td><a class="btn btn-success default editBtn"

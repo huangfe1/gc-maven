@@ -177,7 +177,7 @@
                                     <%--<div class="col-sm-6">--%>
                                         <%--<select  class="form-control" id="payWay" name="payWay" value="${address.address}">--%>
                                         <%--<option value="0">微信支付</option>--%>
-                                        <%--<option value="1">代金券支付</option>--%>
+                                        <%--<option value="1">奖金支付</option>--%>
                                         <%--</select>--%>
                                     <%--</div>--%>
                                     <%--<div class="col-md-4 col-xs-4 text-error"></div>--%>

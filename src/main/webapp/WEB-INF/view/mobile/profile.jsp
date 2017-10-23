@@ -235,23 +235,23 @@
 
 
 
-        <c:choose>
-        <c:when test="${agent.id eq user.id||agent.parent.id eq user.id}">
-            <div class="label level">
-            <span class="h3">等级值</span>
-            <span class="content">${levelName}</span>
-            <i class="fa fa-angle-right" aria-hidden="true">库存</i>
-            </div>
-        </c:when>
-        <c:otherwise>
-        <div class="label level">
-            <span class="h3">等级值</span>
-            <span class="content">****</span>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </div>
-        </c:otherwise>
+        <%--<c:choose>--%>
+        <%--<c:when test="${agent.id eq user.id||agent.parent.id eq user.id}">--%>
+            <%--<div class="label level">--%>
+            <%--<span class="h3">角色名</span>--%>
+            <%--<span class="content">${levelName}</span>--%>
+            <%--<i class="fa fa-angle-right" aria-hidden="true">库存</i>--%>
+            <%--</div>--%>
+        <%--</c:when>--%>
+        <%--<c:otherwise>--%>
+        <%--<div class="label level">--%>
+            <%--<span class="h3">等级值</span>--%>
+            <%--<span class="content">****</span>--%>
+            <%--<i class="fa fa-angle-right" aria-hidden="true"></i>--%>
+        <%--</div>--%>
+        <%--</c:otherwise>--%>
 
-        </c:choose>
+        <%--</c:choose>--%>
 
 
 
@@ -270,7 +270,7 @@
                             <span class="content">****</span>
                         </c:otherwise>
                     </c:choose>
-                    <i style="color: red" class="fa fa-angle-right" aria-hidden="true">转账</i>
+                    <%--<i style="color: red" class="fa fa-angle-right" aria-hidden="true">转账</i>--%>
                 </div>
             </c:forEach>
         </div>
@@ -289,38 +289,38 @@
             </ul>
         </div>
 
-        <c:if test="${agent.id eq user.id}">
-        <div class="buttons">
-            <div data-uid="${agent.id}" class="transferGoods"><span>我要发货</span></div>
-        </div>
-        </c:if>
+        <%--<c:if test="${agent.id eq user.id}">--%>
+        <%--<div class="buttons">--%>
+            <%--<div data-uid="${agent.id}" class="transferGoods"><span>我要发货</span></div>--%>
+        <%--</div>--%>
+        <%--</c:if>--%>
 
-        <c:if test="${agent.id ne user.id}">
-        <div class="buttons">
-            <div class="chat"><span>发消息</span></div>
-            <c:if test="${agent.agentCode!=null}">
-                <div data-uid="${agent.id}" class="transferGoods"><span>给他拨货</span></div>
-                <!--不是上级-->
-                <c:if test="${user.parent.id ne agent.id}">
-                    <div class="transferPay"><span>录防伪码</span></div>
-                </c:if>
+        <%--<c:if test="${agent.id ne user.id}">--%>
+        <%--<div class="buttons">--%>
+            <%--<div class="chat"><span>发消息</span></div>--%>
+            <%--<c:if test="${agent.agentCode!=null}">--%>
+                <%--<div data-uid="${agent.id}" class="transferGoods"><span>给他拨货</span></div>--%>
+                <%--<!--不是上级-->--%>
+                <%--<c:if test="${user.parent.id ne agent.id}">--%>
+                    <%--<div class="transferPay"><span>录防伪码</span></div>--%>
+                <%--</c:if>--%>
 
-            </c:if>
-        </div>
-        </c:if>
-
-
+            <%--</c:if>--%>
+        <%--</div>--%>
+        <%--</c:if>--%>
 
 
 
-    </c:if>
 
-    <!--是公司-->
-    <c:if test="${agent.mutedUser}">
-        <div class="buttons">
-        <div data-uid="${agent.id}" class="backTransferGoods"><span>申请换货</span></div>
 
     </c:if>
+
+    <%--<!--是公司-->--%>
+    <%--<c:if test="${agent.mutedUser}">--%>
+        <%--<div class="buttons">--%>
+        <%--<div data-uid="${agent.id}" class="backTransferGoods"><span>申请换货</span></div>--%>
+
+    <%--</c:if>--%>
 
 
 </div>

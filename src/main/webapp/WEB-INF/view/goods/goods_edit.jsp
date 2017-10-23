@@ -85,6 +85,31 @@
 								</div>
 								<div class="col-md-4 col-xs-4 text-error"></div>
 							</div>
+
+
+                                <div class="form-group">
+                                    <label for="spec" class="col-sm-2 control-label">生产企业</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="editSpec" tabIndex="11"
+                                               name="company" value="${parameter.entity.company}"
+                                               placeholder="生产企业">
+                                    </div>
+                                    <div class="col-md-4 col-xs-4 text-error"></div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="spec" class="col-sm-2 control-label">批准文号</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="editSpec" tabIndex="11"
+                                               name="license" value="${parameter.entity.license}"
+                                               placeholder="批准文号">
+                                    </div>
+                                    <div class="col-md-4 col-xs-4 text-error"></div>
+                                </div>
+
+
+
 								<!--产品重量-->
 								<div class="form-group">
 									<label for="spec" class="col-sm-2 control-label">产品重量</label>
@@ -287,15 +312,15 @@
 
 
 
-								<div class="form-group">
-									<label for="pointFactor" class="col-sm-2 control-label">零售价</label>
-									<div class="col-sm-4">
-										<input type="number" class="form-control" id="editRetailPrice" tabIndex="13" required
-											   name="retailPrice" value="${parameter.entity.retailPrice}"
-											   placeholder="输入产品零售价">
-									</div>
-									<div class="col-md-4 col-xs-4 text-error"></div>
-								</div>
+								<%--<div class="form-group">--%>
+									<%--<label for="pointFactor" class="col-sm-2 control-label">零售价</label>--%>
+									<%--<div class="col-sm-4">--%>
+										<%--<input type="number" class="form-control" id="editRetailPrice" tabIndex="13" required--%>
+											   <%--name="retailPrice" value="${parameter.entity.retailPrice}"--%>
+											   <%--placeholder="输入产品零售价">--%>
+									<%--</div>--%>
+									<%--<div class="col-md-4 col-xs-4 text-error"></div>--%>
+								<%--</div>--%>
 
 								<div class="form-group">
 									<label for="editOrder" class="col-sm-2 control-label">排列顺序</label>
@@ -355,24 +380,36 @@
 								<table id="levelTable" class="table table-condensed">
 									<thead>
 									<tr>
-										<th>等级名称</th>
+										<th>名称</th>
 										<th>单价</th>
-										<th>等级阈值</th>
+										<th>返利</th>
+                                        <c:if test="${parameter.entity.benchmark}">
+                                            <th>日销</th>
+                                        </c:if>
+
 									</tr>
 									</thead>
 									<tbody>
 									<c:forEach var="l" items="${levels}" varStatus="s">
 
-										<c:set var="levelP" value="${prices[l.id]}" />
-										<tr class="lc" tag="${l.goodsType}">
-											<td>${l.name}
-												<input  type="hidden"   name="priceId" value="${levelP.id}">
-												<input  type="hidden" 	name="levelId"  value="${l.id}">
+										<c:if test="${fn:contains(l.name,'分公司')}">
+											<c:set var="levelP" value="${prices[l.id]}" />
+											<tr class="lc" tag="${l.goodsType}">
+												<td>${l.name}
+													<input  type="hidden"   name="priceId" value="${levelP.id}">
+													<input  type="hidden" 	name="levelId"  value="${l.id}">
 
-											</td>
-											<td><input   type="number" name="levelPrice" tabindex="${s.count+18}"  value="${levelP.price}" ></td>
-											<td><input   type="number" name="levelThreshold" tabindex="${s.count+19}" value="${levelP.threshold}"></td>
-										</tr>
+												</td>
+												<td><input   type="number" name="levelPrice" tabindex="${s.count+18}"  value="${levelP.price}" ></td>
+												<td><input   type="text" name="voucherStrs" tabindex="${s.count+19}" value="${levelP.voucherStr}"></td>
+                                                <c:if test="${parameter.entity.benchmark}">
+                                                    <td><input   type="number" name="buyAmounts" tabindex="${s.count+20}" value="${levelP.buyAmount}"></td>
+                                                </c:if>
+
+											</tr>
+										</c:if>
+
+
 									</c:forEach>
 									</tbody>
 								</table>

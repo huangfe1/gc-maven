@@ -26,10 +26,10 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#basicInfo" aria-controls="basicInfo"
                                                                       role="tab" data-toggle="tab">基本信息</a></li>
-                            <li role="presentation"><a href="#authInfo" aria-controls="authInfo" role="tab"
-                                                       data-toggle="tab">产品授权</a></li>
-                            <li role="presentation"><a href="#authedInfo" aria-controls="authedInfo" role="tab"
-                                                       data-toggle="tab">已有授权</a></li>
+                            <%--<li role="presentation"><a href="#authInfo" aria-controls="authInfo" role="tab"--%>
+                                                       <%--data-toggle="tab">产品授权</a></li>--%>
+                            <%--<li role="presentation"><a href="#authedInfo" aria-controls="authedInfo" role="tab"--%>
+                                                       <%--data-toggle="tab">已有授权</a></li>--%>
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="basicInfo">
@@ -163,69 +163,69 @@
                                     </c:if>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane" id="authInfo">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table
-                                                class="table table-striped table-bordered table-condensed"
-                                                id="mainTable">
-                                            <caption>
-                                                <label>授权名称</label> <input type="text" value=""
-                                                                           name="authName" id="authName"
-                                                                           placeholder="授权名称"> <label>产品名称</label><input
-                                                    type="text" value="" name="goodsName" id="goodsName"
-                                                    placeholder="产品名称">
-                                                <button type="button" class="btn btn-primary navbar-btn"
-                                                        id="searchDT" name="searchDT">
-                                                    <span class="glyphicon glyphicon-search"></span>&nbsp;查询
-                                                </button>
-                                            </caption>
-                                            <thead>
-                                            <tr>
-                                                <th>授权类型</th>
-                                                <th>授权产品</th>
-                                                <th>选择</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="authedInfo">
-                                <div class="col-md-12">
-                                    <table class="table table-striped table-bordered table-condensed">
-                                        <thead>
-                                        <tr>
-                                            <th>授权类型</th>
-                                            <th>授权产品</th>
-                                            <th>授权状态</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach items="${parameter.entity.authorizations}"
-                                                   var="auth">
-                                            <tr>
-                                                <input type="hidden" value="${auth.id}" name="authedIds">
-                                                <td>${auth.authorizationType.name}</td>
-                                                <td>${auth.authorizationType.goods.name}</td>
-                                                <td>${auth.status.desc}</td>
-                                                <td>
-                                                    <a class="btn btn-default viewBtn" target="letter"
-                                                       href="<c:url value='/auth/letter.html?id=${auth.id}'/>"
-                                                       data-id="${l.id}">查看证书</a>
-                                                    <a class="btn btn-danger removeAuthBtn ajaxLink"
-                                                       href="<c:url value='/agent/auth/remove.json?id=${parameter.entity.id}&authId=${auth.id}'/>">
-                                                        <i class="glyphicon glyphicon-trash"></i>取消本授权
-                                                    </a></td>
-                                            </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <%--<div role="tabpanel" class="tab-pane" id="authInfo">--%>
+                                <%--<div class="col-md-12">--%>
+                                    <%--<div class="table-responsive">--%>
+                                        <%--<table--%>
+                                                <%--class="table table-striped table-bordered table-condensed"--%>
+                                                <%--id="mainTable">--%>
+                                            <%--<caption>--%>
+                                                <%--<label>授权名称</label> <input type="text" value=""--%>
+                                                                           <%--name="authName" id="authName"--%>
+                                                                           <%--placeholder="授权名称"> <label>产品名称</label><input--%>
+                                                    <%--type="text" value="" name="goodsName" id="goodsName"--%>
+                                                    <%--placeholder="产品名称">--%>
+                                                <%--<button type="button" class="btn btn-primary navbar-btn"--%>
+                                                        <%--id="searchDT" name="searchDT">--%>
+                                                    <%--<span class="glyphicon glyphicon-search"></span>&nbsp;查询--%>
+                                                <%--</button>--%>
+                                            <%--</caption>--%>
+                                            <%--<thead>--%>
+                                            <%--<tr>--%>
+                                                <%--<th>授权类型</th>--%>
+                                                <%--<th>授权产品</th>--%>
+                                                <%--<th>选择</th>--%>
+                                            <%--</tr>--%>
+                                            <%--</thead>--%>
+                                            <%--<tbody>--%>
+                                            <%--</tbody>--%>
+                                        <%--</table>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div role="tabpanel" class="tab-pane" id="authedInfo">--%>
+                                <%--<div class="col-md-12">--%>
+                                    <%--<table class="table table-striped table-bordered table-condensed">--%>
+                                        <%--<thead>--%>
+                                        <%--<tr>--%>
+                                            <%--<th>授权类型</th>--%>
+                                            <%--<th>授权产品</th>--%>
+                                            <%--<th>授权状态</th>--%>
+                                            <%--<th>操作</th>--%>
+                                        <%--</tr>--%>
+                                        <%--</thead>--%>
+                                        <%--<tbody>--%>
+                                        <%--<c:forEach items="${parameter.entity.authorizations}"--%>
+                                                   <%--var="auth">--%>
+                                            <%--<tr>--%>
+                                                <%--<input type="hidden" value="${auth.id}" name="authedIds">--%>
+                                                <%--<td>${auth.authorizationType.name}</td>--%>
+                                                <%--<td>${auth.authorizationType.goods.name}</td>--%>
+                                                <%--<td>${auth.status.desc}</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<a class="btn btn-default viewBtn" target="letter"--%>
+                                                       <%--href="<c:url value='/auth/letter.html?id=${auth.id}'/>"--%>
+                                                       <%--data-id="${l.id}">查看证书</a>--%>
+                                                    <%--<a class="btn btn-danger removeAuthBtn ajaxLink"--%>
+                                                       <%--href="<c:url value='/agent/auth/remove.json?id=${parameter.entity.id}&authId=${auth.id}'/>">--%>
+                                                        <%--<i class="glyphicon glyphicon-trash"></i>取消本授权--%>
+                                                    <%--</a></td>--%>
+                                            <%--</tr>--%>
+                                        <%--</c:forEach>--%>
+                                        <%--</tbody>--%>
+                                    <%--</table>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
                     </form>
 

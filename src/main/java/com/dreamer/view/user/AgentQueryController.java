@@ -10,6 +10,7 @@ import com.dreamer.domain.user.enums.AgentStatus;
 import com.dreamer.domain.user.enums.UserStatus;
 import com.dreamer.service.goods.AgentLevelTradingLimitedHandler;
 import com.dreamer.service.mobile.AgentHandler;
+import com.dreamer.service.mobile.AgentLevelHandler;
 import com.dreamer.util.ExcelFile;
 import com.dreamer.view.goods.GoodsAccountDTO;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -54,7 +55,7 @@ public class AgentQueryController {
 		        //获取上级编号
             }
             agents = agentHandler.findAgents(parameter);
-			WebUtil.turnPage(parameter, request);
+            WebUtil.turnPage(parameter, request);
 			model.addAttribute("status", AgentStatus.values());
 			model.addAttribute("agents", agents);
 		} catch (Exception exp) {
@@ -135,6 +136,8 @@ public class AgentQueryController {
 		try {
 			model.addAttribute("aTypes", AccountsType.values());
 			model.addAttribute("agentStatus", AgentStatus.values());
+			List<AgentLevel> agentLevels =  agentLevelHandler.findAllOrderByLevel();
+			model.addAttribute("levels",agentLevels);
 		} catch (Exception exp) {
 			exp.printStackTrace();
 			LOG.error("代理查询失败", exp);
@@ -341,6 +344,9 @@ public class AgentQueryController {
 
 	@Autowired
 	private AgentHandler agentHandler;
+
+	@Autowired
+	private AgentLevelHandler agentLevelHandler;
 
 	@Autowired
 	private AgentLevelTradingLimitedHandler agentLevelTradingLimitedHandler;

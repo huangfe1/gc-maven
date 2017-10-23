@@ -48,7 +48,7 @@ public class VoucherRecordDAO extends HibernateBaseDAO<VoucherRecord>{
 //	}
 
 	/**
-	 * 获取没有通知的代金券记录
+	 * 获取没有通知的奖金记录
 	 * @return
      */
 	public List<VoucherRecord> getNeedNoticeRecord(){

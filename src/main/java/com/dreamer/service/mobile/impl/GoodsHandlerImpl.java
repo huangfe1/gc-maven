@@ -4,6 +4,7 @@ import com.dreamer.domain.mall.goods.Goods;
 import com.dreamer.domain.mall.goods.StockBlotter;
 import com.dreamer.repository.mobile.GoodsDao;
 import com.dreamer.repository.mobile.StockBlotterDao;
+import com.dreamer.service.mobile.GoodsAccountHandler;
 import com.dreamer.service.mobile.GoodsHandler;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by huangfei on 03/07/2017.
  */
 @Service
-public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHandler{
+public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHandler {
 
     @Override
     public List<Goods> findGoods(SearchParameter<Goods> parameter) {
@@ -28,13 +29,13 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
         DetachedCriteria criteria = DetachedCriteria.forClass(Goods.class);
         criteria.add(example);
         criteria.addOrder(Order.asc("order"));
-        return goodsDao.searchByPage(parameter,criteria);
+        return goodsDao.searchByPage(parameter, criteria);
     }
 
 
     @Override
     @Transactional
-    public void addBalance(Integer gid,Integer quantity) {
+    public void addBalance(Integer gid, Integer quantity) {
         Goods goods = goodsDao.get(gid);
         goods.increaseCurrentBalance(quantity);
         goodsDao.merge(goods);
@@ -42,7 +43,7 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
 
     @Override
     @Transactional
-    public void reduceBalacne(Integer gid,Integer quantity) {
+    public void reduceBalacne(Integer gid, Integer quantity) {
         Goods goods = goodsDao.get(gid);
         goods.deductCurrentBalance(quantity);
         goodsDao.merge(goods);
@@ -50,7 +51,7 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
 
     @Override
     @Transactional
-    public void addStock(Integer gid,Integer quantity) {
+    public void addStock(Integer gid, Integer quantity) {
         Goods goods = goodsDao.get(gid);
         goods.increaseCurrentStock(quantity);
         goodsDao.merge(goods);
@@ -69,7 +70,7 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
 
     @Override
     @Transactional
-    public void reduceStock(Integer gid,Integer quantity) {
+    public void reduceStock(Integer gid, Integer quantity) {
         Goods goods = goodsDao.get(gid);
         goods.deductCurrentStock(quantity);
         goodsDao.merge(goods);
@@ -91,6 +92,41 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
         goodsDao.merge(goods);
     }
 
+
+    @Override
+    @Transactional
+    public void adminAddStock(StockBlotter stock) {
+
+        Integer gid = stock.getGoods().getId();
+        Integer quantity = stock.getChange();
+
+        if (stock.getChange() == 0) {
+            return;
+        }
+        if (stock.getChange() > 0) {
+
+            addBalance(gid, quantity);
+            addStock(gid, quantity);
+            addStockSum(gid, quantity);
+        } else {
+            reduceBalacne(gid, quantity);
+            reduceStock(gid, quantity);
+            reduceStockSum(gid, quantity);
+        }
+        addStockBlotter(stock);
+//        addBalance(gid, quantity);
+//        addStock(gid, quantity);
+//        addStockSum(gid,quantity);
+//        增加总公司虚拟账户的
+//        MutedUser mutedUser = muteUserHandler.getMuteUser();
+//        Goods goods = goodsHandler.get(stock.getGoods().getId());
+//        GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(mutedUser, goods);
+//        goodsAccountHandler.increaseGoodsAccount(goodsAccount, stock.getChange());
+//        goodsAccountHandler.merge(goodsAccount);
+    }
+
+
+
     private GoodsDao goodsDao;
 
     @Autowired
@@ -105,4 +141,8 @@ public class GoodsHandlerImpl extends BaseHandlerImpl<Goods> implements GoodsHan
         this.goodsDao = goodsDao;
         super.setBaseDao(goodsDao);
     }
+
+    @Autowired
+    private GoodsAccountHandler goodsAccountHandler;
+
 }

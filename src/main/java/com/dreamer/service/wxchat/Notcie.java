@@ -12,7 +12,7 @@ public interface Notcie {
      * @param agentAndCode 代理姓名与编号
      * @param goodsName 产品名字
      * @param number 产品数量
-     * @param voucher 返代金券数量
+     * @param voucher 返奖金数量
      * @param time  返利时间
      */
     void sendFanLiNotice(String nameAndCode,String goodsName,int number,Double voucher);
@@ -20,7 +20,7 @@ public interface Notcie {
      void sendRecord();
 
     /**
-     * 代金券纪录通知
+     * 奖金纪录通知
      * @param Body
      */
     void sendVoucherRecord(VoucherRecord v);

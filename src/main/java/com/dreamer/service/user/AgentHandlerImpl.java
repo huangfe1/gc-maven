@@ -454,7 +454,7 @@ public class AgentHandlerImpl implements AgentHandler {
 //    }
 
 //    /**
-//     * 代金券转换成预存款
+//     * 奖金转换成预存款
 //     *
 //     * @param time
 //     * @param transfer

@@ -2,6 +2,7 @@ package com.dreamer.util;
 
 import com.dreamer.domain.user.Agent;
 import com.wxjssdk.util.DateUtil;
+import org.springframework.web.multipart.MultipartFile;
 import ps.mx.otter.exception.ApplicationException;
 
 import java.io.IOException;
@@ -68,6 +69,21 @@ public class CommonUtil {
             mapAll.put(key,sum);
         }
     }
+
+
+
+    public static String saveFile(MultipartFile file,String path) {
+        String imgType = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
+        String fileName = generateFileName(imgType);
+        try {
+            writeImgFile(file.getBytes(), fileName,path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileName;
+    }
+
+
 
 
     //写入文件

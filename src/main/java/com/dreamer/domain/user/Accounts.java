@@ -27,7 +27,7 @@ public class Accounts implements java.io.Serializable {
 
 
 //    /**
-//     * 代金券转移
+//     * 奖金转移
 //     *
 //     * @param acs
 //     * @param voucher
@@ -40,7 +40,7 @@ public class Accounts implements java.io.Serializable {
 //    }
 
 //    /**
-//     * 代金券转移
+//     * 奖金转移
 //     *
 //     * @param acs
 //     * @param voucher
@@ -112,13 +112,13 @@ public class Accounts implements java.io.Serializable {
     }
 
 //    /**
-//     * 代金券转移
+//     * 奖金转移
 //     *
 //     * @param acs
 //     * @param points
 //     */
 //    public void transferVoucherToAnoher(Accounts acs, Double voucher) {
-//        String more = user.getRealName() + "主动转移代金券到" + acs.getUser().getRealName();
+//        String more = user.getRealName() + "主动转移奖金到" + acs.getUser().getRealName();
 //        if (!this.getUser().isMutedUser()) {
 //            this.deductVoucher(voucher, more);
 //        }
@@ -176,7 +176,7 @@ public class Accounts implements java.io.Serializable {
 
 
 //    /**
-//     * 增加代金券
+//     * 增加奖金
 //     *
 //     * @param voucher
 //     * @return
@@ -186,10 +186,10 @@ public class Accounts implements java.io.Serializable {
 //            return getVoucherBalance();
 //        }
 //        if (voucher < 0) {
-//            throw new ApplicationException("代金券增加值非法,不能为负数");
+//            throw new ApplicationException("奖金增加值非法,不能为负数");
 //        }
 ////		if(getVoucherBalance()+voucher<0){
-////			throw new ApplicationException("代金券增加值非法");
+////			throw new ApplicationException("奖金增加值非法");
 ////		}
 //        // 进行加法运算
 //        Double result = PreciseComputeUtil.add(getVoucherBalance(), voucher);
@@ -199,7 +199,7 @@ public class Accounts implements java.io.Serializable {
 //    }
 
 //    /**
-//     * 扣减代金券
+//     * 扣减奖金
 //     *
 //     * @param voucher
 //     * @return
@@ -209,10 +209,10 @@ public class Accounts implements java.io.Serializable {
 //            return getVoucherBalance();
 //        }
 //        if (voucher < 0) {
-//            throw new ApplicationException("代金券扣减值不能为负数");
+//            throw new ApplicationException("奖金扣减值不能为负数");
 //        }
 //        if (voucher > getVoucherBalance()) {
-//            throw new ApplicationException("代金券/物流费余额不足,请及时充值");
+//            throw new ApplicationException("奖金/物流费余额不足,请及时充值");
 //        }
 //        // 进行减法运算
 //        Double result = PreciseComputeUtil.sub(getVoucherBalance(), voucher);
@@ -222,7 +222,7 @@ public class Accounts implements java.io.Serializable {
 //    }
 
 //    /**
-//     * 追回代金券
+//     * 追回奖金
 //     *
 //     * @param voucher
 //     * @return
@@ -232,7 +232,7 @@ public class Accounts implements java.io.Serializable {
 //            return getVoucherBalance();
 //        }
 //        if (voucher < 0) {
-//            throw new ApplicationException("代金券扣减值不能为负数");
+//            throw new ApplicationException("奖金扣减值不能为负数");
 //        }
 //        // 进行减法运算
 //        Double result = PreciseComputeUtil.sub(getVoucherBalance(), voucher);

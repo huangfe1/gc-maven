@@ -149,6 +149,34 @@
             width: 2.1em;
         }
 
+        /*.file {*/
+        /*position: relative;*/
+        /*display: inline-block;*/
+        /*!*background: #D0EEFF;*!*/
+        /*!*border: 1px solid #99D3F5;*!*/
+        /*border-radius: 4px;*/
+        /*padding: 4px 12px;*/
+        /*overflow: hidden;*/
+        /*color: #1E88C7;*/
+        /*text-decoration: none;*/
+        /*text-indent: 0;*/
+        /*line-height: 20px;*/
+        /*}*/
+        .file input {
+            /*position: absolute;*/
+            /*font-size: 100px;*/
+            /*right: 0;*/
+            /*top: 0;*/
+            opacity: 0;
+        }
+
+        /*.file:hover {*/
+        /*background: #AADFFD;*/
+        /*border-color: #78C3F3;*/
+        /*color: #004974;*/
+        /*text-decoration: none;*/
+        /*}*/
+
 
     </style>
     <title>完善信息</title>
@@ -156,16 +184,22 @@
 <body style="background: rgb(232, 232, 232);">
 <div class="con">
     <%--<header>--%>
-        <%--<a href="" class="Return"><span></span></a>--%>
-        <%--<span class="Title">完善信息</span>--%>
-        <%--&lt;%&ndash;<a href="" class="Home"><span></span></a>&ndash;%&gt;--%>
+    <%--<a href="" class="Return"><span></span></a>--%>
+    <%--<span class="Title">完善信息</span>--%>
+    <%--&lt;%&ndash;<a href="" class="Home"><span></span></a>&ndash;%&gt;--%>
     <%--</header>--%>
     <form id="loginForm" method="post" action="<c:url value='/mobile/register.json' />">
         <div class="login">
             <section>
                 <div class="input">
                     <div class="name">
-                        <b>姓名：</b><span><input name="realName" type="text"></span>
+                        <c:if test="${isF}">
+                            <b>姓名：</b>
+                        </c:if>
+                        <c:if test="${isY}">
+                            <b>店名：</b>
+                        </c:if>
+                        <span><input name="realName" type="text"></span>
                     </div>
                     <div class="name">
                         <b>手机：</b><span><input name="mobile" type="text"></span>
@@ -173,6 +207,16 @@
                     <div class="name">
                         <b>微信：</b><span><input name="weixin" type="text"></span>
                     </div>
+                    <div class="name">
+                        <b>住址：</b><span><input name="registerAddress" type="text"></span>
+                    </div>
+
+                    <c:if test="${isY}">
+                        <div class="name file">
+                            <b>证件：</b><span><input id="file"  name="img" type="file"></span>
+                        </div>
+                    </c:if>
+
                     <div class="name">
                         <b>密码：</b><span><input id="password" name="password" placeholder="" type="password"></span>
                     </div>
@@ -187,7 +231,7 @@
                 </div>
                 <p style="color: red" id="error"></p>
                 <p>
-                    <label class="loginBtn"  id="loginBtn">立即提交</label>
+                    <label class="loginBtn" id="loginBtn">立即提交</label>
                 </p>
                 <%--<p><a style="color: blueviolet" href="<c:url value="/vmall/uc//dmz/login.html"/>" class="register">有账号,去登陆</a>--%>
                 </p>
@@ -197,8 +241,8 @@
     <div class="hz">
         <%--<h2><a href=""><span style="color:blueviolet;">我有账号,点我登录</span></a></h2>--%>
         <%--<p>--%>
-            <%--<img src="${ctx}/resources/mallimages/qq.png" alt="">--%>
-            <%--<img src="${ctx}/resources/mallimages/weibo.png" alt="">--%>
+        <%--<img src="${ctx}/resources/mallimages/qq.png" alt="">--%>
+        <%--<img src="${ctx}/resources/mallimages/weibo.png" alt="">--%>
         <%--</p>--%>
     </div>
 </div>
@@ -212,7 +256,7 @@
     $(function () {
 
         !function (w) {
-            if (w.utils)return;
+            if (w.utils) return;
             var Utils = function () {
             }
             Utils.prototype = {
@@ -333,6 +377,16 @@
             btn = $(this);
             $("#loginForm").submit();
         });
+
+        $("#file").change(function () {
+            var index = $(this).val().lastIndexOf("\\") + 1;
+            var val = $(this).val().substr(index, $(this).val().length);
+            if(val.length>30){
+                val = val.substr(val.length-20,val.length);
+            }
+            $(this).closest(".file").children("b").html("证件: " + val.trim());
+        })
+
     })
 </script>
 </body>

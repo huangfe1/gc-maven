@@ -10,6 +10,8 @@ import com.dreamer.domain.user.enums.UserStatus;
 import com.dreamer.repository.mobile.AgentDao;
 import com.dreamer.service.mobile.*;
 import com.dreamer.service.user.agentCode.AgentCodeGenerator;
+import com.dreamer.util.CommonUtil;
+import com.dreamer.util.PreciseComputeUtil;
 import com.wxjssdk.util.DateUtil;
 import javafx.application.Application;
 import org.apache.commons.collections.map.HashedMap;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ps.mx.otter.exception.ApplicationException;
 import ps.mx.otter.exception.ValidationException;
 import ps.mx.otter.utils.SearchParameter;
@@ -38,12 +41,41 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         if (!agent.getPassword().equals(paw)) {
             throw new ApplicationException("账号密码不相匹配！");
         }
+
+        if (agent.getAgentStatus().equals(AgentStatus.NO_ACTIVE)) {
+            throw new ApplicationException("账号不相匹配！");
+        }
+
         return agent;
+    }
+
+
+    @Override
+    @Transactional
+    public void updateBuyDate(Agent agent, Integer amount, Integer buyAmount) {
+        Integer d = amount / buyAmount;
+        Date date = DateUtil.formatStr(DateUtil.getFetureDate(d), "yyyy-MM-dd");
+        agent.setBuyTime(date);
+        merge(agent);
     }
 
     @Override
     public List<Agent> findByParentHasUnionId(Integer pid) {
         return agentDao.findByParentHasUnionId(pid);
+    }
+
+
+    @Override
+    public Agent findVip(Agent agent) {
+        while (!agent.isMutedUser()) {
+            Agent parent = agent.getParent();
+            if (getLevelName(parent).contains(AgentLevelName.分公司.toString())) {
+                return parent;
+            } else {
+                agent = parent;
+            }
+        }
+        return null;
     }
 
     /**
@@ -75,15 +107,25 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
      */
     @Transactional
     @Override
-    public Agent selfRegister(Agent agent, String refCode) {
+    public Agent selfRegister(Agent agent, String refCode, MultipartFile file) {
+
+        String fileName = "";
+
+        if (file != null) {
+            //营业执照
+            fileName = CommonUtil.saveFile(file, systemParameterHandler.getGoodsImgPath());
+        }
+
         //通过统一Id查找
         Agent tem = get("wxUnionID", agent.getWxUnionID());
         if (tem != null) {//判断当前用户是否存在，存在的话是扫二维码过来的,完信息
             tem = buildAgent(tem, agent.getRealName(), agent.getMobile(), agent.getWeixin(), agent.getPassword());
+            tem.setImgFile(fileName);
             return merge(tem);
         }
         //否则就是新注册用户
         agent = buildAgent(refCode, agent.getMobile(), agent.getIdCard(), agent.getWeixin(), agent.getRealName(), agent.getRemittance(), agent.getPassword());
+        agent.setImgFile(fileName);   //营业执照
         save(agent);
         return agent;
     }
@@ -118,7 +160,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
             //基本信息
             agent.setRealName(nickName);
             agent.setJoinDate(new Date());
-            agent.setUserStatus(UserStatus.NORMAL);
+            agent.setUserStatus(UserStatus.NEW);
             agent.setAgentStatus(AgentStatus.ACTIVE);
             agent.setWxUnionID(wxUnionID);
 
@@ -148,7 +190,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         }
         agent.setParent(parent);
         agent.setUserStatus(UserStatus.NORMAL);
-        agent.setAgentStatus(AgentStatus.ACTIVE);
+        agent.setAgentStatus(AgentStatus.NO_ACTIVE);//自己注册的是没有激活的
         agent.setJoinDate(new Date());
         agent.setRemittance(remittance);
         agent.setRealName(realName);
@@ -165,7 +207,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         Accounts accounts = new Accounts();
         accounts.setUser(agent);
         agent.setAccounts(accounts);
-        //生成主打产品账户
+        //生成主打产品账户 TODO 如果是分公司 授予业务员  如果是业务员授权为药店
 
         GoodsAccount goodsAccount = goodsAccountHandler.generateMainGoodsAccount(agent);
         goodsAccount.setUser(agent);
@@ -293,7 +335,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     public Agent findByAgentCodeOrId(String refCode) {
         //通过code或者id查找
         Map<String, Object> map = new HashedMap();
-        if (refCode.indexOf("zdt") > -1) {
+        if (refCode.indexOf("gc") > -1) {
             map.put("agentCode", refCode);
         } else {
             map.put("id", Integer.valueOf(refCode));
@@ -357,7 +399,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     }
 
     /**
-     * 代理商城是否可以返利
+     * 商城是否可以返利
      *
      * @param agent
      * @return
@@ -366,44 +408,12 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
 
 
         //如果被整顿了就跳过
-        if (agent.getAgentStatus().equals(AgentStatus.REORGANIZE)) {
+        if (agent.getAgentStatus().equals(AgentStatus.REORGANIZE) || agent.getAgentStatus().equals(AgentStatus.NO_ACTIVE)) {
             return false;//整顿了的直接跳过
         }
 
         if (isVip(agent)) return true;
 
-//        if(agent.getNeedCheck()!=null&&agent.getNeedCheck()==false)return true;//不需要审核
-
-//        Double sumAmount = 800.00;//每个月除了1号 要进货达到800元的
-//        Date today = new Date();
-//        String day = DateUtil.formatDate(today, "dd");//当天是否是1号  1号全免
-//        if (isVip(agent)) {//如果是vip
-//            if(day.equals("01")){//1号  直接可以返利
-//                return  true;
-//            }
-//
-//            if(isNewVip(agent)){//是新品牌代言 如果注册不到三个月不用进货 直接可以返利
-//                today = new Date();
-//                //不到三个月
-//                if(DateUtil.countMonths(DateUtil.formatDate(today),DateUtil.formatDate(agent.getJoinDate()),"yyyy-MM-dd")<3){
-//                    return  true;
-//                }
-//            }
-//            //老品牌代言 或者 超过三个月的品牌代言 要进货800才能返利
-//            if (!day.equals("01")) {//不是1号  要核对购买数量
-//                Double sumAdd;//总进账
-//                Double sumSub;//总出账
-//                //公司转给他的成交订单
-//                List<Transfer> addTransfers = transferHandler.findTransferRecords(3, agent.getId(), DateUtil.formatStartDayOfMonth(new Date()), new Date(), GoodsTransferStatus.CONFIRM);
-//                sumAdd = addTransfers.stream().mapToDouble(p -> p.getAmount()).sum();
-//                //退回公司
-//                List<Transfer> subTransfers = transferHandler.findTransferRecords(agent.getId(), 3, DateUtil.formatStartDayOfMonth(new Date()), new Date(), GoodsTransferStatus.CONFIRM);
-//                sumSub = subTransfers.stream().mapToDouble(p -> p.getAmount()).sum();
-//                if (sumAdd - sumSub >= sumAmount) {
-//                    return true;
-//                }
-//            }
-//        }
         return false;
     }
 
@@ -425,10 +435,9 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         if (goodsAccount != null) {
             String levelName = goodsAccount.getAgentLevel().getName();
             if (AgentLevelName.contains(levelName)) {
-                if (!levelName.equals(AgentLevelName.品牌代言.toString())) {//不是品牌代言
+                if (!levelName.equals(AgentLevelName.分公司.toString())) {//不是品牌代言
                     return true;
                 }
-
             }
         }
         return false;
@@ -439,7 +448,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     public boolean isVip(Agent agent) {
         GoodsAccount goodsAccount = goodsAccountHandler.getMainGoodsAccount(agent);
         if (goodsAccount != null) {
-            if (AgentLevelName.contains(goodsAccount.getAgentLevel().getName())) {
+            if (goodsAccount.getAgentLevel().getName().contains(AgentLevelName.分公司.toString()) || goodsAccount.getAgentLevel().getName().contains(AgentLevelName.业务员.toString())) {
                 return true;
             }
         }
@@ -538,7 +547,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         for (Agent agent : agents) {
             ids.add(agent.getId());
         }
-        if(ids.size()==0)return;
+        if (ids.size() == 0) return;
         List<Agent> temps = getListIn("parent.id", ids);
         childrens.addAll(agents);
         getChildrens(temps, childrens);
@@ -580,4 +589,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
 
     @Autowired
     private MuteUserHandler muteUserHandler;
+
+    @Autowired
+    private SystemParameterHandler systemParameterHandler;
 }

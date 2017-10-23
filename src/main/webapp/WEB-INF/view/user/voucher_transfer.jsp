@@ -18,7 +18,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title text-primary" id="myModalLabel">代理代金券转账</h4>
+				<h4 class="modal-title text-primary" id="myModalLabel">代理奖金转账</h4>
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
@@ -26,7 +26,7 @@
 						<div class="col-md-12 col-xs-12">
 							<input type="hidden" name="id" value="${parameter.entity.id}">
 							<div class="panel panel-primary">
-								<div class="panel-heading">转出方代金券账户基本信息</div>
+								<div class="panel-heading">转出方奖金账户基本信息</div>
 								<div class="panel-body">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">代理编码</label>
@@ -35,7 +35,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">当前代金券余额</label>
+										<label class="col-sm-2 control-label">当前奖金余额</label>
 										<div class="col-sm-6">
 											<p class="form-control-static">${voucherBalance}</p>
 										</div>
@@ -65,7 +65,7 @@
 										<div class="col-md-4 col-xs-4 text-error"></div>
 									</div>
 									<div class="form-group">
-										<label for="voucher" class="col-sm-2 control-label">转出代金券数量</label>
+										<label for="voucher" class="col-sm-2 control-label">转出奖金数量</label>
 										<div class="col-sm-4">
 											<input type="number" class="form-control" required
 												id="voucher" tabIndex="12" name="voucher" value=""
@@ -74,7 +74,7 @@
 										</c:if>
 												placeholder="输入转出数量">
 												<c:if test="${voucherBalance<=0}">
-													<span class="help-block text-danger">代金券余额为0时无法转出</span>
+													<span class="help-block text-danger">奖金余额为0时无法转出</span>
 												</c:if>
 										</div>
 										<div class="col-md-4 col-xs-4 text-error"></div>
@@ -106,7 +106,7 @@
 										disabled="disabled"
 										</c:if>
 								tabindex="4" data-loading-text="正在提交......">
-								<span class="glyphicon glyphicon-save">&nbsp;</span>转让代金券
+								<span class="glyphicon glyphicon-save">&nbsp;</span>转让奖金
 							</button>
 						</div>
 					</div>
@@ -140,7 +140,7 @@
 										var m = $.parseJSON(xhr.responseText);
 										btn.button("reset");
 										if (m.flag == "0") {
-											alert("代金券转让成功");
+											alert("奖金转让成功");
 											$(".quitBtn").click();
 											$("#search").click();
 										} else {

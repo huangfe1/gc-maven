@@ -58,7 +58,7 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
 
 
     /**
-     * 追回代金券
+     * 追回奖金
      *
      * @param transfer
      * @return
@@ -69,21 +69,21 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
         transfer.getItems().forEach(p -> {
             goodsInfo.append(p.getGoods().getName()).append("X").append(p.getQuantity()).append("  ");
         });
-        //全部退代金券
+        //全部退奖金
         Double voucher = transfer.getAmount();
         StringBuffer backMy = new StringBuffer();
         backMy.append("退回--退货退回预存款，货物:");
         backMy.append(goodsInfo).append("  ");
         records.add(accountsHandler.increaseAccountAndRecord(AccountsType.ADVANCE, transfer.getFromAgent(), muteUserHandler.getMuteUser(), voucher, backMy.toString()));
-        AccountsRecord record1 = accountsHandler.deductAccountAndRecord(AccountsType.BENEFIT, transfer.getFromAgent(), transfer.getFromAgent(),voucher , "退货减少-退货减少总业绩！");//增加消费数量 TODO
+        AccountsRecord record1 = accountsHandler.deductAccountAndRecord(AccountsType.BENEFIT, transfer.getFromAgent(), transfer.getFromAgent(), voucher, "退货减少-退货减少总业绩！");//增加消费数量 TODO
         records.add(record1);
-        //追回上级代金券
+        //追回上级奖金
         StringBuffer sb = new StringBuffer();
         sb.append("追回--");
-        sb.append(transfer.getFromAgent().getRealName()).append("退货追回代金券，货物:");
+        sb.append(transfer.getFromAgent().getRealName()).append("退货追回奖金，货物:");
         sb.append(goodsInfo.toString());
         HashMap<Agent, Double> map = getAgentsWithVoucher(transfer.getFromAgent(), transfer.getItems());
-        for (Agent agent : map.keySet()) {//减少上级的代金券 不验证 可以为负数
+        for (Agent agent : map.keySet()) {//减少上级的奖金 不验证 可以为负数
             records.add(accountsHandler.deductAccountAndRecord(AccountsType.VOUCHER, agent, transfer.getFromAgent(), map.get(agent), sb.toString(), false));
         }
         return records;
@@ -113,7 +113,9 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
         items.forEach(
                 item -> {
                     //装载所有返利
-                    CommonUtil.putAll(maps, accountsHandler.rewardVoucher(toAgent,parents, item.getGoods().getVoucher(), item.getQuantity()));
+                    Agent fAgent = agentHandler.findVip(toAgent);//分公司
+                    Price price = priceHandler.getPrice(fAgent, item.getGoods());
+                    CommonUtil.putAll(maps, accountsHandler.rewardVoucher(parents, price.getVoucherStr(), item.getQuantity()));
                 }
         );
 
@@ -172,13 +174,19 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
                     //这里要判断是不是公司转出，或者公司转入
                     if (fromAgent.isMutedUser()) {//如果转出人是公司
                         goodsHandler.reduceBalacne(p.getGoods().getId(), p.getQuantity());//减少公司余额
-                    } else if (toAgent.isMutedUser()) {//如果接收方是公司
-                        goodsHandler.addBalance(p.getGoods().getId(), p.getQuantity());//增加公司余额
+                    } else {
+                        GoodsAccount fromGoodsAccount = goodsAccountHandler.getGoodsAccount(fromAgent, p.getGoods(), fromAgentMain);
+                        goodsAccountHandler.deductGoodsAccount(fromGoodsAccount, p.getQuantity());//减少库存
                     }
-                    GoodsAccount fromGoodsAccount = goodsAccountHandler.getGoodsAccount(fromAgent, p.getGoods(), fromAgentMain);
-                    goodsAccountHandler.deductGoodsAccount(fromGoodsAccount, p.getQuantity());//减少库存
-                    GoodsAccount toGoodsAccount = goodsAccountHandler.getGoodsAccount(toAgent, p.getGoods(), toAgentMain);
-                    goodsAccountHandler.increaseGoodsAccount(toGoodsAccount, p.getQuantity());//增加库存
+
+                    if (toAgent.isMutedUser()) {//如果接收方是公司
+                        goodsHandler.addBalance(p.getGoods().getId(), p.getQuantity());//增加公司余额
+                    } else {
+                        GoodsAccount toGoodsAccount = goodsAccountHandler.getGoodsAccount(toAgent, p.getGoods(), toAgentMain);
+                        goodsAccountHandler.increaseGoodsAccount(toGoodsAccount, p.getQuantity());//增加库存
+                    }
+
+
                 }
         );
     }
@@ -371,7 +379,7 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
 
 
     /**
-     * 退货操作  冻结库存 先把库存转给公司  代金券先不返还  等待公司确认
+     * 退货操作  冻结库存 先把库存转给公司  奖金先不返还  等待公司确认
      *
      * @param uid
      * @param goodsIds
@@ -411,15 +419,15 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
         Double sumAmount = transfer.getAmount();
         //可用的预存款
         Double advance = accountsHandler.getAvailableAdvance(agent, sumAmount);
-//        只能用预存款 不能使用代金券
+//        只能用预存款 不能使用奖金
 //        Double voucher = accountsHandler.getAvailableVoucher(agent, PreciseComputeUtil.round(sumAmount - purchase));
         transfer.setVoucher(0.0);
         transfer.setPurchase(advance);
         List<AccountsRecord> records = new ArrayList<>();
-        //减少代金券 生成记录
+        //减少奖金 生成记录
         String more = "进货-支付给" + fromAgent.getRealName();
-        AccountsRecord record = accountsHandler.deductAccountAndRecord(AccountsType.ADVANCE, agent, fromAgent,advance , more);
-        AccountsRecord record1 = accountsHandler.increaseAccountAndRecord(AccountsType.BENEFIT, agent, fromAgent,advance , "进货增加-进货增加总业绩");//增加消费数量 TODO
+        AccountsRecord record = accountsHandler.deductAccountAndRecord(AccountsType.ADVANCE, agent, fromAgent, advance, more);
+        AccountsRecord record1 = accountsHandler.increaseAccountAndRecord(AccountsType.BENEFIT, agent, fromAgent, advance, "进货增加-进货增加总业绩");//增加消费数量 TODO
         records.add(record);
         records.add(record1);
 //        //减少进货券
@@ -537,7 +545,7 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
 
 
     /**
-     * 通过代金券+进货券购买
+     * 通过奖金+进货券购买
      *
      * @param fromUid
      * @param toUid
@@ -554,6 +562,8 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
         List<AccountsRecord> records = deductMoney(transfer);
         //确认
         confirmTransfer(transfer);
+        //更新购物时间
+        updateBuyTime(transfer);
         //返利
         List<AccountsRecord> rewardRecords = rewardVoucher(transfer);
         records.addAll(rewardRecords);
@@ -565,6 +575,24 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
         noticeHandler.noticeAccountRecords(records);
         //产品库存通知
         noticeHandler.noticeTransfer(transfer);
+    }
+
+
+    private void updateBuyTime(Transfer transfer) {
+        Integer amount = 0;
+        Goods goods = null;
+        for (TransferItem item : transfer.getItems()) {
+            if (item.getGoods().isMainGoods()) {
+                amount += item.getQuantity();//累积数量
+                goods = item.getGoods();
+            }
+        }
+        if (amount != 0) {
+            Agent fAgent = agentHandler.findVip(transfer.getToAgent());
+            Integer buyAmount = priceHandler.getPrice(fAgent, goods).getBuyAmount();
+            agentHandler.updateBuyDate(transfer.getToAgent(), amount, buyAmount);
+        }
+
     }
 
 
@@ -657,8 +685,6 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
     @Autowired
     private GoodsDao goodsDao;
 
-    @Autowired
-    private PriceHandler priceHandler;
 
     @Autowired
     private AgentDao agentDao;
@@ -668,6 +694,9 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
 
     @Autowired
     private MuteUserHandler muteUserHandler;
+
+    @Autowired
+    private PriceHandler priceHandler;
 
     @Autowired
     private GoodsHandler goodsHandler;

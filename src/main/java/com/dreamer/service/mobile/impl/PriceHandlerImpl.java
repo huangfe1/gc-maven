@@ -6,6 +6,7 @@ import com.dreamer.domain.mall.goods.Price;
 import com.dreamer.domain.user.Agent;
 import com.dreamer.domain.user.AgentLevel;
 import com.dreamer.repository.mobile.PriceDao;
+import com.dreamer.service.mobile.AgentHandler;
 import com.dreamer.service.mobile.GoodsAccountHandler;
 import com.dreamer.service.mobile.PriceHandler;
 import org.apache.commons.collections.map.HashedMap;
@@ -29,8 +30,10 @@ public class PriceHandlerImpl extends BaseHandlerImpl<Price> implements PriceHan
      * @return
      */
     public Price getPrice(Agent agent, Goods goods) {
+        //所有的价格 都是分公司的价格
+        Agent fAgent =  agentHandler.findVip(agent);
         //获取某个人主打产品级别
-        GoodsAccount main = goodsAccountHandler.getMainGoodsAccount(agent);
+        GoodsAccount main = goodsAccountHandler.getMainGoodsAccount(fAgent);
         AgentLevel mainLevel = main.getAgentLevel();//主打产品级别
         Map map = new HashedMap();
         map.put("goods", goods);
@@ -43,6 +46,9 @@ public class PriceHandlerImpl extends BaseHandlerImpl<Price> implements PriceHan
 
     @Autowired
     private GoodsAccountHandler goodsAccountHandler;
+
+    @Autowired
+    private AgentHandler agentHandler;
 
     @Autowired
     private PriceDao priceDao;

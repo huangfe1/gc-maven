@@ -189,33 +189,6 @@ public class TransferQueryController {
             Agent toAgent = agentHandler.get(toId);
             model.addAttribute("fromAgent",fromAgent);
             model.addAttribute("toAgent",toAgent);
-
-//			if(user.isAdmin()){
-//				//throw new ApplicationException("此操作只能代理本用户进行");
-//			}
-//			Agent agent = agentDAO.findById(user.getId());
-//			model.addAttribute("toback", 0);
-//			back.ifPresent(s->{
-////				if(agent.isTopAgent()){
-////					MutedUser mutedUser=(MutedUser)WebUtil.getSessionAttribute(request, Constant.MUTED_USER_KEY);
-////					model.addAttribute("toAgentName",mutedUser.getRealName());
-////					model.addAttribute("toAgentCode", mutedUser.getAgentCode());
-////				}else{
-////					model.addAttribute("toAgentName",agent.getParent().getRealName());
-////					model.addAttribute("toAgentCode", ((Agent)agent.getParent()).getAgentCode());
-////				}
-//				model.addAttribute("toback", 1);
-//			});
-			
-			
-			/*if (!agent.isActivedAuthorizedGoods(parameter.getEntity())) {
-				throw new NotAuthorizationException("您对该产品没有授权");
-			}
-			GoodsAccount gac = agent.loadAccountForGoods(parameter.getEntity());
-			if(gac==null){
-				throw new DataNotFoundException("产品账户不存在");
-			}
-			model.addAttribute("currentBalance", gac.getCurrentBalance());*/
 		} catch (Exception exp) {
 			exp.printStackTrace();
 			model.addAttribute("message", exp.getMessage());
@@ -239,19 +212,6 @@ public class TransferQueryController {
 			List<Transfer> ts=transferHandler.findRecords(parameter,user);
 			WebUtil.turnPage(parameter, request);
 			model.addAttribute("trans", ts);
-
-//			if(user.isAdmin()){
-//				List<Transfer> ts=transferDAO.searchEntityByPage(parameter, null, null,null);
-//				WebUtil.turnPage(parameter, request);
-//				model.addAttribute("ts", ts);
-//			}else{
-//				if(agentId==null){
-//					agentId=user.getId();
-//				}
-//				List<Transfer> ts=transferDAO.searchEntityByPage(parameter, null, null, agentId);
-//				WebUtil.turnPage(parameter, request);
-//				model.addAttribute("ts", ts);
-//			}
 			model.addAttribute("from", user.getId());
 		} catch (Exception exp) {
 			exp.printStackTrace();
@@ -284,7 +244,7 @@ public class TransferQueryController {
             headers.add("转入方");
             headers.add("转出方");
             headers.add("申请时间");
-            headers.add("使用代金券");
+            headers.add("使用奖金");
             headers.add("使用进货券");
             headers.add("状态");
             headers.add("备注");
@@ -343,7 +303,7 @@ public class TransferQueryController {
             headers1.add("货物数量");
 
             List<String> headers2 = new ArrayList<>();
-            headers2.add("代金券总数");
+            headers2.add("奖金总数");
             headers2.add("进货券总数");
 
             List<String> ss=new ArrayList<>();
@@ -376,7 +336,7 @@ public class TransferQueryController {
             ds.add(datas);
             ds.add(datas1);
             ds.add(datas2);
-//		ExcelFile.ExpExs("","特权代理商城订单",headers,datas,response);//创建表格并写入
+//		ExcelFile.ExpExs("","特权商城订单",headers,datas,response);//创建表格并写入
             ExcelFile.ExpExs("",ss,hs,ds,response);//创建表格并写入
 
 		} catch (Exception exp) {

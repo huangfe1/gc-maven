@@ -28,7 +28,7 @@ public class VoucherTransfer implements java.io.Serializable {
 //
 //	/**
 //	 * mobile
-//     * 转让代金券
+//     * 转让奖金
 //	 */
 //	public void transfer(){
 //		type=VoucherTransferType.NORMAL;
@@ -76,8 +76,8 @@ public class VoucherTransfer implements java.io.Serializable {
     public void commit(Agent userByFromAgent,Agent userByToAgent){
         setOut_trade_no(fillOrderNo());//设置订单
         setUpdateTime(new Date());//设置提交时间
-        setUserByFromAgent(userByFromAgent);//转代金券人
-        setUserByToAgent(userByToAgent);//收代金券人
+        setUserByFromAgent(userByFromAgent);//转奖金人
+        setUserByToAgent(userByToAgent);//收奖金人
 		setType(VoucherTransferType.ERROR);
 //		setRemark(VoucherTransferType.ERROR.desc);//设置成未付款
 		setRemark("请向公司指定支付宝账号汇款");//设置成未付款

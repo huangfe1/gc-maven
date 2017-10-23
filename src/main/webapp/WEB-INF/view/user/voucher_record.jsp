@@ -25,7 +25,7 @@
   width: inherit !important;
 }
 </style>
-<title>代金券转让</title>
+<title>奖金转让</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -73,7 +73,7 @@
 					<!-- 	<ul class="nav navbar-nav navbar-right">
 							<li><button type="button"
 									class="btn btn-primary navbar-btn transBtn">
-									<li class="fa fa-exchange fa-fw"></li>转让代金券
+									<li class="fa fa-exchange fa-fw"></li>转让奖金
 								</button></li>
 						</ul> -->
 						</div>
@@ -92,7 +92,7 @@
 									<th>支出/进账</th>
 									<th>详情</th>
 									<th>数量</th>
-									<th>变更后代金券</th>
+									<th>变更后奖金</th>
 									<th>时间</th>
 								</tr>
 							</thead>

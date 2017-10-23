@@ -94,7 +94,7 @@ public class VoucherRecordController {
 			datas2.add(m1);
 
             List<String> ss=new ArrayList<>();
-            ss.add("代金券详情");
+            ss.add("奖金详情");
             ss.add("金额总数");
 
 

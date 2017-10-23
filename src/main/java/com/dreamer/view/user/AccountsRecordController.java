@@ -231,7 +231,7 @@ public class AccountsRecordController {
         List<List<Map>> ds = new ArrayList<>();
         ds.add(datas);
         ds.add(datas1);
-//		ExcelFile.ExpExs("","特权代理商城订单",headers,datas,response);//创建表格并写入
+//		ExcelFile.ExpExs("","特权商城订单",headers,datas,response);//创建表格并写入
         ExcelFile.ExpExs("", ss, hs, ds, response);//创建表格并写入
     }
 

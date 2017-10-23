@@ -212,11 +212,11 @@ public class OrderHandlerImpl extends BaseHandlerImpl<Order> implements OrderHan
         //设置为支付状态
         if (accountsType == AccountsType.ADVANCE) {//预存款
             paymentWay = PaymentWay.ADVANCE;
-        } else {//代金券
+        } else {//奖金
             paymentWay = PaymentWay.VOUCHER;
         }
         List<AccountsRecord> records = new ArrayList<>();
-        //减少代金券
+        //减少奖金
         records.add(deductAccounts(order, accountsType));
         //增加消费
 //        AccountsRecord accountsRecord = accountsHandler.increaseAccountAndRecord(AccountsType.CONSUME,order.getUser(),order.getUser(),order.getAmount(),"累积-优惠商城购物累积消费值");
@@ -227,7 +227,7 @@ public class OrderHandlerImpl extends BaseHandlerImpl<Order> implements OrderHan
         records.addAll(rewardVoucher(order));
         //保存
         merge(order);
-        //保存代金券记录
+        //保存奖金记录
         accountsRecordHandler.saveList(records);
         //累积消费记录
         accountsRecordHandler.save(accountsRecord);
@@ -317,8 +317,8 @@ public class OrderHandlerImpl extends BaseHandlerImpl<Order> implements OrderHan
                 goodsStandards.add(tem);
             }
             item.setStandards(goodsStandards);
-            if (!item.getPmallGoods().getCanAdvance()) {//存在一款不能代金券的
-                order.setCanAdvance(false);//就都不能代金券
+            if (!item.getPmallGoods().getCanAdvance()) {//存在一款不能奖金的
+                order.setCanAdvance(false);//就都不能奖金
             }
             items.add(item);
         });

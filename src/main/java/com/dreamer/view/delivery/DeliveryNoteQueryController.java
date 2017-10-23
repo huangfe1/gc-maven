@@ -47,7 +47,120 @@ public class DeliveryNoteQueryController {
 	}
 
 
-	@RequestMapping(value = "/download.html")
+	@RequestMapping("/count.html")
+	public String count(@RequestParam(required = false) String agentCode, Model model, @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime){
+		if (agentCode == null) return "/delivery/delivery_record_children";
+		//找出他下面所有的代理  并且统计级别
+		List<Agent> childrens = agentHandler.getAllChildrens(agentCode);
+		//统计下级代理级别
+		List<Object[]> objects = agentHandler.countAgentsByLevel(childrens);
+		if (startTime == null || startTime.equals("")) {
+			startTime = "2000-01-01";
+			endTime = "2025-01-01";
+		}
+		List<DeliveryNote> notes = deliveryNoteHandler.findByChlidrens(childrens,startTime,endTime);
+		//统计所有产品总数
+        Map<String,Integer> gMap = new HashedMap();
+        for(DeliveryNote note : notes){
+            for(DeliveryItem item : note.getDeliveryItems()){
+                String name = item.getGoods().getName();
+                Integer quantity =item.getQuantity();
+                if(gMap.containsKey(name)){
+                    Integer tem = gMap.get(name);
+                    gMap.put(name,tem+quantity);
+                }else {
+                    gMap.put(name,quantity);
+                }
+            }
+        }
+        model.addAttribute("gMap",gMap);//产品总数
+        model.addAttribute("levels", objects);//级别
+        model.addAttribute("agentCode", agentCode);
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
+        model.addAttribute("notes",notes);
+        return "/delivery/delivery_record_children";
+	}
+
+
+
+    //通过编号  业绩统计 下载
+    @RequestMapping("/count/download.html")
+    public void countDownload(@RequestParam(required = false) String agentCode, HttpServletResponse response, @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime) {
+        if (agentCode == null) return ;
+        //找出他下面所有的代理  并且统计级别
+        List<Agent> childrens = agentHandler.getAllChildrens(agentCode);
+        //统计下级代理级别
+        List<Object[]> objects = agentHandler.countAgentsByLevel(childrens);
+        if (startTime == null || startTime.equals("")) {
+            startTime = "2000-01-01";
+            endTime = "2025-01-01";
+        }
+        List<DeliveryNote> notes = deliveryNoteHandler.findByChlidrens(childrens,startTime,endTime);
+        List<Map> datas = new ArrayList<>();
+        List<Map> datas1 = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
+        List<String> headers1 = new ArrayList<>();
+        headers.add("单号");
+        headers.add("分公司");
+        headers.add("业务员");
+        headers.add("时间");
+        headers.add("产品");
+        headers.add("金额");
+        headers.add("状态");
+        Map m;
+        for (int i = 0; i < notes.size(); i++) {
+            m = new HashMap();
+            DeliveryNote record = notes.get(i);
+            m.put(0,record.getLogisticsCode());
+            m.put(1, record.getApplyAgent().getParent().getParent().getRealName());
+            m.put(2, record.getApplyAgent().getParent().getRealName());
+            m.put(3, record.getApplyTime());
+            StringBuffer sb = new StringBuffer();
+            for(DeliveryItem item : record.getDeliveryItems()){
+                sb.append(item.getGoods().getName()).append("X").append(item.getQuantity());
+            }
+            m.put(4, sb.toString());
+            m.put(5,record.getAmount());
+            m.put(6,record.getStatus().getDesc());
+            datas.add(m);
+        }
+        headers1.add("姓名");
+        headers1.add("业务员");
+        headers1.add("分公司");
+        headers1.add("电话");
+        headers1.add("消费值");
+        HashMap m1;
+//        System.out.println(childrens.size());
+        for (Agent agent : childrens) {
+            m1 = new HashMap();
+            m1.put(0, agent.getRealName() + "--" + agent.getAgentCode());
+            m1.put(1, agent.getParent().getRealName() + "--" + agent.getParent().getAgentCode());
+            m1.put(2, agent.getParent().getParent().getRealName());
+            m1.put(3, agent.getMobile());
+            m1.put(4, agent.getAccounts().getBenefitPointsBalance());
+            datas1.add(m1);
+        }
+
+        List<String> ss = new ArrayList<>();
+        ss.add("发货详情");
+        ss.add("代理详情");
+
+
+        List<List> hs = new ArrayList<>();
+        hs.add(headers);
+        hs.add(headers1);
+
+        List<List<Map>> ds = new ArrayList<>();
+        ds.add(datas);
+        ds.add(datas1);
+//		ExcelFile.ExpExs("","特权商城订单",headers,datas,response);//创建表格并写入
+        ExcelFile.ExpExs("", ss, hs, ds, response);//创建表格并写入
+    }
+
+
+
+    @RequestMapping(value = "/download.html")
     @ResponseBody
 	public void download(
 			@ModelAttribute("parameter") SearchParameter<DeliveryNote> parameter,
@@ -77,10 +190,13 @@ public class DeliveryNoteQueryController {
 		DeliveryNote order=null;
 		for(int i=0;i<orders.size();i++){
 			order=orders.get(i);
+            if(!order.getApplyAgent().getParent().getParent().getId().equals(user.getId())){
+                continue;
+            }
 			m=new HashedMap();
 			m.put(0,i);
 			m.put(1,order.getApplyAgent().getRealName());
-//			m.put(2,"芝德堂");
+//			m.put(2,"高臣药业");
 			m.put(2,order.getDeliveryTime());
 			m.put(3,order.getAddress().getConsignee());
 			m.put(4,order.getAddress().getMobile());
@@ -131,7 +247,7 @@ public class DeliveryNoteQueryController {
         List<List<Map>> ds=new ArrayList<>();
         ds.add(datas);
         ds.add(sdatas);
-//		ExcelFile.ExpExs("","特权代理商城订单",headers,datas,response);//创建表格并写入
+//		ExcelFile.ExpExs("","特权商城订单",headers,datas,response);//创建表格并写入
 		ExcelFile.ExpExs("",ss,hs,ds,response);//创建表格并写入
 	}
 	
@@ -267,8 +383,9 @@ public class DeliveryNoteQueryController {
 			HttpServletRequest request, Model model) {
 		try {
 			User user=(User)WebUtil.getCurrentUser(request);
-			if(!user.isAdmin()){
-				LOG.error("非管理员身份,无发货权限");
+//			if(!user.isAdmin()){
+            if(!parameter.getEntity().getApplyAgent().getParent().getParent().getId().equals(user.getId())){
+				LOG.error("无发货权限");
 				return "common/403";
 			}
 		} catch (Exception exp) {
@@ -323,7 +440,8 @@ public class DeliveryNoteQueryController {
 	 * 获取所有需要发货的订单
 	 */
 	@RequestMapping(value = "/getOrders.html",method = RequestMethod.GET)
-	public void getOrders(HttpServletResponse response,Integer limit){
+	public void getOrders(HttpServletResponse response,Integer limit,HttpServletRequest request){
+	    User user = (User) WebUtil.getCurrentUser(request);
 		List<DeliveryNote> orders=deliveryNoteHandler.findNotDelivery(limit);//获取没有发货的订单
 		List<Object[]> results=deliveryNoteHandler.getOrdersItemCount(limit);
 		for(DeliveryNote order:orders){
@@ -350,11 +468,14 @@ public class DeliveryNoteQueryController {
 		Map m ;
 		DeliveryNote order;
 		for(int i=0;i<orders.size();i++){
+		    if(!orders.get(i).getApplyAgent().getParent().getParent().getId().equals(user.getId())){
+		        continue;
+            }
 			order=orders.get(i);
 			m=new HashedMap();
 			m.put(0,i);
 			m.put(1,order.getApplyAgent().getRealName());
-//			m.put(2,"芝德堂");
+//			m.put(2,"高臣药业");
 			m.put(2,order.getDeliveryTime());
 			m.put(3,order.getAddress().getConsignee());
 			m.put(4,order.getAddress().getMobile());
@@ -381,7 +502,7 @@ public class DeliveryNoteQueryController {
 			m.put(15,"");//订单ID
 			datas.add(m);
 		}
-//		ExcelFile.ExpExs("","特权代理商城订单",headers,datas,response);//创建表格并写入
+//		ExcelFile.ExpExs("","特权商城订单",headers,datas,response);//创建表格并写入
 
 		//总数表格
 		List<String> sheaders=new ArrayList<>();
@@ -408,7 +529,7 @@ public class DeliveryNoteQueryController {
 		List<List<Map>> ds=new ArrayList<>();
 		ds.add(datas);
 		ds.add(sdatas);
-//		ExcelFile.ExpExs("","特权代理商城订单",headers,datas,response);//创建表格并写入
+//		ExcelFile.ExpExs("","特权商城订单",headers,datas,response);//创建表格并写入
 		ExcelFile.ExpExs("",ss,hs,ds,response);//创建表格并写入
 
 //        model.addAttribute("order_size",orders.size());

@@ -259,7 +259,7 @@
             <%--<div class="radio ">--%>
             <%--<label>--%>
             <%--<input aria-selected="true" type="radio" name="payWay" id="optionsRadios1" value="${payWays[1].type}" >--%>
-            <%--代金券支付(${agent.accounts.voucherBalance})--%>
+            <%--奖金支付(${agent.accounts.voucherBalance})--%>
             <%--</label>--%>
             <%--</div>--%>
             <%--</li>--%>
