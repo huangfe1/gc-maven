@@ -5,14 +5,14 @@
       <paths name="图片库">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/target/zdt/resources" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$/out/artifacts/gc_maven_war_exploded/resources" web="/" />
           </mappings>
         </serverdata>
       </paths>
       <paths name="新服务器">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/target/zdt" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$/out/artifacts/gc_maven_war_exploded" web="/" />
           </mappings>
         </serverdata>
       </paths>

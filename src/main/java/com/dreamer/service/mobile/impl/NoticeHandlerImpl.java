@@ -43,7 +43,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         String template_id = "3JfLagPhXX7Ngbt3fcGJPHBe2_jCtyj13YU_rMl1yNs";
         Map<String, Object> data;
         for (AccountsRecord record : records) {
-            String url = "http://ht.gcyy365.com/gc/mobile/accounts/records.html?stateType=" + record.getAccountsType().getState();
+            String url = "http://ht.gcjx66.com/gc/mobile/accounts/records.html?stateType=" + record.getAccountsType().getState();
             data = new HashMap<>();
             data.put("first", createItemMap(record.getInfo()));//变动原因
             data.put("keyword2", createItemMap(record.getAmount()));
@@ -61,7 +61,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
      * @param records
      */
     public void noticeTransfer(Transfer transfer) {
-        String url = "http://ht.gcyy365.com/gc/mobile/transfer/records.html";
+        String url = "http://ht.gcjx66.com/gc/mobile/transfer/records.html";
         Agent fromAgent = transfer.getFromAgent();
         Agent toAgent = transfer.getToAgent();
         //入库通知
@@ -99,7 +99,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         Agent fromAgent = note.getFromAgent();
         Agent toAgent = note.getToAgent();
         String template_id = "EcEZbfHDASd6uewH3gjPSFLq4XY-PtTClorlyp-wwms";
-        String url = "http://ht.gcyy365.com/gc/mobile/delivery/records.html";
+        String url = "http://ht.gcjx66.com/gc/mobile/delivery/records.html";
         Map<String, Object> fromAgentData = new HashedMap();
         Map<String, Object> toAgentData = new HashedMap();
         //出货人
@@ -144,7 +144,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         Agent fromAgent = note.getFromAgent();
         Agent toAgent = note.getToAgent();
         String template_id = "azqhgvIvoVyVnuM8vFNhMlqZKuEefQHMj7dD1ottlV0";
-        String url = "http://ht.gcyy365.com/gc/mobile/delivery/records.html";
+        String url = "http://ht.gcjx66.com/gc/mobile/delivery/records.html";
         Map<String, Object> fromAgentData = new HashedMap();
         Map<String, Object> toAgentData = new HashedMap();
         //出货人
@@ -174,7 +174,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         Agent fromAgent = note.getFromAgent();
         Agent toAgent = note.getToAgent();
         String template_id = "azqhgvIvoVyVnuM8vFNhMlqZKuEefQHMj7dD1ottlV0";
-        String url = "http://ht.gcyy365.com/gc/mobile/delivery/records.html";
+        String url = "http://ht.gcjx66.com/gc/mobile/delivery/records.html";
         Map<String, Object> fromAgentData = new HashedMap();
         Map<String, Object> toAgentData = new HashedMap();
         //出货人
@@ -205,7 +205,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
         AddressClone addressClone = order.getAddressClone();
         String name = addressClone.getConsignee();
         String template_id = "azqhgvIvoVyVnuM8vFNhMlqZKuEefQHMj7dD1ottlV0";
-        String url = "http://ht.gcyy365.com/gc/pm/order/myOrder.html";
+        String url = "http://ht.gcjx66.com/gc/pm/order/myOrder.html";
         Map<String, Object> fromAgentData = new HashedMap();
         //出货人
         fromAgentData.put("first", createItemMap("您好，您发给" + name + "订单已经发货！"));
@@ -222,7 +222,7 @@ public class NoticeHandlerImpl implements NoticeHandler {
     @Override
     public void noticeNewUser(Agent agent) {
         String template_id = "nxNXI49969JK_ZIggseBpy3zQ-Y9YKvukCwMuER6bOw";
-        String url = "http://ht.gcyy365.com/gc/mobile/contacts.html";
+        String url = "http://ht.gcjx66.com/gc/mobile/contacts.html";
         Map<String, Object> data = new HashedMap();
         data.put("first", createItemMap("您好，您新增了一位新的客户，请跟进服务！"));
         data.put("keyword1", createItemMap(agent.getRealName()));

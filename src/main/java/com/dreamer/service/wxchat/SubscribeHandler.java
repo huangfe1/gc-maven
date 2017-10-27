@@ -79,16 +79,16 @@ public class SubscribeHandler extends EventHandler {
             Article article = new Article();
             article.setTitle("欢迎回来！亲爱的" + agent.getRealName());
             article.setDescription("让更多的人用上优惠的好产品");
-            article.setPicUrl("http://ht.gcyy365.com/gc/resources/mallimages/template.jpg");
-//            article.setUrl("http://ht.gcyy365.com/gc/dmz/pmall/show.html");
-            article.setUrl("http://ht.gcyy365.com/gc/dmz/mobile/index.html");
+            article.setPicUrl("http://ht.gcjx66.com/gc/resources/mallimages/template.jpg");
+//            article.setUrl("http://ht.gcjx66.com/gc/dmz/pmall/show.html");
+            article.setUrl("http://ht.gcjx66.com/gc/dmz/mobile/index.html");
             articles.add(article);
         } else {//新用户
             Article article = new Article();
             article.setTitle("高臣药业商城--让更多的人用上优惠的好产品！");
             article.setDescription("");
-            article.setPicUrl("http://ht.gcyy365.com/gc/resources/mallimages/template.jpg");
-            article.setUrl("http://ht.gcyy365.com/gc/dmz/mobile/index.html");
+            article.setPicUrl("http://ht.gcjx66.com/gc/resources/mallimages/template.jpg");
+            article.setUrl("http://ht.gcjx66.com/gc/dmz/mobile/index.html");
             //信息
             Article info = new Article();
             info.setTitle(
@@ -98,26 +98,26 @@ public class SubscribeHandler extends EventHandler {
             );
             info.setDescription("");
             info.setPicUrl(agent.getHeadimgurl());
-            info.setUrl("http://ht.gcyy365.com/gc/mobile/my.html");
+            info.setUrl("http://ht.gcjx66.com/gc/mobile/my.html");
             //直接购买
             Article buy = new Article();
             buy.setTitle("【点击进入】购买产品");
             buy.setDescription("");
-            buy.setPicUrl("http://ht.gcyy365.com/gc/resources/mallimages/template.jpg");
-            buy.setUrl("http://ht.gcyy365.com/gc/dmz/mobile/index.html");
+            buy.setPicUrl("http://ht.gcjx66.com/gc/resources/mallimages/template.jpg");
+            buy.setUrl("http://ht.gcjx66.com/gc/dmz/mobile/index.html");
             //完善信息
             Article register = new Article();
             register.setTitle("【点击进入】完善信息");
             register.setDescription("");
-            register.setPicUrl("http://ht.gcyy365.com/gc/resources/mallimages/template.jpg");
+            register.setPicUrl("http://ht.gcjx66.com/gc/resources/mallimages/template.jpg");
             //带refCode，openid，unionId
-            register.setUrl("http://ht.gcyy365.com/gc/mobile/register.html?refCode="+agent.getParent().getId()+"&s_openid="+agent.getWxOpenid()+"&s_unionid="+agent.getWxUnionID());
+            register.setUrl("http://ht.gcjx66.com/gc/mobile/register.html?refCode="+agent.getParent().getId()+"&s_openid="+agent.getWxOpenid()+"&s_unionid="+agent.getWxUnionID());
 //            //直接登录
 //            Article login = new Article();
 //            login.setTitle("老客户点击此处直接登录");
 //            login.setDescription("");
 //            login.setPicUrl("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1089399937,1684001946&fm=26&gp=0.jpg");
-//            login.setUrl("http://ht.gcyy365.com/gc/login.html?");
+//            login.setUrl("http://ht.gcjx66.com/gc/login.html?");
 
             articles.add(article);
             articles.add(info);

@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="zmz-maven:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="kam.war">
-      <element id="artifact" artifact-name="zmz-maven:war exploded" />
-    </root>
-  </artifact>
-</component>
