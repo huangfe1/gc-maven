@@ -141,8 +141,10 @@ public class DeliveryNoteController {
             HttpServletRequest request, Double actual_logisticsFee) {
         try {
             User user = (User) WebUtil.getCurrentUser(request);
-            if (!parameter.getApplyAgent().getParent().getParent().getId().equals(user.getId())) {
-                throw new ApplicationException("无发货权限");
+            if(!user.isAdmin()){
+                if (!parameter.getApplyAgent().getParent().getParent().getId().equals(user.getId())) {
+                    throw new ApplicationException("无发货权限");
+                }
             }
             deliveryNoteHandler.delivery(parameter.getId(), parameter.getLogistics(), parameter.getLogisticsCode(), actual_logisticsFee);
             return Message.createSuccessMessage();

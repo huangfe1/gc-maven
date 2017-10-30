@@ -381,7 +381,7 @@
         $("#file").change(function () {
             var index = $(this).val().lastIndexOf("\\") + 1;
             var val = $(this).val().substr(index, $(this).val().length);
-            if(val.length>30){
+            if(val.length>25){
                 val = val.substr(val.length-20,val.length);
             }
             $(this).closest(".file").children("b").html("证件: " + val.trim());

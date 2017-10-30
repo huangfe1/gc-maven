@@ -34,7 +34,7 @@ public class CaptchaController {
 			resStr = gtSdk.getResponseStr();
 
 			PrintWriter out = response.getWriter();
-			out.println(resStr);
+//			out.println(resStr);
 
 		}
 

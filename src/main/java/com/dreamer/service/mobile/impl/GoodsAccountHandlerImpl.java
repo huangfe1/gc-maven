@@ -11,6 +11,7 @@ import com.dreamer.service.mobile.GoodsAccountHandler;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ps.mx.otter.exception.ApplicationException;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class GoodsAccountHandlerImpl extends BaseHandlerImpl<GoodsAccount> imple
      *
      * @param agent
      */
+    @Transactional
     public GoodsAccount generateMainGoodsAccount(Agent agent) {
         //找出主打产品
         Goods mg = goodsDao.get("benchmark", true);

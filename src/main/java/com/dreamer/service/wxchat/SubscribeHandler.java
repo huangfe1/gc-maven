@@ -78,14 +78,14 @@ public class SubscribeHandler extends EventHandler {
         if (agent.getAgentCode() != null) {//有编号的用户
             Article article = new Article();
             article.setTitle("欢迎回来！亲爱的" + agent.getRealName());
-            article.setDescription("让更多的人用上优惠的好产品");
+            article.setDescription("退热贴 我选高臣");
             article.setPicUrl("http://ht.gcjx66.com/gc/resources/mallimages/template.jpg");
 //            article.setUrl("http://ht.gcjx66.com/gc/dmz/pmall/show.html");
             article.setUrl("http://ht.gcjx66.com/gc/dmz/mobile/index.html");
             articles.add(article);
         } else {//新用户
             Article article = new Article();
-            article.setTitle("高臣药业商城--让更多的人用上优惠的好产品！");
+            article.setTitle("退热贴 我选高臣！");
             article.setDescription("");
             article.setPicUrl("http://ht.gcjx66.com/gc/resources/mallimages/template.jpg");
             article.setUrl("http://ht.gcjx66.com/gc/dmz/mobile/index.html");

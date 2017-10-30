@@ -36,8 +36,8 @@ public class PriceHandlerImpl extends BaseHandlerImpl<Price> implements PriceHan
         GoodsAccount main = goodsAccountHandler.getMainGoodsAccount(fAgent);
         AgentLevel mainLevel = main.getAgentLevel();//主打产品级别
         Map map = new HashedMap();
-        map.put("goods", goods);
-        map.put("agentLevel", mainLevel);
+        map.put("goods.id", goods.getId());
+        map.put("agentLevel.id", mainLevel.getId());
 //        DetachedCriteria dc = DetachedCriteria.forClass(Price.class);
 //        dc.add(Restrictions.eq("goods", goods));//对应的产品
 //        dc.add(Restrictions.eq("agentLevel", mainLevel));

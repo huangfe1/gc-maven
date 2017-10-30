@@ -41,7 +41,7 @@
       </property>
 
         <property name="threshold" type="java.lang.Integer">
-            <column name="threshold" not-null="true">
+            <column name="threshold" not-null="false">
                 <comment>晋升到本等级需要购买的货物量</comment>
             </column>
         </property>

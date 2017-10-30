@@ -534,6 +534,13 @@ public class AgentHandlerImpl implements AgentHandler {
     private PurchaseTransferDAO purchaseTransferDAO;
     @Autowired
     private AdvanceTransferDAO advanceTransferDAO;
+
+    @Autowired
+    private com.dreamer.service.mobile.AgentHandler agentHandler;
+
+    @Autowired
+    private com.dreamer.service.mobile.AgentLevelHandler levelHandler;
+
     @Autowired
     private SystemParameterDAOInf systemParameterDAO;
     @Autowired

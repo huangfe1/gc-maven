@@ -48,17 +48,20 @@
                                         </div>
                                         <div class="col-md-2 col-xs-2 text-error"></div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="editName" class="col-sm-2 control-label">上级代理编码</label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="editName"
-                                                   tabIndex="10" name="parentAgentCode"
-                                            <c:if test="${not user.admin}"> readonly='readonly' </c:if>
-                                                   value="${ parameter.entity.topAgent ? '' : parameter.entity.parent.agentCode}"
-                                                   placeholder="输入上级代理编码">
+                                    <c:if test="${user.admin}">
+                                        <div class="form-group">
+                                            <label for="editName" class="col-sm-2 control-label">上级代理编码</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="editName"
+                                                       tabIndex="10" name="parentAgentCode"
+                                                <c:if test="${not user.admin}"> readonly='readonly' </c:if>
+                                                       value="${ parameter.entity.topAgent ? '' : parameter.entity.parent.agentCode}"
+                                                       placeholder="输入上级代理编码">
+                                            </div>
+                                            <div class="col-md-4 col-xs-4 text-error"></div>
                                         </div>
-                                        <div class="col-md-4 col-xs-4 text-error"></div>
-                                    </div>
+                                    </c:if>
+
 
 
                                     <div class="form-group">

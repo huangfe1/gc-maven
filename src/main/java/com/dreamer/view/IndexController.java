@@ -86,7 +86,7 @@ public class IndexController {
             @RequestParam("password") String pwd, HttpServletRequest request,HttpServletResponse response) {
         try {
             //captchaValidate(captcha,request);
-            captchaValidate(request);//更换验证码
+//            captchaValidate(request);//更换验证码
             User user = userHandler.login(name, pwd);
             recordLoginInfo(request,response, user);
             UriComponents ucb = ServletUriComponentsBuilder.fromContextPath(request).path("/index.html").build();

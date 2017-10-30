@@ -19,7 +19,7 @@ public class AccountsTransferDao extends BaseDaoImpl<AccountsTransfer> {
 
     public List<AccountsTransfer> findAccountsTransfer(SearchParameter<AccountsTransfer> parameter, User user) {
         //只显示show
-        parameter.getEntity().setCanShow(true);
+//        parameter.getEntity().setCanShow(true);
         Example example = Example.create(parameter.getEntity());
         DetachedCriteria dc = DetachedCriteria.forClass(AccountsTransfer.class);
         dc.add(example);

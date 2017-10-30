@@ -113,8 +113,8 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
         items.forEach(
                 item -> {
                     //装载所有返利
-                    Agent fAgent = agentHandler.findVip(toAgent);//分公司
-                    Price price = priceHandler.getPrice(fAgent, item.getGoods());
+//                    Agent fAgent = agentHandler.findVip(toAgent);//分公司
+                    Price price = priceHandler.getPrice(toAgent, item.getGoods());
                     CommonUtil.putAll(maps, accountsHandler.rewardVoucher(parents, price.getVoucherStr(), item.getQuantity()));
                 }
         );
@@ -588,8 +588,8 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
             }
         }
         if (amount != 0) {
-            Agent fAgent = agentHandler.findVip(transfer.getToAgent());
-            Integer buyAmount = priceHandler.getPrice(fAgent, goods).getBuyAmount();
+//            Agent fAgent = agentHandler.findVip();
+            Integer buyAmount = priceHandler.getPrice(transfer.getToAgent(), goods).getBuyAmount();
             agentHandler.updateBuyDate(transfer.getToAgent(), amount, buyAmount);
         }
 

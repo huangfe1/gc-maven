@@ -208,7 +208,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         accounts.setUser(agent);
         agent.setAccounts(accounts);
         //生成主打产品账户 TODO 如果是分公司 授予业务员  如果是业务员授权为药店
-
+        setLevel(agent);
         GoodsAccount goodsAccount = goodsAccountHandler.generateMainGoodsAccount(agent);
         goodsAccount.setUser(agent);
         agent.addGoodsAccount(goodsAccount);
@@ -218,6 +218,20 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         fieldsValiate(agent);
 
         return agent;
+    }
+
+
+    private void setLevel(Agent agent) {
+//        System.out.println("---设置级别");
+        if (!agent.getParent().isMutedUser()) {//set yewuyaun
+            String pl = getLevelName(agent.getParent());
+            if (pl.contains("分公司")) ;
+            AgentLevel level = agentLevelHandler.get("name", AgentLevelName.业务员.toString());
+            for (GoodsAccount ga : agent.getGoodsAccounts()) {
+                ga.setAgentLevel(level);
+            }
+            agent.setImgFile(null);
+        }
     }
 
 
@@ -275,7 +289,10 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         visitor.setAgentCode(createAgentCode());
         //设置产品库存
         //生成主打产品账户
+//        System.out.println("=================");
         goodsAccountHandler.generateMainGoodsAccount(visitor);
+        //生成主打产品账户 TODO 如果是分公司 授予业务员  如果是业务员授权为药店
+        setLevel(visitor);
         //验证是否为空
         fieldsValiate(visitor);
 
@@ -446,6 +463,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     //品牌代言
     @Override
     public boolean isVip(Agent agent) {
+        if (agent.getAgentCode() == null || agent.getAgentCode().equals("")) return false;
         GoodsAccount goodsAccount = goodsAccountHandler.getMainGoodsAccount(agent);
         if (goodsAccount != null) {
             if (goodsAccount.getAgentLevel().getName().contains(AgentLevelName.分公司.toString()) || goodsAccount.getAgentLevel().getName().contains(AgentLevelName.业务员.toString())) {

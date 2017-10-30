@@ -64,8 +64,8 @@ public class ShopCartController {
 			} else {
 				 cart = new ShopCart();
 			}
-			Agent fAgnet = agentHandler.findVip(agent);
-			Price price  = priceHandler.getPrice(fAgnet,goods);
+//			Agent fAgnet = agentHandler.findVip(agent);
+			Price price  = priceHandler.getPrice(agent,goods);
 			cart.addGoods(goods, addQuantity, price.getPrice());
 			result=cart.getQuantity();
 			WebUtil.addSessionAttribute(request, CART, cart);

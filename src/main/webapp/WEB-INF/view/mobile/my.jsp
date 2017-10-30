@@ -251,7 +251,7 @@
     <%--</header>--%>
     <a href="
     <c:if test="${agent.agentCode==null}">
-        <c:url value='/mobile/register.html?s_unionid=${agent.wxUnionID}&s_openid=${agent.wxOpenid}'/>
+        <c:url value='/mobile/register.html?refCode=${agent.parent.id}&s_unionid=${agent.wxUnionID}&s_openid=${agent.wxOpenid}'/>
     </c:if>
      <c:if test="${agent.agentCode!=null}">
      #

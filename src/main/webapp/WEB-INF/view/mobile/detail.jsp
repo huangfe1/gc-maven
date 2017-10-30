@@ -236,11 +236,11 @@
             <%--<span><i class="fa fa-heart-o"></i>收藏</span>--%>
         </section>
         <section class="detail">
-            <p>
-                    <span>当前价格:
-                    <strong>￥${goods.retailPrice}</strong>
-                    </span>
-            </p>
+            <%--<p>--%>
+                    <%--<span>当前价格:--%>
+                    <%--<strong>￥${goods.retailPrice}</strong>--%>
+                    <%--</span>--%>
+            <%--</p>--%>
             <p>
                     <span>产品规格:
                     <strong>${goods.spec}</strong>

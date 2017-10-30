@@ -221,13 +221,13 @@ public class NoticeHandlerImpl implements NoticeHandler {
 
     @Override
     public void noticeNewUser(Agent agent) {
-        String template_id = "nxNXI49969JK_ZIggseBpy3zQ-Y9YKvukCwMuER6bOw";
+        String template_id = "-9_Dmm_GAA3LdoICZrmNIJZVscabnmYx5HC-eOYiQo0";
         String url = "http://ht.gcjx66.com/gc/mobile/contacts.html";
         Map<String, Object> data = new HashedMap();
         data.put("first", createItemMap("您好，您新增了一位新的客户，请跟进服务！"));
         data.put("keyword1", createItemMap(agent.getRealName()));
         data.put("keyword2", createItemMap(DateUtil.formatDate(new Date())));
-        data.put("remark", createItemMap("娱乐微商，高臣药业！"));
+        data.put("remark", createItemMap("退热贴，选高臣！"));
         sendTemplateMessage(agent.getParent().getWxOpenid(), template_id, url, data);
     }
 

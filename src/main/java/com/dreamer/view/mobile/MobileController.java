@@ -146,7 +146,7 @@ public class MobileController {
             model.addAttribute("s_openid", s_openid);
             model.addAttribute("refCode", refCode);//推荐过来的
         }
-        Agent agent = agentHandler.get("agentCode", refCode);
+        Agent agent = agentHandler.findByAgentCodeOrId(refCode);
         String levelName = agentHandler.getLevelName(agent);
         if (levelName.contains(AgentLevelName.分公司.toString())) {
             model.addAttribute("isF", true);
@@ -213,7 +213,6 @@ public class MobileController {
         Agent agent = agentHandler.get(user.getId());
         Agent fAgent = agentHandler.findVip(agent);//找出分公司
 
-
         if (refCode != null) {
             request.getSession().setAttribute("refCode", refCode);
 //            Agent refAgent = agentDAO.findByAgentCode(refCode);
@@ -237,7 +236,7 @@ public class MobileController {
         List<Goods> goodss = new ArrayList<>();
         for (GoodsAccount g : fAgent.getGoodsAccounts()) {
             if (g.getCurrentBalance() > 0) {
-                Price price = priceHandler.getPrice(fAgent, g.getGoods());
+                Price price = priceHandler.getPrice(agent, g.getGoods());
                 g.getGoods().setRetailPrice(price.getPrice());
                 goodss.add(g.getGoods());
             }
@@ -282,10 +281,10 @@ public class MobileController {
         model.addAttribute("agent", agent);
         Boolean isVip = agentHandler.isVip(agent);
         model.addAttribute("isVip", !isVip);
-        if (isVip) {
+//        if (isVip) {
             List<AddressMy> addressMies = addressMyHandler.findAddressByAgent(agent);
             model.addAttribute("addresses", addressMies);
-        }
+//        }
         return "/mobile/shopcart/index";
     }
 

@@ -126,8 +126,8 @@ public class DeliveryNoteQueryController {
             datas.add(m);
         }
         headers1.add("姓名");
-        headers1.add("业务员");
-        headers1.add("分公司");
+        headers1.add("上级");
+        headers1.add("上上级");
         headers1.add("电话");
         headers1.add("消费值");
         HashMap m1;
@@ -135,8 +135,18 @@ public class DeliveryNoteQueryController {
         for (Agent agent : childrens) {
             m1 = new HashMap();
             m1.put(0, agent.getRealName() + "--" + agent.getAgentCode());
-            m1.put(1, agent.getParent().getRealName() + "--" + agent.getParent().getAgentCode());
-            m1.put(2, agent.getParent().getParent().getRealName());
+            if(agent.getParent()!=null){
+                m1.put(1, agent.getParent().getRealName() + "--" + agent.getParent().getAgentCode());
+            }else {
+                m1.put(1,"");
+            }
+
+            if(agent.getParent()!=null&&agent.getParent().getParent()!=null){
+                m1.put(2, agent.getParent().getRealName() + "--" + agent.getParent().getAgentCode());
+            }else {
+                m1.put(2,"");
+            }
+
             m1.put(3, agent.getMobile());
             m1.put(4, agent.getAccounts().getBenefitPointsBalance());
             datas1.add(m1);
@@ -383,10 +393,11 @@ public class DeliveryNoteQueryController {
 			HttpServletRequest request, Model model) {
 		try {
 			User user=(User)WebUtil.getCurrentUser(request);
-//			if(!user.isAdmin()){
+			if(!user.isAdmin()){
             if(!parameter.getEntity().getApplyAgent().getParent().getParent().getId().equals(user.getId())){
 				LOG.error("无发货权限");
 				return "common/403";
+			}
 			}
 		} catch (Exception exp) {
 			LOG.error("进入发货确认失败,",exp);

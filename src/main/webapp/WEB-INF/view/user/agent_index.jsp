@@ -144,7 +144,7 @@
                                 <td>
 
                                     <c:if test="${l.imgFile!=null}">
-                                        <a target="_blank" href="${imgPath}${l.imgFile}">点我查看</a>
+                                        <a target="_blank" href="<c:url value="${dmzImgPath}${l.imgFile}"/>">点我查看</a>
                                     </c:if>
 
                                 </td>
