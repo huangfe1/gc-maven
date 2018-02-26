@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-md-2 col-xs-2 text-error"></div>
                                     </div>
-                                    <c:if test="${user.admin}">
+
                                         <div class="form-group">
                                             <label for="editName" class="col-sm-2 control-label">上级代理编码</label>
                                             <div class="col-sm-4">
@@ -60,34 +60,67 @@
                                             </div>
                                             <div class="col-md-4 col-xs-4 text-error"></div>
                                         </div>
-                                    </c:if>
 
 
 
                                     <div class="form-group">
                                         <label for="editMobile" class="col-sm-2 control-label">手机号码</label>
                                         <div class="col-sm-4">
-                                            <input type="tel" class="form-control" id="editMobile"
+                                            <input <c:if test="${!user.admin}">readonly</c:if>  type="tel" class="form-control" id="editMobile"
                                                    tabIndex="11" required name="mobile"
                                                    value="${parameter.entity.mobile}" placeholder="输入代理联系电话">
                                         </div>
                                         <div class="col-md-4 col-xs-4 text-error"></div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="editMobile" class="col-sm-2 control-label">纳税识别号</label>
+                                        <div class="col-sm-4">
+                                            <input <c:if test="${!user.admin}">readonly</c:if>  type="tel" class="form-control" id="taxCode"
+                                                   tabIndex="11" required name="taxCode"
+                                                   value="${parameter.entity.taxCode}" placeholder="纳税识别号">
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 text-error"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="registerAddress" class="col-sm-2 control-label">收件地址</label>
+                                        <div class="col-sm-4">
+                                            <input <c:if test="${!user.admin}">readonly</c:if>  type="tel" class="form-control" id="registerAddress"
+                                                   tabIndex="11" required name="registerAddress"
+                                                   value="${parameter.entity.registerAddress}" placeholder="收件地址">
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 text-error"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="info" class="col-sm-2 control-label">客户性质</label>
+                                        <div class="col-sm-4">
+                                            <input <c:if test="${!user.admin}">readonly</c:if>  type="tel" class="form-control" id="info"
+                                                   tabIndex="11" required name="info"
+                                                   value="${parameter.entity.info}" placeholder="客户性质">
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 text-error"></div>
+                                    </div>
+
+
                                     <div class="form-group">
                                         <label for="editWeixin" class="col-sm-2 control-label">微信号</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="editWeixin"
+                                            <input <c:if test="${!user.admin}">readonly</c:if> type="text" class="form-control" id="editWeixin"
                                                    tabIndex="12" required name="weixin"
                                                    value="${parameter.entity.weixin}" placeholder="输入微信号">
                                         </div>
                                         <div class="col-md-4 col-xs-4 text-error"></div>
                                     </div>
 
+
+
                                     <c:if test="${parameter.entity.id!=null}">
                                         <div class="form-group">
                                             <label for="editWeixin" class="col-sm-2 control-label">密码</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="editWeixin"
+                                                <input <c:if test="${!user.admin}">readonly</c:if>  type="text" class="form-control" id="editWeixin"
                                                        tabIndex="12" required name="password"
                                                        value="${parameter.entity.password}" placeholder="输入密码">
                                             </div>
@@ -97,6 +130,22 @@
 
 
                                     <div class="form-group">
+                                        <label for="payWay" class="col-sm-2 control-label">支付方式</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control" id="payWay" name="payWay">
+                                                <c:if test="${parameter.entity.payWay!=null&&parameter.entity.payWay!=''}">
+                                                    <option value="${parameter.entity.payWay}">${parameter.entity.payWay}</option>
+                                                </c:if>
+                                                <option value="微信支付">微信支付</option>
+                                                <option value="代付">代付</option>
+                                                <option value="货到付款">货到付款</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-xs-4 text-error"></div>
+                                    </div>
+
+
+                                    <div class="form-group" style="display: none">
                                         <label for="editWeixin" class="col-sm-2 control-label">是否需要考核</label>
                                         <div class="col-sm-4">
                                             <select class="form-control" name="needCheck">
@@ -123,7 +172,7 @@
                                     <div class="form-group">
                                         <label for="editWeixin" class="col-sm-2 control-label">注册时期</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="editWeixin"
+                                            <input <c:if test="${!user.admin}">readonly</c:if>  type="text" class="form-control" id="editWeixin"
                                                    tabIndex="12" required name="joinDate"
                                                    value="${parameter.entity.joinDate}" placeholder="注册时间">
                                         </div>
@@ -134,7 +183,7 @@
                                         <div class="form-group">
                                             <label for="currentPoint" class="col-sm-2 control-label">绑定的微信</label>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="editIdCard"
+                                                <input <c:if test="${!user.admin}">readonly</c:if>  type="text" class="form-control" id="editIdCard"
                                                        tabIndex="13" required name="wxOpenid"
                                                        value="${parameter.entity.wxOpenid}" placeholder="请勿填写">
                                             </div>
@@ -156,7 +205,7 @@
                                         <div class="form-group">
                                             <label for="currentBalance" class="col-sm-2 control-label">汇款信息</label>
                                             <div class="col-sm-6">
-											<textarea rows="3" class="form-control" id="editRemittance"
+											<textarea <c:if test="${!user.admin}">readonly</c:if>  rows="3" class="form-control" id="editRemittance"
                                                       tabIndex="14" required name="remittance"
                                                       value="${parameter.entity.remittance}"
                                                       placeholder="请输入汇款信息">${parameter.entity.remittance}</textarea>

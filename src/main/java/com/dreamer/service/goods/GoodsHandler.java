@@ -44,8 +44,8 @@ public class GoodsHandler {
 	}
 
 	@Transactional
-	public Goods saveOrUpdateGoods(Goods goods, Double[] levelPrice, String[] voucherStrs, Integer[] buyAmounts,Integer[] levelId, Integer[] priceId) {
-		assemblePrice(goods, levelPrice, voucherStrs,buyAmounts, levelId, priceId);//价格重新计算
+	public Goods saveOrUpdateGoods(Goods goods, Double[] levelPrice, String[] voucherStrs, Integer[] buyAmounts,Double[] pointss,String[] policies,Integer[] levelId, Integer[] priceId) {
+		assemblePrice(goods, levelPrice, voucherStrs,buyAmounts,pointss,policies,levelId, priceId);//价格重新计算
 		Goods instance = goodsDAO.merge(goods);
 		return instance;
 	}
@@ -74,7 +74,7 @@ public class GoodsHandler {
 
 
 	private void assemblePrice(Goods goods, Double[] levelPrice,
-							   String[] voucherStrs,Integer[] buyAmounts, Integer[] levelId, Integer[] priceId) {
+							   String[] voucherStrs,Integer[] buyAmounts,Double[] pointss,String[] policies, Integer[] levelId, Integer[] priceId) {
 		if (levelId != null && levelId.length > 0) {
 			for (int index = 0; index < levelId.length; index++) {
 				Price price = null;
@@ -88,6 +88,8 @@ public class GoodsHandler {
 				}
 				price.setPrice(levelPrice[index]);
 				price.setVoucherStr(voucherStrs[index]);
+				price.setPoints(pointss[index]);
+				price.setPolicy(policies[index]);
 				if(buyAmounts!=null&&buyAmounts.length>0){
                     price.setBuyAmount(buyAmounts[index]);
                 }

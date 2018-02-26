@@ -185,9 +185,9 @@
                                           href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=0' /> "><span
                                                class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转奖金</a>
 
-                                       <a class="btn btn-info  transBtn"
-                                          href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=1' /> "><span
-                                               class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转预存款</a>
+                                       <%--<a class="btn btn-info  transBtn"--%>
+                                          <%--href="<c:url value='/accounts/transfer.html?toId=${l.id}&typeState=1' /> "><span--%>
+                                               <%--class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;转预存款</a>--%>
                                    </c:if>
 
 

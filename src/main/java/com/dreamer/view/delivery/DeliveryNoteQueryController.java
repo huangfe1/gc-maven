@@ -195,6 +195,7 @@ public class DeliveryNoteQueryController {
 		headers.add("备注");
 		headers.add("物流费");
 		headers.add("订单ID");
+		headers.add("状态");
 		List<Map>   datas = new ArrayList<>();
 		Map m = null;
 		DeliveryNote order=null;
@@ -231,7 +232,8 @@ public class DeliveryNoteQueryController {
 //				m.put(28,""+results.get(i)[0]);//订单ID
 //				m.put(29,""+results.get(i)[1]);//订单ID
 //			}
-			m.put(15,"");//订单ID
+			m.put(15,order.getStatus().getDesc());//订单ID
+			m.put(16,"");//订单ID
 			datas.add(m);
 		}
         //总数表格

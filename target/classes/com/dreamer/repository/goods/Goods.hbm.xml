@@ -16,6 +16,12 @@
    </column>
   </property>
 
+  <property name="basePrice" type="java.lang.Double">
+   <column name="basePrice">
+    <comment>产品底价</comment>
+   </column>
+  </property>
+
   <property name="license" type="java.lang.String">
    <column name="license">
     <comment>批准文号</comment>

@@ -1,9 +1,12 @@
 package com.dreamer.view.mobile;
 
 import com.dreamer.domain.account.GoodsAccount;
+import com.dreamer.domain.mall.delivery.DeliveryItem;
+import com.dreamer.domain.mall.delivery.DeliveryNote;
 import com.dreamer.domain.mall.goods.Goods;
 import com.dreamer.domain.mall.goods.Price;
 import com.dreamer.domain.mall.transfer.Transfer;
+import com.dreamer.domain.pmall.order.PaymentStatus;
 import com.dreamer.domain.user.*;
 import com.dreamer.domain.user.dto.UserDto;
 import com.dreamer.domain.user.enums.AccountsTransferStatus;
@@ -18,6 +21,7 @@ import com.dreamer.util.TokenInfo;
 import com.wxjssdk.JSAPI;
 import com.wxjssdk.dto.SdkResult;
 import com.wxjssdk.util.DateUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -155,6 +159,15 @@ public class MobileController {
             model.addAttribute("isY", true);
         }
 
+        if (levelName.contains(AgentLevelName.大区.toString())) {
+            model.addAttribute("isD", true);
+        }
+
+        if (levelName.contains(AgentLevelName.省代.toString())) {
+            model.addAttribute("isS", true);
+        }
+
+
         return "mobile/register";
     }
 
@@ -280,10 +293,10 @@ public class MobileController {
         Agent agent = agentHandler.get(user.getId());
         model.addAttribute("agent", agent);
         Boolean isVip = agentHandler.isVip(agent);
-        model.addAttribute("isVip", !isVip);
+        model.addAttribute("isVip", isVip);
 //        if (isVip) {
-            List<AddressMy> addressMies = addressMyHandler.findAddressByAgent(agent);
-            model.addAttribute("addresses", addressMies);
+        List<AddressMy> addressMies = addressMyHandler.findAddressByAgent(agent);
+        model.addAttribute("addresses", addressMies);
 //        }
         return "/mobile/shopcart/index";
     }
@@ -303,6 +316,9 @@ public class MobileController {
     public String deliveryRecord(HttpServletRequest request, Model model, @RequestParam(required = false) Integer noteId) {
         User user = (User) WebUtil.getCurrentUser(request);
         List items = deliveryNoteHandler.findDeliveryNotes(user.getId(), noteId);
+        List<DeliveryNote> notes = deliveryNoteHandler.findDeliveryByParent(user.getId(), noteId);
+        items.addAll(notes);
+
         model.addAttribute("items", items);
         return "mobile/delivery/records";
     }
@@ -369,7 +385,7 @@ public class MobileController {
         for (Agent a : agents) {
             ids.add(a.getId());
         }
-        if(!ids.isEmpty()){
+        if (!ids.isEmpty()) {
             List<Agent> yAgent = agentHandler.getListIn("parent.id", ids);
             agents.addAll(yAgent);
         }
@@ -565,6 +581,70 @@ public class MobileController {
             return Message.createFailedMessage(e.getMessage());
         }
 
+    }
+
+
+    //手机端支付发货订单页面
+    @RequestMapping("/mobile/dmz/note/pay.html")
+    public String payOrder(Integer nid, HttpServletRequest request, Model model) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            Agent agent = agentHandler.get(user.getId());
+            DeliveryNote note = deliveryNoteHandler.get(nid);
+            WxConfig wxConfig = wxConfigFactory.getBaseConfig();
+            String jsapiparam = payHandler.toWxPay(wxConfig, agent.getWxOpenid(), note.getOrderNo(), note.getAmount(), WxConfig.NOTE_NOTICE_URL);
+            model.addAttribute("jsApiParam", jsapiparam);
+            model.addAttribute("note", note);
+            return "/mobile/delivery/pay";
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+            return "/mobile/error";
+        }
+    }
+
+    @RequestMapping("/dmz/mobile/note/wxPay.json")
+    @ResponseBody
+    public String wxConfirmOrder(@RequestBody(required = false)String body) {
+        try {
+            String result = deliveryNoteHandler.confirmPayByWx(body);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "<xml>\n" + "  <return_code><![CDATA[SUCCESS]]></return_code>\n" + "  <return_msg><![CDATA[OK]]></return_msg>\n" + "</xml>";
+    }
+
+
+    //管理员确认支付
+    @RequestMapping("/mobile/note/confirmPay.json")
+    @ResponseBody
+    public Message adminConfirmOrder(Integer id, HttpServletRequest request) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            if (user.isAdmin()) {//管理员才可以
+                deliveryNoteHandler.confirmPay(id);
+            } else {
+                throw new ApplicationException("非管理员操作!");
+            }
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Message.createFailedMessage(e.getMessage());
+        }
+    }
+
+    //代金券确认支付
+    @RequestMapping("/mobile/note/accountsPay.json")
+    @ResponseBody
+    public Message accountsConfirmOrder(Integer nid, HttpServletRequest request) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            deliveryNoteHandler.confirmPayByAccounts(nid, user.getId());
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Message.createFailedMessage(e.getMessage());
+        }
     }
 
 
@@ -805,6 +885,462 @@ public class MobileController {
         return "/mobile/wallet";
     }
 
+    @RequestMapping("/dmz/count.html")
+    public String count(@RequestParam(required = false) String agentCode, @RequestParam(required = false) Integer gid, @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime, Model model) {
+        Agent fA = null;
+        Goods fG = null;
+        if (agentCode != null) {
+            fA = agentHandler.get("agentCode", agentCode);
+            model.addAttribute("agent", fA);
+        }
+        if (gid != null && gid > 0) {
+            fG = goodsHandler.get(gid);
+            model.addAttribute("goods", fG);
+        }
+        //查询出所有的分公司
+        List<Agent> vips = agentHandler.getList("parent.id", 3);
+        //所有产品
+        List<Goods> goods = goodsHandler.findAll();//所有产品
+        List<Agent> childrens = new ArrayList<>();
+        for (Agent agent : vips) {
+            childrens.addAll(agentHandler.getAllChildrens(agent.getAgentCode()));
+        }
+        if (startTime == null) {
+            startTime = DateUtil.formatDate(new Date(), "yyyy-MM-dd");
+            endTime = DateUtil.formatDate(new Date(), "yyyy-MM-dd");
+        }
+        //根据时间、分公司、产品筛选 以金钱显示
+        List<DeliveryNote> notes = deliveryNoteHandler.findByChlidrens(childrens, startTime, endTime);
+        //金额总数
+        Double sum = 0.0;
+        //产品金额总数
+        Map<String, Double> sMap = new HashMap<>();
+        //分公司，分产品统计
+        Map<Integer, Map<String, Double>> aMap = new HashMap<>();
+        Map<String, Double> gMap;
+        for (DeliveryNote note : notes) {
+            Integer ak = note.getApplyAgent().getId();
+            sum += note.getAmount();
+            if (fA != null) {//有查找的
+                Agent t = note.getApplyAgent();//获取申请人
+                if (agentHandler.findVip(t).getId() != fA.getId()) {
+                    continue;//调试不是这个分公司
+                }
+            }
+            for (DeliveryItem item : note.getDeliveryItems()) {
+
+                if (fG != null) {//跳过不是当前产品的
+                    if (fG.getId() != item.getGoods().getId()) {
+                        continue;
+                    }
+                }
+
+                String gk = item.getGoods().getName();
+                //总数统计
+                if (sMap.containsKey(gk)) {
+                    Double tem = sMap.get(gk);
+                    tem += item.getAmount();
+                    sMap.put(gk, tem);
+                } else {
+                    sMap.put(gk, item.getAmount());
+                }
+
+                //获取当前用户的统计产品map
+                if (aMap.containsKey(ak)) {//如果这个代理已经有了
+                    gMap = aMap.get(ak);
+                } else {
+                    gMap = new HashMap<>();
+                }
+                //产品map添加数量
+                if (gMap.containsKey(gk)) {
+                    Double tem = gMap.get(gk);
+                    tem += item.getAmount();
+                    gMap.put(gk, tem);
+                } else {//不包含
+                    gMap.put(gk, item.getAmount());
+                }
+                aMap.put(ak, gMap);
+            }
+        }
+        HashMap<String, Map<String, Double>> gg = new HashMap<>();
+        aMap.keySet().stream().forEach(m -> {
+            Agent agent = agentHandler.get(m);
+            gg.put(agent.getRealName() + agent.getAgentCode(), aMap.get(m));
+        });
+        model.addAttribute("sum", sum);
+        model.addAttribute("sMap", sMap);
+        model.addAttribute("aMap", gg);
+        model.addAttribute("vips", childrens);
+        model.addAttribute("goodses", goods);
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
+        return "/mobile/count";
+    }
+
+
+    //大区-省-市-县-业务员 联动查询
+    @RequestMapping("/mobile/select/children.json")
+    @ResponseBody
+    public JSONArray getChildrens(Integer uid) {
+        try {
+            List<Agent> agents = agentHandler.getList("parent.id", uid);
+            JSONArray jsonArray = new JSONArray();
+            agents.forEach(a -> {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("uid", a.getId());
+                jsonObject.put("name", a.getRealName());
+                jsonArray.add(jsonObject);
+            });
+            return jsonArray;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //用户统计页面
+    @RequestMapping("/mobile/agent/count.html")
+    public String countAgent(HttpServletRequest request, Model model) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            HashMap<Long, List<Agent>> map = getSelectAgent(user);
+            model.addAttribute("map", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "/mobile/agent_count";
+    }
+
+    @RequestMapping("/mobile/agent/count.json")
+    @ResponseBody
+    public JSONArray countAgent(Integer uid, @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime, Integer days) {
+//      List<Agent> agents = agentHandler.findAgentByTimeAndPid(uid,startTime,endTime);
+        try {
+            if (startTime == null || startTime.equals("")) {
+                startTime = "1990-01-01";
+            }
+            if (endTime == null || endTime.equals("")) {
+                endTime = "2990-01-01";
+            }
+            Date st = DateUtil.formatStartTime(startTime);
+            Date et = DateUtil.formatEndTime(endTime);
+            JSONObject sum = new JSONObject();
+            sum.put("name", "合计");
+            sum.put("number", 0);
+            List<Agent> agents = agentHandler.getList("parent.id", uid);//先获取直接下级
+            JSONArray jsonArray = new JSONArray();
+            Agent agent = agentHandler.get(uid);
+            String ln = agentHandler.getLevelName(agent);
+            if (ln.equals(AgentLevelName.业务员.toString())) {//业务员就是查明细
+                agents.forEach(a -> {
+                    String key = a.getAgentCode() + a.getRealName();
+                    if (a.getJoinDate().after(st) && a.getJoinDate().before(et)) {//当前查询的时间内
+                        //满足购买天数的
+                        Date buyDate = a.getBuyTime();
+                        if (buyDate == null) buyDate = a.getJoinDate();
+                        //规定购物时间超过规定天数没购物的
+                        if (DateUtil.longOfTwoDate(new Date(), buyDate) > days) {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("name", key);
+                            jsonObject.put("number", 1);
+                            jsonArray.add(jsonObject);
+                            //合计
+                            Integer s = sum.getInt("number");
+                            s++;
+                            sum.put("number", s);
+                        }
+                    }
+                });
+            } else {//其它就是查总数需要汇总
+                agents.forEach(a -> {
+                    JSONObject jsonObject = new JSONObject();
+                    String key = a.getAgentCode() + a.getRealName();
+                    Integer amount = 0;
+                    List<Agent> temA = agentHandler.getAllChildrens(a.getAgentCode());
+                    for (Agent t : temA) {
+                        String lv = agentHandler.getLevelName(t);
+                        if (!lv.contains("药房")) continue;
+                        if (t.getJoinDate().after(st) && t.getJoinDate().before(et)) {//当前查询的时间内
+                            //满足购买天数的
+                            Date buyDate = t.getBuyTime();
+                            if (buyDate == null) buyDate = t.getJoinDate();
+                            //规定购物时间超过规定天数没购物的
+                            if (DateUtil.longOfTwoDate(new Date(), buyDate) > days) {
+                                amount++;
+                            }
+                        }
+                    }
+                    jsonObject.put("name", key);
+                    jsonObject.put("number", amount);
+                    jsonArray.add(jsonObject);
+                    //合计
+                    Integer s = sum.getInt("number");
+                    s += amount;
+                    sum.put("number", s);
+                });
+            }
+            jsonArray.add(sum);
+            return jsonArray;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    //销售统计页面
+    @RequestMapping("/mobile/note/count.html")
+    public String countNote(HttpServletRequest request, Model model) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            HashMap<Long, List<Agent>> map = getSelectAgent(user);
+            model.addAttribute("map", map);
+            List<Goods> goods = goodsHandler.findAll();
+            model.addAttribute("goods", goods);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "/mobile/note_count";
+    }
+
+
+    //统计订单销售数 未测试
+    @RequestMapping("/mobile/note/count.json")
+    @ResponseBody
+    public JSONArray countNote(Integer uid, @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer gid) {
+//      List<Agent> agents = agentHandler.findAgentByTimeAndPid(uid,startTime,endTime);
+        try {
+            if (startTime == null || startTime.equals("")) {
+                startTime = "1990-01-01";
+            }
+            if (endTime == null || endTime.equals("")) {
+                endTime = "2990-01-01";
+            }
+            Goods goods = goodsHandler.get(gid);
+            Date st = DateUtil.formatStartTime(startTime);
+            Date et = DateUtil.formatEndTime(endTime);
+            JSONArray jsonArray = new JSONArray();
+            JSONObject sum = new JSONObject();
+            sum.put("param1", "合计");
+            sum.put("param2", 0);
+            sum.put("param3", 0);
+            //获取uid下面所有的代理
+            List<Agent> agents = agentHandler.getList("parent.id", uid);//先获取直接下级
+            Agent agent = agentHandler.get(uid);
+            String ln = agentHandler.getLevelName(agent);
+            if (ln.equals(AgentLevelName.业务员.toString())) {
+                List<DeliveryNote> notes = deliveryNoteHandler.getList("toAgent.id", uid);
+                for (DeliveryNote note : notes) {
+                    Integer quantity = 0;
+                    Double amount = 0.0;
+                    //没有支付
+                    if (note.getPaymentStatus() == PaymentStatus.UNPAID) {
+                        continue;
+                    }
+                    //时间不对
+                    if (st.after(note.getUpdateTime()) || et.before(note.getUpdateTime())) continue;
+                    Set<DeliveryItem> items = note.getDeliveryItems();
+                    for (DeliveryItem item : items) {
+                        if (!item.getGoods().getId().equals(goods.getId())) continue;//产品不对
+                        amount += item.getAmount();
+                        quantity += item.getQuantity();
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("param1", DateUtil.formatDate(note.getUpdateTime()));
+                    jsonObject.put("param2", quantity);
+                    jsonObject.put("param1", amount);
+                    jsonArray.add(jsonObject);
+                    //合计
+                    Integer sumQ = sum.getInt("param2");
+                    Double sumA = sum.getDouble("param3");
+                    sumQ += quantity;
+                    sumA += amount;
+                    sum.put("param2", sumQ);
+                    sum.put("param3", sumA);
+                }
+                jsonArray.add(sum);
+                return jsonArray;
+            }
+            //非业务员
+            for (Agent a : agents) {
+                List<Agent> tems = agentHandler.getAllChildrens(a.getAgentCode());
+                List<Object> ids = new ArrayList<>();
+                for (Agent t : tems) {
+                    ids.add(t.getId());
+                }
+                if (ids.isEmpty()) {
+                    continue;
+                }
+                //查找tems这些人所有成功的订单
+                List<DeliveryNote> notes = deliveryNoteHandler.getListIn("toAgent.id", ids);
+                Integer quantity = 0;
+                Double amount = 0.0;
+                //统计
+                for (DeliveryNote note : notes) {
+                    //没有支付
+                    if (note.getPaymentStatus() == PaymentStatus.UNPAID) {
+                        continue;
+                    }
+                    //时间不对
+                    if (st.after(note.getUpdateTime()) || et.before(note.getUpdateTime())) continue;
+                    Set<DeliveryItem> items = note.getDeliveryItems();
+                    for (DeliveryItem item : items) {
+                        if (!item.getGoods().getId().equals(goods.getId())) continue;
+                        quantity += item.getQuantity();
+                        amount += item.getAmount();
+                    }
+                }
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("param1", a.getAgentCode() + a.getRealName());
+                jsonObject.put("param2", quantity);
+                jsonObject.put("param3", amount);
+                jsonArray.add(jsonObject);
+                //合计
+                Integer sumQ = sum.getInt("param2");
+                Double sumA = sum.getDouble("param3");
+                sumQ += quantity;
+                sumA += amount;
+                sum.put("param2", sumQ);
+                sum.put("param3", sumA);
+            }
+            jsonArray.add(sum);
+            return jsonArray;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //销售统计页面
+    @RequestMapping("/mobile/accounts/count.html")
+    public String countAccounts(HttpServletRequest request, Model model) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            HashMap<Long, List<Agent>> map = getSelectAgent(user);
+            model.addAttribute("map", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "/mobile/accounts_count";
+    }
+
+
+    //统计订单销售数 未测试
+    @RequestMapping("/mobile/accounts/count.json")
+    @ResponseBody
+    public JSONArray countAccounts(Integer uid, @RequestParam(required = false) String startTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer addSub) {
+//      List<Agent> agents = agentHandler.findAgentByTimeAndPid(uid,startTime,endTime);
+        try {
+            if (startTime == null || startTime.equals("")) {
+                startTime = "1990-01-01";
+            }
+            if (endTime == null || endTime.equals("")) {
+                endTime = "2990-01-01";
+            }
+            Date st = DateUtil.formatStartTime(startTime);
+            Date et = DateUtil.formatEndTime(endTime);
+            JSONArray jsonArray = new JSONArray();
+            JSONObject sum = new JSONObject();
+            sum.put("param1", "合计");
+            sum.put("param2", 0);
+            //获取uid下面所有的代理
+            List<Agent> agents = agentHandler.getList("parent.id", uid);//先获取直接下级
+            Agent agent = agentHandler.get(uid);
+            String ln = agentHandler.getLevelName(agent);
+            if (ln.equals(AgentLevelName.业务员.toString())) {
+                List<AccountsRecord> notes = accountsRecordHandler.getList("agent.id", uid);
+                for (AccountsRecord note : notes) {
+                    //时间不对
+                    if (st.after(note.getUpdateTime()) || et.before(note.getUpdateTime())) continue;
+                    //进账出账不对的
+                    if (note.getAddSub() != addSub) continue;
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("param1", DateUtil.formatDate(note.getUpdateTime()));
+                    jsonObject.put("param2", note.getAmount());
+                    jsonArray.add(jsonObject);
+                    //合计
+                    Double sumA = sum.getDouble("param2");
+                    sumA += note.getAmount();
+                    sum.put("param2", sumA);
+                }
+                jsonArray.add(sum);
+                return jsonArray;
+            }
+            //非药房
+            for (Agent a : agents) {
+                List<Agent> tems = agentHandler.getAllChildrens(a.getAgentCode());
+                List<Object> ids = new ArrayList<>();
+                for (Agent t : tems) {
+                    ids.add(t.getId());
+                }
+                if (ids.isEmpty()) {
+                    continue;
+                }
+                //查找tems这些人所有成功的订单
+                List<AccountsRecord> notes = accountsRecordHandler.getListIn("agent.id", ids);
+                Double amount = 0.0;
+                //统计
+                for (AccountsRecord note : notes) {
+                    //进账出账不对
+                    if (note.getAddSub() != addSub) {
+                        continue;
+                    }
+                    //时间不对
+                    if (st.after(note.getUpdateTime()) || et.before(note.getUpdateTime())) continue;
+                    amount += note.getAmount();
+                }
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("param1", a.getAgentCode() + a.getRealName());
+                jsonObject.put("param2", amount);
+                jsonArray.add(jsonObject);
+                //合计
+                Double sumA = sum.getDouble("param2");
+                sumA += amount;
+                sum.put("param2", sumA);
+            }
+            jsonArray.add(sum);
+            return jsonArray;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    private HashMap<Long, List<Agent>> getSelectAgent(User user) {
+        HashMap<Long, List<Agent>> hashMap = new HashMap<>();//注意 这里是int类型的话 前台取不到值  因为el表达式取map是Long类型
+        if (user.isAdmin()) {//显示大区
+            AgentLevel level = levelHandler.get("name", AgentLevelName.大区.toString());
+            Agent agent = muteUserHandler.getMuteUser();
+            hashMap.put(0L, agentHandler.findAgentByLvAndParent(level, agent.getId()));
+        } else {//普通用户
+            Agent agent = agentHandler.get(user.getId());
+            if (agent.getAgentCode() != null) {
+                AgentLevel tlv = agentHandler.getLevel(agent);
+                AgentLevel lv = levelHandler.get("level", tlv.getLevel() + 1);//获取下一个级别的等级
+                hashMap.put(lv.getLevel().longValue(), agentHandler.findAgentByLvAndParent(lv, agent.getId()));
+            }
+        }
+        return hashMap;
+    }
+
+    @RequestMapping("/mobile/parent/active/agent.json")
+    @ResponseBody
+    public Message activeAgentAndChangePayWay(Integer uid, String payWay, HttpServletRequest request) {
+        try {
+            User user = (User) WebUtil.getCurrentUser(request);
+            Agent parent = agentHandler.get(user.getId());
+            Agent agent = agentHandler.get(uid);
+            if (!parent.getId().equals(agent.getParent().getId())) throw new ApplicationException("没有权限");
+            agent.setAgentStatus(AgentStatus.WAITING);
+            agent.setPayWay(payWay);
+            agentHandler.merge(agent);
+            return Message.createSuccessMessage();
+        } catch (Exception e) {
+            return Message.createFailedMessage(e.getMessage());
+        }
+    }
+
 
     @Autowired
     private WxConfigFactory wxConfigFactory;
@@ -850,6 +1386,9 @@ public class MobileController {
 
     @Autowired
     private PriceHandler priceHandler;
+
+    @Autowired
+    private AgentLevelHandler levelHandler;
 
 //    @Autowired
 //    private WxConfigFactory wxConfigFactory;

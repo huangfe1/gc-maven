@@ -44,6 +44,11 @@ public interface AgentHandler extends BaseHandler<Agent> {
 
     List<Object[]> countAgentsByLevel(List<Agent> agents);
 
+    List<Agent> findAgentByLvAndParent(AgentLevel level,Integer pid);
+
+    List<Agent> findAgentByTimeAndPid(Integer pid,String startTime,String endTime);
+
+
 
     boolean canReward(Agent agent);
 

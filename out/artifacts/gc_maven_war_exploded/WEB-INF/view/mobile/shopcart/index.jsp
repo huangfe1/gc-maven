@@ -333,10 +333,10 @@
         <p style="text-align: center;padding: 1em 0">选择或者新增收货地址</p>
         <div id="addAddress" style="display: none">
             <div class="form-group">
-                <input type="text" class="form-control" value="${user.realName}" id="addrName" placeholder="收货人">
+                <input type="text" class="form-control" value="" id="addrName" placeholder="收货人">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" value="${user.agentCode}" id="addrCode" placeholder="收货人编号">
+                <input type="text" class="form-control" value="" id="addrCode" placeholder="收货人编号,没有可不填">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" id="addrPhone" placeholder="收货人手机号">
@@ -573,7 +573,7 @@
                 function (data, status, jqXHR) {
                     var m = data;
                     if (m.flag == "0") {
-                        alert("发货成功!");
+                        alert("提交成功,请及时支付!");
                         window.location.href = "<c:url value='/mobile/delivery/records.html'/>";
                     } else {
                         alert("操作失败" + m.message);

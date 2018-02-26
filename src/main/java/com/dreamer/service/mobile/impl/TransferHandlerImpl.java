@@ -33,94 +33,96 @@ import java.util.*;
  */
 @Service
 public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements TransferHandler {
-    /**
-     * 返利
-     *
-     * @param transfer
-     */
-    private List<AccountsRecord> rewardVoucher(Transfer transfer) {
-        List<AccountsRecord> records = new ArrayList<>();
-        StringBuffer sb = new StringBuffer();
-        sb.append("利润--");
-        sb.append(transfer.getToAgent().getRealName()).append("购买:");
-        transfer.getItems().forEach(p -> {
-            sb.append(p.getGoods().getName()).append("X").append(p.getQuantity()).append("  ");
-        });
-        String more = sb.toString();
-        //获取整个的返利
-        HashMap<Agent, Double> map = getAgentsWithVoucher(transfer.getToAgent(), transfer.getItems());
-        for (Agent agent : map.keySet()) {
-            //增加返利库存
-            records.add(accountsHandler.increaseAccountAndRecord(AccountsType.VOUCHER, agent, transfer.getToAgent(), map.get(agent), more));
-        }
-        return records;
-    }
+//    /**
+//     * 返利
+//     *
+//     * @param transfer
+//     */
+//    private List<AccountsRecord> rewardVoucher(Transfer transfer) {
+//        List<AccountsRecord> records = new ArrayList<>();
+//        StringBuffer sb = new StringBuffer();
+//        sb.append("利润--");
+//        sb.append(transfer.getToAgent().getRealName()).append("购买:");
+//        transfer.getItems().forEach(p -> {
+//            sb.append(p.getGoods().getName()).append("X").append(p.getQuantity()).append("  ");
+//        });
+//        String more = sb.toString();
+//        //获取整个的返利
+//        HashMap<Agent, Double> map = getAgentsWithVoucher(transfer.getToAgent(), transfer.getItems());
+//        for (Agent agent : map.keySet()) {
+//            //增加返利库存
+//            records.add(accountsHandler.increaseAccountAndRecord(AccountsType.VOUCHER, agent, transfer.getToAgent(), map.get(agent), more));
+//        }
+//        return records;
+//    }
 
 
-    /**
-     * 追回奖金
-     *
-     * @param transfer
-     * @return
-     */
-    private List<AccountsRecord> backVoucher(Transfer transfer) {
-        List<AccountsRecord> records = new ArrayList<>();
-        StringBuffer goodsInfo = new StringBuffer();
-        transfer.getItems().forEach(p -> {
-            goodsInfo.append(p.getGoods().getName()).append("X").append(p.getQuantity()).append("  ");
-        });
-        //全部退奖金
-        Double voucher = transfer.getAmount();
-        StringBuffer backMy = new StringBuffer();
-        backMy.append("退回--退货退回预存款，货物:");
-        backMy.append(goodsInfo).append("  ");
-        records.add(accountsHandler.increaseAccountAndRecord(AccountsType.ADVANCE, transfer.getFromAgent(), muteUserHandler.getMuteUser(), voucher, backMy.toString()));
-        AccountsRecord record1 = accountsHandler.deductAccountAndRecord(AccountsType.BENEFIT, transfer.getFromAgent(), transfer.getFromAgent(), voucher, "退货减少-退货减少总业绩！");//增加消费数量 TODO
-        records.add(record1);
-        //追回上级奖金
-        StringBuffer sb = new StringBuffer();
-        sb.append("追回--");
-        sb.append(transfer.getFromAgent().getRealName()).append("退货追回奖金，货物:");
-        sb.append(goodsInfo.toString());
-        HashMap<Agent, Double> map = getAgentsWithVoucher(transfer.getFromAgent(), transfer.getItems());
-        for (Agent agent : map.keySet()) {//减少上级的奖金 不验证 可以为负数
-            records.add(accountsHandler.deductAccountAndRecord(AccountsType.VOUCHER, agent, transfer.getFromAgent(), map.get(agent), sb.toString(), false));
-        }
-        return records;
-    }
+//    /**
+//     * 追回奖金
+//     *
+//     * @param transfer
+//     * @return
+//     */
+//    private List<AccountsRecord> backVoucher(Transfer transfer) {
+//        List<AccountsRecord> records = new ArrayList<>();
+//        StringBuffer goodsInfo = new StringBuffer();
+//        transfer.getItems().forEach(p -> {
+//            goodsInfo.append(p.getGoods().getName()).append("X").append(p.getQuantity()).append("  ");
+//        });
+//        //全部退奖金
+//        Double voucher = transfer.getAmount();
+//        StringBuffer backMy = new StringBuffer();
+//        backMy.append("退回--退货退回预存款，货物:");
+//        backMy.append(goodsInfo).append("  ");
+//        records.add(accountsHandler.increaseAccountAndRecord(AccountsType.ADVANCE, transfer.getFromAgent(), muteUserHandler.getMuteUser(), voucher, backMy.toString()));
+//        AccountsRecord record1 = accountsHandler.deductAccountAndRecord(AccountsType.BENEFIT, transfer.getFromAgent(), transfer.getFromAgent(), voucher, "退货减少-退货减少总业绩！");//增加消费数量 TODO
+//        records.add(record1);
+//        //追回上级奖金
+//        StringBuffer sb = new StringBuffer();
+//        sb.append("追回--");
+//        sb.append(transfer.getFromAgent().getRealName()).append("退货追回奖金，货物:");
+//        sb.append(goodsInfo.toString());
+//        HashMap<Agent, Double> map = getAgentsWithVoucher(transfer.getFromAgent(), transfer.getItems());
+//        for (Agent agent : map.keySet()) {//减少上级的奖金 不验证 可以为负数
+//            records.add(accountsHandler.deductAccountAndRecord(AccountsType.VOUCHER, agent, transfer.getFromAgent(), map.get(agent), sb.toString(), false));
+//        }
+//        return records;
+//    }
 
 
-    /**
-     * 核心返利算法
-     * 获取某个订单可以返利的总数
-     *
-     * @param transfer
-     * @return
-     */
-    private HashMap<Agent, Double> getAgentsWithVoucher(Agent agent, Set<TransferItem> items) {
-        HashMap<Agent, Double> maps = new HashMap<>();
-        Agent toAgent = agent;
-        //首先找出能返利的代理
-        List<Agent> parents = new ArrayList<>();
-        Agent parent = toAgent.getParent();
-        while (parent != null && !parent.isMutedUser()) {
-            if (agentHandler.canReward(parent)) {
-                parents.add(parent);//可以返利的上级
-            }
-            parent = parent.getParent();
-        }
-        //开始返利
-        items.forEach(
-                item -> {
-                    //装载所有返利
-//                    Agent fAgent = agentHandler.findVip(toAgent);//分公司
-                    Price price = priceHandler.getPrice(toAgent, item.getGoods());
-                    CommonUtil.putAll(maps, accountsHandler.rewardVoucher(parents, price.getVoucherStr(), item.getQuantity()));
-                }
-        );
+//    /**
+//     * 核心返利算法
+//     * 获取某个订单可以返利的总数
+//     *
+//     * @param transfer
+//     * @return
+//     */
+//    private HashMap<Agent, Double> getAgentsWithVoucher(Agent agent, Set<TransferItem> items) {
+//        HashMap<Agent, Double> maps = new HashMap<>();
+//        Agent toAgent = agent;
+//        //首先找出能返利的代理
+//        List<Agent> parents = new ArrayList<>();
+//        Agent parent = toAgent.getParent();
+//        while (parent != null && !parent.isMutedUser()) {
+//            if (agentHandler.canReward(parent)) {
+//                parents.add(parent);//可以返利的上级
+//            }
+//            parent = parent.getParent();
+//        }
+//        //开始返利
+//        items.forEach(
+//                item -> {
+//                    //装载所有返利
+////                    Agent fAgent = agentHandler.findVip(toAgent);//分公司
+//                    Price price = priceHandler.getPrice(toAgent, item.getGoods());
+//                    CommonUtil.putAll(maps, accountsHandler.rewardVoucher(parents, price.getVoucherStr(), item.getQuantity()));
+//                }
+//        );
+//
+//        return maps;
+//    }
 
-        return maps;
-    }
+
 
 
     /**
@@ -340,18 +342,18 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
      *
      * @param transfer
      */
-    private List<AccountsRecord> confirmBackTransfer(Transfer transfer) {
-        if (!transfer.getStatus().equals(GoodsTransferStatus.BACK)) {
-            throw new ApplicationException("不可退货订单!当前订单状态为" + transfer.getStatus().getDesc());
-        }
-        //退奖金
-        List<AccountsRecord> accountsRecord = backVoucher(transfer);
-
-        //更新状态
-        transfer.setRemittance("订单已退货!");
-        transfer.setStatus(GoodsTransferStatus.CONFIRM);
-        return accountsRecord;
-    }
+//    private List<AccountsRecord> confirmBackTransfer(Transfer transfer) {
+//        if (!transfer.getStatus().equals(GoodsTransferStatus.BACK)) {
+//            throw new ApplicationException("不可退货订单!当前订单状态为" + transfer.getStatus().getDesc());
+//        }
+//        //退奖金
+//        List<AccountsRecord> accountsRecord = backVoucher(transfer);
+//
+//        //更新状态
+//        transfer.setRemittance("订单已退货!");
+//        transfer.setStatus(GoodsTransferStatus.CONFIRM);
+//        return accountsRecord;
+//    }
 
     /**
      * 主动转货
@@ -462,13 +464,13 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
     @Override
     @Transactional
     public void backTransferConfirm(Transfer transfer) {
-        List<AccountsRecord> records = confirmBackTransfer(transfer);
+//        List<AccountsRecord> records = confirmBackTransfer(transfer);
         //保存通知
-        accountsRecordDao.saveList(records);
+//        accountsRecordDao.saveList(records);
         //保存订单
-        transferDao.merge(transfer);
+//        transferDao.merge(transfer);
         //通知
-        noticeHandler.noticeAccountRecords(records);
+//        noticeHandler.noticeAccountRecords(records);
     }
 
     /**
@@ -559,22 +561,23 @@ public class TransferHandlerImpl extends BaseHandlerImpl<Transfer> implements Tr
         Transfer transfer = initTransfer(fromUid, toUid, goodsIds, amounts, remark);
         applyTransfer(transfer);//提交 初始化相关参数
         //扣除费用
-        List<AccountsRecord> records = deductMoney(transfer);
+//        List<AccountsRecord> records = deductMoney(transfer);//暂时不扣费
+//        List<AccountsRecord> records = new ArrayList<>();
         //确认
         confirmTransfer(transfer);
         //更新购物时间
-        updateBuyTime(transfer);
+//        updateBuyTime(transfer);
         //返利
-        List<AccountsRecord> rewardRecords = rewardVoucher(transfer);
-        records.addAll(rewardRecords);
+//        List<AccountsRecord> rewardRecords = rewardVoucher(transfer);//暂时不返利，返利留到确认发货的时候
+//        records.addAll(rewardRecords);
         //保存订单
         transferDao.merge(transfer);
         //保存记录
-        accountsRecordDao.saveList(records);
+//        accountsRecordDao.saveList(records);
         //奖金通知
-        noticeHandler.noticeAccountRecords(records);
+//        noticeHandler.noticeAccountRecords(records);
         //产品库存通知
-        noticeHandler.noticeTransfer(transfer);
+//        noticeHandler.noticeTransfer(transfer);
     }
 
 

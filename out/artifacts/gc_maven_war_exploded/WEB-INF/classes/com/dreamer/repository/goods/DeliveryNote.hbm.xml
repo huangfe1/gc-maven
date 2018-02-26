@@ -58,6 +58,7 @@
 				<comment>备注信息</comment>
 			</column>
 		</property>
+
 		<property generated="never" lazy="false" name="status">
 			<column length="32" name="status" not-null="true">
 				<comment>发货状态</comment>
@@ -68,6 +69,18 @@
 				<param name="useNamed">true</param>
 			</type>
 		</property>
+
+		<property  name="paymentStatus">
+			<column length="32" name="paymentStatus" not-null="true">
+				<comment>发货状态</comment>
+			</column>
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">com.dreamer.domain.pmall.order.PaymentStatus</param>
+				<param name="type">12</param>
+				<param name="useNamed">true</param>
+			</type>
+		</property>
+
 		<property generated="never" lazy="false" name="applyOrigin">
 			<column name="origin" not-null="true">
 				<comment>请求来源</comment>

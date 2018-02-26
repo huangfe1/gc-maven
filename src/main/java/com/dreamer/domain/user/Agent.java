@@ -27,8 +27,35 @@ public class Agent extends User {
 	private String registerAddress;//注册地址
 	private String imgFile;//营业执照
     private Date buyTime;//需要重新购买的时间，每次购物更新
+	private String taxCode;//纳税识别号
+	private String payWay;//支付方式,业务员选择
+	private String info;//客户性质
 
-    public Date getBuyTime() {
+	public String getPayWay() {
+		return payWay;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public void setPayWay(String payWay) {
+		this.payWay = payWay;
+	}
+
+	public String getTaxCode() {
+		return taxCode;
+	}
+
+	public void setTaxCode(String taxCode) {
+		this.taxCode = taxCode;
+	}
+
+	public Date getBuyTime() {
         return buyTime;
     }
 

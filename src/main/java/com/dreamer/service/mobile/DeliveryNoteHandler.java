@@ -17,6 +17,8 @@ public interface DeliveryNoteHandler extends BaseHandler<DeliveryNote> {
 
     List<DeliveryNote> findDeliveryNotes(Integer uid, Integer nid);
 
+    List<DeliveryNote> findDeliveryByParent(Integer pid, Integer nid);
+
     void deliveryGoods(AddressMy address, Integer fromUid, Integer toUid, Integer[] goodsIds, Integer[] amounts, String remark);
 
     List<DeliveryNote> findDeliveryNotes(SearchParameter<DeliveryNote> uid, User user);
@@ -29,5 +31,10 @@ public interface DeliveryNoteHandler extends BaseHandler<DeliveryNote> {
 
     List<DeliveryNote> findByChlidrens(List<Agent> chlidrens,String startTime,String endTime);
 
+    void confirmPay(Integer id);//确认付款
+
+    String confirmPayByWx(String body);//微信支付回调
+
+    void confirmPayByAccounts(Integer nid,Integer uid);//代金券支付
 
 }

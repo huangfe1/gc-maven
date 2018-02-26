@@ -290,53 +290,37 @@
     </div>
 
 
-        <div class="moreInfo">
-            <%--<div class="label zq">--%>
-                <%--<div class="img">--%>
-                    <%--<img src="${ctx}/resources/mallimages/zq.png" alt="">--%>
-                <%--</div>--%>
-                <%--<span>转券</span>--%>
-            <%--</div>--%>
-            <div class="label jh">
-                <div class="img">
-                    <img src="${ctx}/resources/mallimages/jh.png" alt="">
-                </div>
-                <span>进货</span>
-            </div>
-            <%--<div class="label fh">--%>
-                <%--<div class="img">--%>
-                    <%--<img src="${ctx}/resources/mallimages/fh.png" alt="">--%>
-                <%--</div>--%>
-                <%--<span>发货</span>--%>
-            <%--</div>--%>
-            <%--<div class="label gw">--%>
-                <%--<div class="img">--%>
-                    <%--<img src="${ctx}/resources/mallimages/yhsc.png" alt="">--%>
-                <%--</div>--%>
-                <%--<span>购物</span>--%>
-            <%--</div>--%>
-            <%--<div class="address label">--%>
-            <%--<div class="img">--%>
-            <%--<img src="${ctx}/resources/mallimages/wxqb.png" alt="">--%>
-            <%--</div>--%>
-            <%--<span>扫一扫</span>--%>
-            <%--</div>--%>
-        </div>
-
-
     <div class="moreInfo">
-        <%--<div class="label dd">--%>
-            <%--<div class="img">--%>
-                <%--<img src="${ctx}/resources/mallimages/dd.png" alt="">--%>
-            <%--</div>--%>
-            <%--<span>订单</span>--%>
+        <%--<div class="label zq">--%>
+        <%--<div class="img">--%>
+        <%--<img src="${ctx}/resources/mallimages/zq.png" alt="">--%>
         <%--</div>--%>
+        <%--<span>转券</span>--%>
+        <%--</div>--%>
+        <div class="label jh">
+            <div class="img">
+                <img src="${ctx}/resources/mallimages/jh.png" alt="">
+            </div>
+            <span>进货</span>
+        </div>
         <div class="label bg">
             <div class="img">
                 <img src="${ctx}/resources/mallimages/bg.png" alt="">
             </div>
             <span>包裹</span>
         </div>
+        <%--<div class="label fh">--%>
+        <%--<div class="img">--%>
+        <%--<img src="${ctx}/resources/mallimages/fh.png" alt="">--%>
+        <%--</div>--%>
+        <%--<span>发货</span>--%>
+        <%--</div>--%>
+        <%--<div class="label gw">--%>
+        <%--<div class="img">--%>
+        <%--<img src="${ctx}/resources/mallimages/yhsc.png" alt="">--%>
+        <%--</div>--%>
+        <%--<span>购物</span>--%>
+        <%--</div>--%>
         <%--<div class="address label">--%>
         <%--<div class="img">--%>
         <%--<img src="${ctx}/resources/mallimages/wxqb.png" alt="">--%>
@@ -345,21 +329,55 @@
         <%--</div>--%>
     </div>
 
-    <%--<div class="label" id="zx" style="margin-bottom: 6em">--%>
+
+    <div class="moreInfo">
+        <%--<div class="label dd">--%>
         <%--<div class="img">--%>
-            <%--<img src="${ctx}/resources/mallimages/wxsz.png" alt="">--%>
+        <%--<img src="${ctx}/resources/mallimages/dd.png" alt="">--%>
         <%--</div>--%>
-        <%--<span>注销</span>--%>
-        <%--<!--钱包-->--%>
+        <%--<span>订单</span>--%>
+        <%--</div>--%>
+
+        <div class="khtj label">
+            <div class="img">
+                <img src="${ctx}/resources/mallimages/khtj.png" alt="">
+            </div>
+            <span>下线统计</span>
+        </div>
+
+
+        <div class="ddtj label">
+            <div class="img">
+                <img src="${ctx}/resources/mallimages/ddtj.png" alt="">
+            </div>
+            <span>订单统计</span>
+        </div>
+
+
+        <div class="zjtj label">
+            <div class="img">
+                <img src="${ctx}/resources/mallimages/zjtj.png" alt="">
+            </div>
+            <span>奖金流水</span>
+        </div>
+
+    </div>
+
+    <%--<div class="label" id="zx" style="margin-bottom: 6em">--%>
+    <%--<div class="img">--%>
+    <%--<img src="${ctx}/resources/mallimages/wxsz.png" alt="">--%>
+    <%--</div>--%>
+    <%--<span>注销</span>--%>
+    <%--<!--钱包-->--%>
     <%--</div>--%>
 
-        <div class="label" id="zx" style="margin-bottom: 6em">
-            <div class="img">
-                <img src="${ctx}/resources/mallimages/wxsz.png" alt="">
-            </div>
-            <span>设置</span>
-            <!--钱包-->
+    <div class="label" id="zx" style="margin-bottom: 6em">
+        <div class="img">
+            <img src="${ctx}/resources/mallimages/wxsz.png" alt="">
         </div>
+        <span>设置</span>
+        <!--钱包-->
+    </div>
 
 
     <div class="qr">
@@ -405,13 +423,13 @@
 
         $("#wallet").click(function () {
             var url = "<c:url value="/mobile/wallet.html"/>"
-            window.location.href=url;
+            window.location.href = url;
         });
 
         //注销按钮
         $("#zx").click(function () {
 //            if (confirm("将取消当前账号与微信的绑定，是否继续！")) {
-                window.location.href = "<c:url value='/mobile/set.html'/>";
+            window.location.href = "<c:url value='/mobile/set.html'/>";
 //            }
         })
 
@@ -436,12 +454,12 @@
 
         //发货
         $(".bg").click(function () {
-            window.location.href="<c:url value="/mobile/delivery/records.html"/>";
+            window.location.href = "<c:url value="/mobile/delivery/records.html"/>";
         })
 
         //订单
         $(".dd").click(function () {
-            window.location.href="<c:url value="/mobile/transfer/records.html"/>";
+            window.location.href = "<c:url value="/mobile/transfer/records.html"/>";
         })
 
         //进货
@@ -449,26 +467,44 @@
             <c:if test="${user.agentCode ==null || user.agentCode eq ''}">
             alert("请先完善信息！");
             </c:if>
-            <c:if test="${user.agentCode !=null && user.agentCode ne ''}">
-            window.location.href="<c:url value="/dmz/mobile/index.html"/>";
+            <c:if test="${agent.agentStatus ==null || agent.agentStatus.desc ne '激活'}">
+            alert("暂时没有激活，不能购物！");
+            </c:if>
+            <c:if test="${user.agentCode !=null && user.agentCode ne ''&&agent.agentStatus.desc eq '激活'}">
+            window.location.href = "<c:url value="/dmz/mobile/index.html"/>";
             </c:if>
         })
 
         //发货
         $(".fh").click(function () {
             alert("请选择收货人!");
-            window.location.href="<c:url value="/mobile/contacts.html"/>";
+            window.location.href = "<c:url value="/mobile/contacts.html"/>";
+        })
+
+        //客户统计
+        $(".khtj").click(function () {
+            window.location.href = "<c:url value="/mobile/agent/count.html"/>";
+        })
+
+        //订单统计
+        $(".ddtj").click(function () {
+            window.location.href = "<c:url value="/mobile/note/count.html"/>";
+        })
+
+        //资金统计
+        $(".zjtj").click(function () {
+            window.location.href = "<c:url value="/mobile/accounts/count.html"/>";
         })
 
         //优惠商城
         $(".gw").click(function () {
-            window.location.href="<c:url value="/dmz/pmall/show.html"/>";
+            window.location.href = "<c:url value="/dmz/pmall/show.html"/>";
         })
 
         //转券
         $(".zq").click(function () {
             alert("请选择收款人！");
-            window.location.href="<c:url value="/mobile/contacts.html"/>";
+            window.location.href = "<c:url value="/mobile/contacts.html"/>";
         })
 
 

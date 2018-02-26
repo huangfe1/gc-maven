@@ -142,6 +142,24 @@ public class DateUtil {
        }
     }
 
+    public static Long  longOfTwoDate(Date first,Date second){
+        try {
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(first);
+//            int cnt = 0;
+//            while(calendar.getTime().compareTo(second)!=0){
+//                calendar.add(Calendar.DATE, 1);
+//                cnt++;
+//            }
+            return (first.getTime()-second.getTime())/86400000;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0L;
+        }
+
+
+    }
+
 
     public static void main(String[] args) throws ParseException {
         System.out.println(DateUtil.countMonths("2017-06-22 15:44:14",DateUtil.formatDate(new Date()),"yyyy-MM-dd"));

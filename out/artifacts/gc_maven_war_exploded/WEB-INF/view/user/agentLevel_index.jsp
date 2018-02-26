@@ -44,12 +44,12 @@
 								</button>
 							</div>
 						</form>
-						<ul class="nav navbar-nav navbar-right">
-							<li><button type="button"
-									class="btn btn-primary navbar-btn addBtn">
-									<li class="fa fa-plus-square fa-fw"></li>新增最高等级
-								</button></li>
-						</ul>
+						<%--<ul class="nav navbar-nav navbar-right">--%>
+							<%--<li><button type="button"--%>
+									<%--class="btn btn-primary navbar-btn addBtn">--%>
+									<%--<li class="fa fa-plus-square fa-fw"></li>新增最高等级--%>
+								<%--</button></li>--%>
+						<%--</ul>--%>
 					</div>
 				</div>
 			</nav>
@@ -83,8 +83,11 @@
 											href="<c:url value='/agentLevel/edit.html?id=${l.id}' /> "><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>修改</a>
 											<%--<a class="btn btn-info goodsBtn"--%>
 											<%--href="<c:url value='/agentLevel/goods.html?id=${l.id}' /> "><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>价格详情</a>--%>
-											<%--<a class="btn btn-primary default editBtn"--%>
-											<%--href="<c:url value='/agentLevel/edit.html?parent=${l.id}' /> "><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增子等级</a>--%>
+											<c:if test="${l.name eq '省'}">
+												<a class="btn btn-primary default editBtn"
+												   href="<c:url value='/agentLevel/edit.html?parent=${l.id}' /> "><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增分公司</a>
+											</c:if>
+
 											<a class="ajaxLink btn btn-danger default" data-role="delete"
 											href="<c:url value='/agentLevel/remove.json?id=${l.id}' /> "><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>删除</a>
 										</td>

@@ -14,4 +14,6 @@ public interface AgentLevelHandler extends BaseHandler<AgentLevel> {
     List<AgentLevel> findAllOrderByLevel();
 
 
+
+
 }

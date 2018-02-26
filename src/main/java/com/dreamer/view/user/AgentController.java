@@ -24,9 +24,9 @@ public class AgentController {
     public Message edit(@ModelAttribute("parameter") Agent parameter, Integer[] ids, @RequestParam(value = "parentAgentCode", required = false) String parentAgentCode, @RequestParam(value = "teqparentAgentCode", required = false) String teqparentAgentCode, HttpServletRequest request) {
         try {
             User user = (User) WebUtil.getCurrentUser(request);
-            if (user.isAdmin()) {
+//            if (user.isAdmin()) {
                 agentHandler.addAgentByAdmin(parameter, parentAgentCode);
-            }
+//            }
             return Message.createSuccessMessage();
         } catch (Exception exp) {
             exp.printStackTrace();

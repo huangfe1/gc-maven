@@ -41,9 +41,8 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         if (!agent.getPassword().equals(paw)) {
             throw new ApplicationException("账号密码不相匹配！");
         }
-
-        if (agent.getAgentStatus().equals(AgentStatus.NO_ACTIVE)) {
-            throw new ApplicationException("账号不相匹配！");
+        if (agent.getAgentStatus()!=AgentStatus.ACTIVE) {
+            throw new ApplicationException("没有激活！");
         }
 
         return agent;
@@ -120,6 +119,9 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         Agent tem = get("wxUnionID", agent.getWxUnionID());
         if (tem != null) {//判断当前用户是否存在，存在的话是扫二维码过来的,完信息
             tem = buildAgent(tem, agent.getRealName(), agent.getMobile(), agent.getWeixin(), agent.getPassword());
+            tem.setTaxCode(agent.getTaxCode());//税号
+            tem.setRegisterAddress(agent.getRegisterAddress());//注册地址
+            tem.setInfo(agent.getInfo());//客户性质
             tem.setImgFile(fileName);
             return merge(tem);
         }
@@ -136,7 +138,11 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         if (agent.getId() != null) {
             agent = updateAgent(refCode, agent);
         } else {
+            String payWay = agent.getPayWay();
+            String taxCode = agent.getTaxCode();
             agent = buildAgent(refCode, agent.getMobile(), agent.getIdCard(), agent.getWeixin(), agent.getRealName(), agent.getRemittance(), agent.getPassword());
+            agent.setPayWay(payWay);
+            agent.setTaxCode(taxCode);
         }
         return merge(agent);
     }
@@ -161,7 +167,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
             agent.setRealName(nickName);
             agent.setJoinDate(new Date());
             agent.setUserStatus(UserStatus.NEW);
-            agent.setAgentStatus(AgentStatus.ACTIVE);
+            agent.setAgentStatus(AgentStatus.NO_ACTIVE);
             agent.setWxUnionID(wxUnionID);
 
         }
@@ -464,13 +470,13 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
     @Override
     public boolean isVip(Agent agent) {
         if (agent.getAgentCode() == null || agent.getAgentCode().equals("")) return false;
-        GoodsAccount goodsAccount = goodsAccountHandler.getMainGoodsAccount(agent);
-        if (goodsAccount != null) {
-            if (goodsAccount.getAgentLevel().getName().contains(AgentLevelName.分公司.toString()) || goodsAccount.getAgentLevel().getName().contains(AgentLevelName.业务员.toString())) {
-                return true;
-            }
-        }
-        return false;
+//        GoodsAccount goodsAccount = goodsAccountHandler.getMainGoodsAccount(agent);
+//        if (goodsAccount != null) {
+//            if (goodsAccount.getAgentLevel().getName().contains(AgentLevelName.分公司.toString()) || goodsAccount.getAgentLevel().getName().contains(AgentLevelName.业务员.toString())) {
+//                return true;
+//            }
+//        }
+        return true;
     }
 
     //新品牌代言
@@ -535,6 +541,7 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         return agentDao.findAgents(parameter);
     }
 
+    //获取某人下面所有的代理
     @Override
     public List<Agent> getAllChildrens(String agentCode) {
         Agent agent = get("agentCode", agentCode);
@@ -571,6 +578,18 @@ public class AgentHandlerImpl extends BaseHandlerImpl<Agent> implements AgentHan
         getChildrens(temps, childrens);
     }
 
+    //找出某人下面的某级别的代理
+    @Override
+    public List<Agent> findAgentByLvAndParent(AgentLevel level, Integer pid) {
+        return agentDao.findAgentByLvAndPid(level.getId(),pid);
+    }
+
+
+    //根据时间查找某个人下面的所有代理
+    @Override
+    public List<Agent> findAgentByTimeAndPid(Integer pid, String startTime, String endTime) {
+        return agentDao.findByTimeAndPid(pid,startTime,endTime);
+    }
 
     @Autowired
     private AgentDao agentDao;

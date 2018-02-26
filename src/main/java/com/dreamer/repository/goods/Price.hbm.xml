@@ -12,6 +12,9 @@
                 <comment>数据版本号</comment>
             </column>
         </version>
+
+        <property name="policy" type="java.lang.String"/>
+
         <many-to-one name="goods" class="com.dreamer.domain.mall.goods.Goods" fetch="select">
             <column name="goods" not-null="true">
                 <comment>货物</comment>
@@ -22,6 +25,9 @@
                 <comment>代理等级</comment>
             </column>
         </many-to-one>
+
+        <property name="points" type="java.lang.Double"/>
+
         <property name="price" type="java.lang.Double">
             <column name="price" precision="10" scale="4" not-null="true">
                 <comment>价格</comment>

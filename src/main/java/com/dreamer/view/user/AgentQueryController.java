@@ -1,6 +1,7 @@
 package com.dreamer.view.user;
 
 import com.dreamer.domain.account.GoodsAccount;
+import com.dreamer.domain.pmall.order.PaymentStatus;
 import com.dreamer.domain.user.Agent;
 import com.dreamer.domain.user.AgentLevel;
 import com.dreamer.domain.user.User;
@@ -221,6 +222,7 @@ public class AgentQueryController {
 //			}
 //			model.addAttribute("types", authTypes);
 			model.addAttribute("status", AgentStatus.values());
+			model.addAttribute("payWays", PaymentStatus.values());
 		} catch (Exception exp) {
 			exp.printStackTrace();
 			LOG.error("进入代理编辑失败", exp);

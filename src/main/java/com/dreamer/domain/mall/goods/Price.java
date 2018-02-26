@@ -5,168 +5,186 @@ import com.dreamer.domain.user.AgentLevel;
 import java.util.Date;
 
 public class Price implements java.io.Serializable {
+    private static final long serialVersionUID = 6973903151410018364L;
+    private Integer id;
+    private Goods goods;
+    //价格等级
+    private AgentLevel agentLevel;
+    private Double price;
+    private Date updateTime;
+    private Integer version;
+    private Integer threshold;
+    private Integer buyAmount;//每天要求销售
+    private String voucherStr;//返利
+    private Double points;//客户积分 暂时没用
+    private String policy;//促销政策
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6973903151410018364L;
-	// Fields
+    public Integer getBuyAmount() {
+        return buyAmount;
+    }
 
-	private Integer id;
-	private Goods goods;
-	//价格等级
-	private AgentLevel agentLevel;
-	private Double price;
-	private Date updateTime;
-	private Integer version;
-	private Integer threshold;
-	private Integer buyAmount;//每天要求销售
-	private String voucherStr;//返利
+    public void setBuyAmount(Integer buyAmount) {
+        this.buyAmount = buyAmount;
+    }
 
-	public Integer getBuyAmount() {
-		return buyAmount;
-	}
+    // Constructors
 
-	public void setBuyAmount(Integer buyAmount) {
-		this.buyAmount = buyAmount;
-	}
+    /**
+     * default constructor
+     */
+    public Price() {
+    }
 
-	// Constructors
+    public String getVoucherStr() {
+        return voucherStr;
+    }
 
-	/** default constructor */
-	public Price() {
-	}
+    public void setVoucherStr(String voucherStr) {
+        this.voucherStr = voucherStr;
+    }
 
-	public String getVoucherStr() {
-		return voucherStr;
-	}
+    /**
+     * minimal constructor
+     */
+    public Price(Goods goods, AgentLevel agentLevel, Double price) {
+        this.goods = goods;
+        this.agentLevel = agentLevel;
+        this.price = price;
+    }
 
-	public void setVoucherStr(String voucherStr) {
-		this.voucherStr = voucherStr;
-	}
+    /**
+     * full constructor
+     */
+    public Price(Goods goods, AgentLevel agentLevel, Double price,
+                 Date updateTime, Integer version) {
+        this.goods = goods;
+        this.agentLevel = agentLevel;
+        this.price = price;
+        this.updateTime = updateTime;
+        this.version = version;
+    }
 
-	/** minimal constructor */
-	public Price(Goods goods, AgentLevel agentLevel, Double price) {
-		this.goods = goods;
-		this.agentLevel = agentLevel;
-		this.price = price;
-	}
+    public boolean thresholdLowerThan(Integer cumulative) {
+        return this.getThreshold() <= cumulative;
+    }
 
-	/** full constructor */
-	public Price(Goods goods, AgentLevel agentLevel, Double price,
-			Date updateTime, Integer version) {
-		this.goods = goods;
-		this.agentLevel = agentLevel;
-		this.price = price;
-		this.updateTime = updateTime;
-		this.version = version;
-	}
-	
-	public boolean thresholdLowerThan(Integer cumulative){
-		return this.getThreshold()<=cumulative;
-	}
+    // Property accessors
 
-	// Property accessors
+    public Integer getId() {
+        return this.id;
+    }
 
-	public Integer getId() {
-		return this.id;
-	}
+    public Double getPoints() {
+        return points;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setPoints(Double points) {
+        this.points = points;
+    }
 
-	public Goods getGoods() {
-		return this.goods;
-	}
+    public String getPolicy() {
+        return policy;
+    }
 
-	public void setGoods(Goods goods) {
-		this.goods = goods;
-	}
+    public void setPolicy(String policy) {
+        this.policy = policy;
+    }
 
-	public AgentLevel getAgentLevel() {
-		return this.agentLevel;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setAgentLevel(AgentLevel agentLevel) {
-		this.agentLevel = agentLevel;
-	}
+    public Goods getGoods() {
+        return this.goods;
+    }
 
-	public Double getPrice() {
-		return this.price;
-	}
+    public void setGoods(Goods goods) {
+        this.goods = goods;
+    }
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+    public AgentLevel getAgentLevel() {
+        return this.agentLevel;
+    }
 
-	public Date getUpdateTime() {
-		return this.updateTime;
-	}
+    public void setAgentLevel(AgentLevel agentLevel) {
+        this.agentLevel = agentLevel;
+    }
 
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
+    public Double getPrice() {
+        return this.price;
+    }
 
-	public Integer getVersion() {
-		return this.version;
-	}
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    public Date getUpdateTime() {
+        return this.updateTime;
+    }
 
-	public Integer getThreshold() {
-		return threshold;
-	}
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
-	public void setThreshold(Integer threshold) {
-		this.threshold = threshold;
-	}
-	
+    public Integer getVersion() {
+        return this.version;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 37;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode())
-				+ ((goods == null) ? 0 : goods.hashCode())
-				+ ((agentLevel == null) ? 0 : agentLevel.hashCode());
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
-		if (!(object instanceof Price)) {
-			return false;
-		}
-		Price other = (Price) object;
-		if (null == this.id) {
-			if (null != other.getId()) {
-				return false;
-			}
-		} else {
-			if (other.getId() == this.getId()) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		if(null==this.goods){
-			if(null!=other.getGoods()){
-				return false;
-			}
-		}else{
-			if(this.goods.equals(other.getGoods())){
-				return true;
-			}else{
-				return false;
-			}
-		}
-		return true;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Integer getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(Integer threshold) {
+        this.threshold = threshold;
+    }
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode())
+                + ((goods == null) ? 0 : goods.hashCode())
+                + ((agentLevel == null) ? 0 : agentLevel.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Price)) {
+            return false;
+        }
+        Price other = (Price) object;
+        if (null == this.id) {
+            if (null != other.getId()) {
+                return false;
+            }
+        } else {
+            if (other.getId() == this.getId()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (null == this.goods) {
+            if (null != other.getGoods()) {
+                return false;
+            }
+        } else {
+            if (this.goods.equals(other.getGoods())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

@@ -22,7 +22,7 @@
 		<div class="row">
 			<div class="col-md-2 col-xs-2">
 				<a href="#" class="thumbnail">
-				<img src="<c:url value='http://ht.gcjx66.com/gc/resources/mallimages/gs.jpg'/>"  style="width:80px;">
+				<img src="<c:url value='http://ht.gcyy365.com/gc/resources/mallimages/gs.jpg'/>"  style="width:80px;">
 				</a>
 			</div>
 		</div>

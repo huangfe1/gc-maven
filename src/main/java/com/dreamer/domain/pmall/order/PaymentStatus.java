@@ -1,7 +1,7 @@
 package com.dreamer.domain.pmall.order;
 
 public enum PaymentStatus {
-	UNPAID("未支付"), PAID("已支付"),PAIDERROR("已收钱,异常"),REFUND("已退款");
+	UNPAID("未支付"), PAID("已支付"),PAIDERROR("已收钱,异常"),REFUND("已退款"),COD("等待到付");
 
 	private String name;
 

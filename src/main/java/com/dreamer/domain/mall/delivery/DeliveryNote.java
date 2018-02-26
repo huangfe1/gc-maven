@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.dreamer.domain.mall.goods.Goods;
+import com.dreamer.domain.pmall.order.PaymentStatus;
 import com.dreamer.domain.user.AddressClone;
 import ps.mx.otter.utils.date.DateUtil;
 
@@ -32,6 +33,7 @@ public class DeliveryNote implements java.io.Serializable {
 //	private String address;
     private String remark;
     private DeliveryStatus status;
+    private PaymentStatus paymentStatus;//支付状态
     private String logisticsCode;//物流单号
     private Double logisticsFee;//物流费
     private String logistics;//物流公司
@@ -56,6 +58,14 @@ public class DeliveryNote implements java.io.Serializable {
         Double amount = deliveryItems.stream().mapToDouble(d -> d.getAmount()).sum();
         BigDecimal p = new BigDecimal(amount);
         return p.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public AddressClone getAddress() {

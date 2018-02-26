@@ -159,6 +159,10 @@
 
         }
 
+        .pay{
+            color: red;
+        }
+
 
     </style>
     <title>发货记录</title>
@@ -237,9 +241,16 @@
                     </span>
                     </c:if>
 
-                    <c:if test="${cart.status.desc ne '已发货'}">
-                    <span data-id="${cart.id}" class="deleteDelivery" style="float: right;color: red">
+                    <c:if test="${cart.status.desc ne '已发货' && cart.paymentStatus.name ne '未支付' }">
+                    <span data-id="${cart.id}"  style="float: right;color: red">
                         <%--暂未发货/点击取消--%>正在出库
+                    </span>
+                    </c:if>
+
+                    <c:if test="${cart.status.desc ne '已发货' && cart.paymentStatus.name eq '未支付' }">
+                    <span data-id="${cart.id}" class="pay" style="float: right;color: red">
+                        <%--暂未发货/点击取消--%>
+                        <a href="<c:url value="/mobile/dmz/note/pay.html?nid=${cart.id}"/>"><span style="color: red">未支付/点我付款</span></a>
                     </span>
                     </c:if>
 
@@ -261,32 +272,42 @@
 <script>
     
     $(function () {
-        $(".deleteDelivery").click(function () {
 
-            if(!confirm("是否确定删除"))return;
-
-            var  id = $(this).attr("data-id");
-            var url = "<c:url value="/delivery/remove.json"/>";
-            $.post(url, {"id":id},
-                function (data, status, jqXHR) {
-                    var m = data;
-                    if (m.flag == "0") {
-                        alert("删除成功!");
-                        window.location.href = "<c:url value='/mobile/delivery/records.html'/>";
-                    } else {
-                        alert("操作失败" + m.message);
-//                        window.location.reload();
-                    }
-                }).fail(function (xhr) {
-                if (xhr.status == 401) {
-                    window.location.href = xhr.getResponseHeader("Location");
-                } else {
-                    console.log(xhr);
-                    alert("未知错误请联系管理员" + xhr.status);
-//                    window.location.reload();
-                }
-            });
+        $(".pay").click(function () {
+            var nid = $(this).attr("data-id");
+            e.preventDefault();
+            e.stopPropagation();
+            //前去支付
+            window.location.href="<c:url value='/mobile/dmz/note/pay.html?nid='/>"+nid;
         })
+
+
+        <%--$(".deleteDelivery").click(function () {--%>
+
+            <%--if(!confirm("是否确定删除"))return;--%>
+
+            <%--var  id = $(this).attr("data-id");--%>
+            <%--var url = "<c:url value="/delivery/remove.json"/>";--%>
+            <%--$.post(url, {"id":id},--%>
+                <%--function (data, status, jqXHR) {--%>
+                    <%--var m = data;--%>
+                    <%--if (m.flag == "0") {--%>
+                        <%--alert("删除成功!");--%>
+                        <%--window.location.href = "<c:url value='/mobile/delivery/records.html'/>";--%>
+                    <%--} else {--%>
+                        <%--alert("操作失败" + m.message);--%>
+<%--//                        window.location.reload();--%>
+                    <%--}--%>
+                <%--}).fail(function (xhr) {--%>
+                <%--if (xhr.status == 401) {--%>
+                    <%--window.location.href = xhr.getResponseHeader("Location");--%>
+                <%--} else {--%>
+                    <%--console.log(xhr);--%>
+                    <%--alert("未知错误请联系管理员" + xhr.status);--%>
+<%--//                    window.location.reload();--%>
+                <%--}--%>
+            <%--});--%>
+        <%--})--%>
     })
     
 </script>

@@ -65,5 +65,22 @@ public class AgentDao extends BaseDaoImpl<Agent> {
         return searchByPage(parameter,criteria);
     }
 
+    public List<Agent> findAgentByLvAndPid(Integer lid,Integer pid){
+        String hql = "select user from User as user left join GoodsAccount  as ga on ga.user.id = user.id left join AgentLevel as lv on lv.id = ga.agentLevel.id left join Goods as goods on goods.id = ga.goods.id where goods.benchmark = true and  lv.id = :lid and user.parent.id = :pid";
+        Query query = currentSession().createQuery(hql);
+        query.setParameter("lid",lid);
+        query.setParameter("pid",pid);
+        return query.list();
+    }
+
+
+    public List<Agent> findByTimeAndPid(Integer pid,String startTime,String endTime){
+        String hql = "from User as user where user.joinDate >= :startTime and user.joinDate <= :endTime and user.parent.id = :pid";
+        Query query = currentSession().createQuery(hql);
+        query.setParameter("pid",pid);
+        query.setParameter("startTime",startTime);
+        query.setParameter("endTime",endTime);
+        return query.list();
+    }
 
 }

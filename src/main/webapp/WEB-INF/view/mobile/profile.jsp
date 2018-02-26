@@ -169,7 +169,6 @@
             border-bottom: 1px solid #ebebeb;
         }
 
-
         .accounts {
             margin-top: 1em;
 
@@ -203,10 +202,10 @@
         }
 
         /*.accounts .accountsInfo h3 {*/
-            /*white-space: nowrap;*/
-            /*overflow: hidden;*/
-            /*text-overflow: ellipsis;*/
-            /*max-width: 5em;*/
+        /*white-space: nowrap;*/
+        /*overflow: hidden;*/
+        /*text-overflow: ellipsis;*/
+        /*max-width: 5em;*/
 
         /*}*/
 
@@ -234,91 +233,132 @@
     </div>
 
 
+    <%--<c:choose>--%>
+    <%--<c:when test="${agent.id eq user.id||agent.parent.id eq user.id}">--%>
+    <%--<div class="label level">--%>
+    <%--<span class="h3">角色名</span>--%>
+    <%--<span class="content">${levelName}</span>--%>
+    <%--<i class="fa fa-angle-right" aria-hidden="true">库存</i>--%>
+    <%--</div>--%>
+    <%--</c:when>--%>
+    <%--<c:otherwise>--%>
+    <%--<div class="label level">--%>
+    <%--<span class="h3">等级值</span>--%>
+    <%--<span class="content">****</span>--%>
+    <%--<i class="fa fa-angle-right" aria-hidden="true"></i>--%>
+    <%--</div>--%>
+    <%--</c:otherwise>--%>
 
-        <%--<c:choose>--%>
-        <%--<c:when test="${agent.id eq user.id||agent.parent.id eq user.id}">--%>
-            <%--<div class="label level">--%>
-            <%--<span class="h3">角色名</span>--%>
-            <%--<span class="content">${levelName}</span>--%>
-            <%--<i class="fa fa-angle-right" aria-hidden="true">库存</i>--%>
-            <%--</div>--%>
-        <%--</c:when>--%>
-        <%--<c:otherwise>--%>
-        <%--<div class="label level">--%>
-            <%--<span class="h3">等级值</span>--%>
-            <%--<span class="content">****</span>--%>
-            <%--<i class="fa fa-angle-right" aria-hidden="true"></i>--%>
-        <%--</div>--%>
-        <%--</c:otherwise>--%>
-
-        <%--</c:choose>--%>
-
+    <%--</c:choose>--%>
 
 
     <!--不是公司-->
     <c:if test="${!agent.mutedUser}">
-        <!--账户信息-->
+
+        <!--基本信息-->
         <div class="moreInfo">
-            <c:forEach items="${aTypes}" var="type">
-                <div data-uid="${agent.id}" data-state="${type.state}" class="account label">
-                    <span class="h3">${type.stateInfo}</span>
-                    <c:choose>
-                        <c:when test="${agent.id eq user.id||agent.parent.id eq user.id}">
-                            <span class="content">${agent.accounts.getAccount(type)}</span>
-                        </c:when>
-                        <c:otherwise>
-                            <span class="content">****</span>
-                        </c:otherwise>
-                    </c:choose>
-                    <%--<i style="color: red" class="fa fa-angle-right" aria-hidden="true">转账</i>--%>
-                </div>
-            </c:forEach>
+
+            <div data-uid="${agent.id}" class="label">
+                <span class="h3">纳税编码</span>
+                <span class="content">${agent.taxCode}</span>
+            </div>
+
+            <div data-uid="${agent.id}" class="label">
+                <span class="h3">客户性质</span>
+                <span class="content">${agent.info}</span>
+            </div>
+
+
+            <div data-uid="${agent.id}" class="label">
+                <span class="h3">付款方式</span>
+                <c:if test="${agent.agentStatus.desc eq '未激活'}">
+                    <select style="font-size: 1em;padding-left: 1.2em" class="payWay">
+                        <option value="-1">选择后自动激活</option>
+                        <option value="微信支付">微信支付</option>
+                        <option value="代付">代付</option>
+                        <option value="货到付款">货到付款</option>
+                    </select>
+                </c:if>
+
+                <c:if test="${agent.agentStatus.desc ne '未激活'}">
+                        <span class="content">${agent.payWay}</span>
+                </c:if>
+
+            </div>
+
+
+            <div data-uid="${agent.id}" data-state="${type.state}" class="label">
+                <span class="h3">注册地址</span>
+                <span class="content">${agent.registerAddress}</span>
+            </div>
+
+
         </div>
 
-        <div class="accounts" style="display:none;">
-            <ul>
-                <c:forEach items="${goodsAccount}" var="gac">
-                    <li>
-                        <img src="${dmzImgPath}${gac.goods.imgFile}" alt="">
-                        <div class="accountsInfo">
-                            <h3>${gac.goods.name}</h3>
-                            <h4>库存:${gac.currentBalance}</h4>
-                        </div>
-                    </li>
-                </c:forEach>
-            </ul>
+
+        <div class="">
+            <img  style="width: 100%" src="${dmzImgPath}${agent.imgFile}" alt="">
         </div>
+
+        <!--账户信息-->
+        <%--<div class="moreInfo">--%>
+        <%--<c:forEach items="${aTypes}" var="type">--%>
+        <%--<div data-uid="${agent.id}" data-state="${type.state}" class="account label">--%>
+        <%--<span class="h3">${type.stateInfo}</span>--%>
+        <%--<c:choose>--%>
+        <%--<c:when test="${agent.id eq user.id||agent.parent.id eq user.id}">--%>
+        <%--<span class="content">${agent.accounts.getAccount(type)}</span>--%>
+        <%--</c:when>--%>
+        <%--<c:otherwise>--%>
+        <%--<span class="content">****</span>--%>
+        <%--</c:otherwise>--%>
+        <%--</c:choose>--%>
+        <%--&lt;%&ndash;<i style="color: red" class="fa fa-angle-right" aria-hidden="true">转账</i>&ndash;%&gt;--%>
+        <%--</div>--%>
+        <%--</c:forEach>--%>
+        <%--</div>--%>
+
+        <%--<div class="accounts" style="display:none;">--%>
+        <%--<ul>--%>
+        <%--<c:forEach items="${goodsAccount}" var="gac">--%>
+        <%--<li>--%>
+        <%--<img src="${dmzImgPath}${gac.goods.imgFile}" alt="">--%>
+        <%--<div class="accountsInfo">--%>
+        <%--<h3>${gac.goods.name}</h3>--%>
+        <%--<h4>库存:${gac.currentBalance}</h4>--%>
+        <%--</div>--%>
+        <%--</li>--%>
+        <%--</c:forEach>--%>
+        <%--</ul>--%>
+        <%--</div>--%>
 
         <%--<c:if test="${agent.id eq user.id}">--%>
         <%--<div class="buttons">--%>
-            <%--<div data-uid="${agent.id}" class="transferGoods"><span>我要发货</span></div>--%>
+        <%--<div data-uid="${agent.id}" class="transferGoods"><span>我要发货</span></div>--%>
         <%--</div>--%>
         <%--</c:if>--%>
 
         <%--<c:if test="${agent.id ne user.id}">--%>
         <%--<div class="buttons">--%>
-            <%--<div class="chat"><span>发消息</span></div>--%>
-            <%--<c:if test="${agent.agentCode!=null}">--%>
-                <%--<div data-uid="${agent.id}" class="transferGoods"><span>给他拨货</span></div>--%>
-                <%--<!--不是上级-->--%>
-                <%--<c:if test="${user.parent.id ne agent.id}">--%>
-                    <%--<div class="transferPay"><span>录防伪码</span></div>--%>
-                <%--</c:if>--%>
-
-            <%--</c:if>--%>
-        <%--</div>--%>
+        <%--<div class="chat"><span>发消息</span></div>--%>
+        <%--<c:if test="${agent.agentCode!=null}">--%>
+        <%--<div data-uid="${agent.id}" class="transferGoods"><span>给他拨货</span></div>--%>
+        <%--<!--不是上级-->--%>
+        <%--<c:if test="${user.parent.id ne agent.id}">--%>
+        <%--<div class="transferPay"><span>录防伪码</span></div>--%>
         <%--</c:if>--%>
 
-
-
+        <%--</c:if>--%>
+        <%--</div>--%>
+        <%--</c:if>--%>
 
 
     </c:if>
 
     <%--<!--是公司-->--%>
     <%--<c:if test="${agent.mutedUser}">--%>
-        <%--<div class="buttons">--%>
-        <%--<div data-uid="${agent.id}" class="backTransferGoods"><span>申请换货</span></div>--%>
+    <%--<div class="buttons">--%>
+    <%--<div data-uid="${agent.id}" class="backTransferGoods"><span>申请换货</span></div>--%>
 
     <%--</c:if>--%>
 
@@ -327,6 +367,31 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+
+    //激活并且改变付款方式
+    $(".payWay").change(function () {
+        var val = $(this).val();
+        if(val=="-1")return;
+        var url = "<c:url value="/mobile/parent/active/agent.json"/>";
+        var param = {
+            "uid":${agent.id},
+            "payWay":val
+        }
+        $.post(url,param,function (data) {
+            var flag = data.flag;
+            if(flag==0){
+                alert("激活成功!");
+                window.location.reload();
+            }else {
+                alert("激活失败!"+data.message);
+                window.location.reload();
+            }
+        }).fail(function (xhr) {
+            alert("激活失败，未知原因");
+            window.location.reload();
+        })
+    })
+
     //转券
     $(".account").click(function () {
         var state = $(this).attr("data-state");

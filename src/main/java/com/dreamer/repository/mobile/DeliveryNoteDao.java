@@ -2,6 +2,7 @@ package com.dreamer.repository.mobile;
 
 import com.dreamer.domain.mall.delivery.DeliveryNote;
 import com.dreamer.domain.mall.delivery.DeliveryStatus;
+import com.dreamer.domain.pmall.order.PaymentStatus;
 import com.dreamer.domain.user.User;
 import com.wxjssdk.util.DateUtil;
 import org.hibernate.Criteria;
@@ -28,18 +29,18 @@ public class DeliveryNoteDao extends BaseDaoImpl<DeliveryNote> {
             Disjunction dis = Restrictions.disjunction();
             DetachedCriteria dc2 = dc.createCriteria("fromAgent");
             DetachedCriteria c = dc2.createCriteria("parent");
-            dis.add(Restrictions.eq("id",user.getId()));
-            dis.add(Restrictions.eq("parent.id",user.getId()));
-            c .add(dis);
+            dis.add(Restrictions.eq("id", user.getId()));
+            dis.add(Restrictions.eq("parent.id", user.getId()));
+            c.add(dis);
 //            dc.add(Restrictions.or(Restrictions.eq("fromAgent.id", user.getId()), Restrictions.eq("toAgent.id", user.getId()), Restrictions.eq("applyAgent.id", user.getId())));
         }
-       if(parameter.getEntity().getApplyAgent()!=null){
-           DetachedCriteria agent = dc.createCriteria("applyAgent");
-           addRestraction(agent,"agentCode",parameter.getEntity().getApplyAgent().getAgentCode());
-       }
-        addExample(dc,"address",parameter.getEntity().getAddress());
-        if(parameter.getStartTime()!=null&&!parameter.getStartTime().equals("")){
-            dc.add(Restrictions.between("applyTime",parameter.getStartTimeByDate(),parameter.getEndTimeByDate()));
+        if (parameter.getEntity().getApplyAgent() != null) {
+            DetachedCriteria agent = dc.createCriteria("applyAgent");
+            addRestraction(agent, "agentCode", parameter.getEntity().getApplyAgent().getAgentCode());
+        }
+        addExample(dc, "address", parameter.getEntity().getAddress());
+        if (parameter.getStartTime() != null && !parameter.getStartTime().equals("")) {
+            dc.add(Restrictions.between("applyTime", parameter.getStartTimeByDate(), parameter.getEndTimeByDate()));
         }
         dc.add(example);
         dc.addOrder(Order.desc("id"));
@@ -48,27 +49,25 @@ public class DeliveryNoteDao extends BaseDaoImpl<DeliveryNote> {
 
 
     //找出所有子等级
-    public List<DeliveryNote> findByChlidrens(List<Integer> cids, String startTime,String endTime){
+    public List<DeliveryNote> findByChlidrens(List<Integer> cids, String startTime, String endTime) {
         String hql = "from DeliveryNote  note where note.applyAgent.id in :cids and note.applyTime <= :endTime and note.applyTime >= :startTime";
         Query query = currentSession().createQuery(hql);
-        query.setParameter("cids",cids);
+        query.setParameter("cids", cids);
         Date startDate = DateUtil.formatStartTime(startTime);
         Date endDate = DateUtil.formatEndTime(endTime);
-        query.setParameter("startTime",startDate);
-        query.setParameter("endTime",endDate);
+        query.setParameter("startTime", startDate);
+        query.setParameter("endTime", endDate);
         return query.list();
     }
 
 
     public List<DeliveryNote> findDeliveryNotes(Integer uid, Integer nid) {
         DetachedCriteria dc = DetachedCriteria.forClass(DeliveryNote.class);
-        if (nid == null) {
-            //收货人或者发货人是我
-            dc.add(Restrictions.or(Restrictions.eq("fromAgent.id", uid), Restrictions.eq("toAgent.id", uid), Restrictions.eq("applyAgent.id", uid)));
-        } else {
-            //根据id查找
+        if (nid != null) {
             dc.add(Restrictions.eq("id", nid));
+            //收货人或者发货人是我
         }
+        dc.add(Restrictions.or(Restrictions.eq("fromAgent.id", uid), Restrictions.eq("toAgent.id", uid), Restrictions.eq("applyAgent.id", uid)));
         //时间倒序  查询30条
         dc.addOrder(Order.desc("applyTime"));
         List<DeliveryNote> items = findByCriteria(dc, 0, 30);
@@ -78,10 +77,27 @@ public class DeliveryNoteDao extends BaseDaoImpl<DeliveryNote> {
         return items;
     }
 
+    public List<DeliveryNote> findDeliveryByParent(Integer pid, Integer nid) {
+        String hql = "from DeliveryNote  as note where note.toAgent.parent.id = :pid";
+        if (nid != null) {
+            hql += " and note.id = :nid";
+        }
+        hql += " order by  note.id desc";
+        Query query = currentSession().createQuery(hql);
+        query.setParameter("pid", pid);
+        if (nid != null) {
+            query.setParameter("nid", nid);
+        }
+        return query.list();
+    }
+
     public List<DeliveryNote> findNotDelivery(Integer limit) {
         DetachedCriteria dc = DetachedCriteria.forClass(DeliveryNote.class);
-        dc.add(Restrictions.eq("status", DeliveryStatus.NEW));
-        Criteria cri =  getCriteria(dc);
+        //下载没有发货订单中的已经支付的或者到付的
+//        dc.add(Restrictions.or(Restrictions.and(Restrictions.eq("status",DeliveryStatus.NEW),Restrictions.eq("paymentStatus",PaymentStatus.PAID)),Restrictions.eq("paymentStatus",PaymentStatus.COD)));
+        dc.add(Restrictions.eq("status", DeliveryStatus.NEW));//新订单
+        dc.add(Restrictions.or(Restrictions.eq("paymentStatus", PaymentStatus.PAID), Restrictions.eq("paymentStatus", PaymentStatus.COD)));//支付了的或者到付的
+        Criteria cri = getCriteria(dc);
         cri.setMaxResults(limit);
         return findByCriteria(dc);
     }

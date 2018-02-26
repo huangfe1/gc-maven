@@ -193,7 +193,7 @@
             <section>
                 <div class="input">
                     <div class="name">
-                        <c:if test="${isF}">
+                        <c:if test="${isD||isS||isF}">
                             <b>姓名：</b>
                         </c:if>
                         <c:if test="${isY}">
@@ -210,8 +210,28 @@
                     <div class="name">
                         <b>住址：</b><span><input name="registerAddress" type="text"></span>
                     </div>
+                    <div class="name">
+                        <b>税号：</b><span><input name="taxCode" type="text"></span>
+                    </div>
+                    <div class="name">
+                        <b>住址：</b><span><input name="registerAddress" type="text"></span>
+                    </div>
+
+
 
                     <c:if test="${isY}">
+                        <div class="name">
+                            <b>性质：</b><span><select name="info" >
+                            <option value="诊所">诊所</option>
+                            <option value="单体药店">单体药店</option>
+                            <option value="加盟连锁">加盟连锁</option>
+                        </select>
+                            </span>
+                        </div>
+                    </c:if>
+
+
+                    <c:if test="${isY||isF}">
                         <div class="name file">
                             <b>证件：</b><span><input id="file"  name="img" type="file"></span>
                         </div>

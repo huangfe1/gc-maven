@@ -7,12 +7,17 @@ import com.dreamer.domain.mall.delivery.DeliveryNote;
 import com.dreamer.domain.mall.delivery.DeliveryStatus;
 import com.dreamer.domain.mall.goods.*;
 import com.dreamer.domain.mall.transfer.Transfer;
+import com.dreamer.domain.mall.transfer.TransferItem;
+import com.dreamer.domain.pmall.order.PaymentStatus;
+import com.dreamer.domain.pmall.order.PaymentWay;
 import com.dreamer.domain.user.*;
+import com.dreamer.domain.user.enums.AccountsTransferStatus;
 import com.dreamer.domain.user.enums.AccountsType;
 import com.dreamer.repository.mobile.*;
 import com.dreamer.service.mobile.*;
 import com.dreamer.util.CommonUtil;
 import com.dreamer.util.PreciseComputeUtil;
+import com.wxjssdk.util.XmlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +45,7 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
             GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(agent, goods, main);
             goodsAccountHandler.deductGoodsAccount(goodsAccount, item.getQuantity());
             //减少公司库房
-            goodsHandler.reduceStock(item.getGoods().getId(),item.getQuantity());
+            goodsHandler.reduceStock(item.getGoods().getId(), item.getQuantity());
         }
     }
 
@@ -57,7 +62,7 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
             GoodsAccount goodsAccount = goodsAccountHandler.getGoodsAccount(agent, goods, main);
             goodsAccountHandler.increaseGoodsAccount(goodsAccount, item.getQuantity());
             //退回公司库房
-            goodsHandler.addStock(item.getGoods().getId(),item.getQuantity());
+            goodsHandler.addStock(item.getGoods().getId(), item.getQuantity());
         }
     }
 
@@ -93,7 +98,7 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
         }
         Double weight = 0.0;
         for (DeliveryItem item : note.getDeliveryItems()) {
-            weight+=item.getGoods().getWeight()*item.getQuantity();
+            weight += item.getGoods().getWeight() * item.getQuantity();
         }
         Double fee = getLogisticsFee(weight, logistics);
         fee = PreciseComputeUtil.round(fee);
@@ -151,8 +156,35 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
         deliveryNote.setUpdateTime(new Timestamp(new Date().getTime()));
         deliveryNote.setApplyOrigin(DeliveryApplyOrigin.SYSTEM);
         deliveryNote.setOrderNo(CommonUtil.createNo());//订单号
-        deliveryNote.setStatus(DeliveryStatus.NEW);
+        //判断发货人是什么付款方式 在线，到付，代付
+        if(deliveryNote.getApplyAgent().getPayWay().equals(PaymentWay.COD.getName())){
+            deliveryNote.setStatus(DeliveryStatus.NEW);//货到付款
+            deliveryNote.setPaymentStatus(PaymentStatus.COD);
+        }else {
+            deliveryNote.setStatus(DeliveryStatus.NEW);//等待自己支付，或者管理员支付
+            deliveryNote.setPaymentStatus(PaymentStatus.UNPAID);//等待自己支付，或者管理员支付
+        }
+
     }
+
+
+    private void updateBuyTime(DeliveryNote transfer) {
+        Integer amount = 0;
+        Goods goods = null;
+        for (DeliveryItem item : transfer.getDeliveryItems()) {
+            if (item.getGoods().isMainGoods()) {
+                amount += item.getQuantity();//累积数量
+                goods = item.getGoods();
+            }
+        }
+        if (amount != 0) {
+//            Agent fAgent = agentHandler.findVip();
+            Integer buyAmount = priceHandler.getPrice(transfer.getToAgent(), goods).getBuyAmount();
+            agentHandler.updateBuyDate(transfer.getToAgent(), amount, buyAmount);
+        }
+
+    }
+
 
     /**
      * 删除发货订单
@@ -165,11 +197,11 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
     @Transactional
     public void deleteDeliveryNote(Integer nid) {
         DeliveryNote note = deliveryNoteDao.get(nid);
-        if(onDelivery(note)){
+        if (onDelivery(note)) {
             throw new ApplicationException("删除失败,正在出货/已经出货");
         }
         List<AccountsRecord> accountsRecords = new ArrayList<>();
-        if(note.getLogisticsFee()>0){
+        if (note.getLogisticsFee() > 0) {
             //退物流费
             String more = "物流费退回-来自给" + note.getToAgent().getRealName() + "的订单取消发货";
             accountsRecords.add(accountsHandler.increaseAccountAndRecord(AccountsType.ADVANCE, note.getApplyAgent(), note.getToAgent(), note.getLogisticsFee(), more));
@@ -193,11 +225,12 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
 
     /**
      * 出货/正在出货
+     *
      * @param deliveryNote
      * @return
      */
-    private boolean onDelivery(DeliveryNote deliveryNote){
-        if(deliveryNote.getStatus().toString().contains("DELIVER")){
+    private boolean onDelivery(DeliveryNote deliveryNote) {
+        if (deliveryNote.getStatus().toString().contains("DELIVER")) {
             return true;
         }
         return false;
@@ -226,6 +259,66 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
         return deliveryNoteDao.findDeliveryNotes(uid, nid);
     }
 
+    @Override
+    public List<DeliveryNote> findDeliveryByParent(Integer pid, Integer nid) {
+        return deliveryNoteDao.findDeliveryByParent(pid,nid);
+    }
+
+    /**
+     * 返利
+     *
+     * @param transfer
+     */
+    private List<AccountsRecord> rewardVoucher(DeliveryNote deliveryNote) {
+        List<AccountsRecord> records = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
+        sb.append("提成--");
+        sb.append(deliveryNote.getApplyAgent().getRealName()).append("购买:");
+        deliveryNote.getDeliveryItems().forEach(p -> {
+            sb.append(p.getGoods().getName()).append("X").append(p.getQuantity()).append("  ");
+        });
+        String more = sb.toString();
+        //获取整个的返利
+        HashMap<Agent, Double> map = getAgentsWithVoucher(deliveryNote.getToAgent(), deliveryNote.getDeliveryItems());
+        for (Agent agent : map.keySet()) {
+            //增加返利库存
+            records.add(accountsHandler.increaseAccountAndRecord(AccountsType.VOUCHER, agent, deliveryNote.getApplyAgent(), map.get(agent), more));
+        }
+        return records;
+    }
+
+
+    /**
+     * 核心返利算法
+     * 获取某个订单可以返利的总数
+     *
+     * @param transfer
+     * @return
+     */
+    private HashMap<Agent, Double> getAgentsWithVoucher(Agent agent, Set<DeliveryItem> items) {
+        HashMap<Agent, Double> maps = new HashMap<>();
+        Agent toAgent = agent;
+        //首先找出能返利的代理
+        List<Agent> parents = new ArrayList<>();
+        Agent parent = toAgent.getParent();
+        while (parent != null && !parent.isMutedUser()) {
+            if (agentHandler.canReward(parent)) {
+                parents.add(parent);//可以返利的上级
+            }
+            parent = parent.getParent();
+        }
+        //开始返利
+        items.forEach(
+                item -> {
+                    Price price = priceHandler.getPrice(toAgent, item.getGoods());
+                    CommonUtil.putAll(maps, accountsHandler.rewardVoucher(parents, price.getVoucherStr(), item.getQuantity()));
+                }
+        );
+
+        return maps;
+    }
+
+
 
     /**
      * 申请发货
@@ -248,6 +341,7 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
         DeliveryNote deliveryNote = new DeliveryNote(fromAgent, fromAgent, toAgent, cloneAddress, remark);
         deliveryNote.setDeliveryItems(buildItems(deliveryNote, goodsIds, amounts));
         applyDeliveryNote(deliveryNote);//提交申请
+        List<AccountsRecord> records = new ArrayList<>();
         //减少库存
         deductGoodsAccounts(deliveryNote);
         //首单设置物流费为0
@@ -256,15 +350,15 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
 //            保存
 //            deliveryNote = deliveryNoteDao.merge(deliveryNote);
 //        }else {
-            //保存
-            deliveryNote = deliveryNoteDao.merge(deliveryNote);
-            //减少物流费 生成记录
-            List<AccountsRecord> records = deductLogistFee(deliveryNote);
-            //保存记录
-            accountsRecordDao.saveList(records);
-            noticeHandler.noticeAccountRecords(records);//物流费扣除通知
+        //保存
+        deliveryNote = deliveryNoteDao.merge(deliveryNote);
+        //减少物流费 生成记录
+//            List<AccountsRecord> records = deductLogistFee(deliveryNote); //暂时没有物流费  物流费到付
+        //保存记录
+//            accountsRecordDao.saveList(records);
+//            noticeHandler.noticeAccountRecords(records);//物流费扣除通知
 //        }
-
+        noticeHandler.noticeAccountRecords(records);
         noticeHandler.noticeDeliveryNote(deliveryNote);//待发货通知
     }
 
@@ -281,8 +375,8 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
     @Transactional
     public void delivery(Integer noteId, String company, String code, Double actual_logisticsFee) {
         DeliveryNote note = deliveryNoteDao.get(noteId);
-        if(note==null){
-            throw new ApplicationException("订单，ID号"+noteId+",不存在，请勿发货！！！");
+        if (note == null) {
+            throw new ApplicationException("订单，ID号" + noteId + ",不存在，请勿发货！！！");
         }
         note.setLogistics(company);//物流公司
         note.setLogisticsCode(code);//物流单号
@@ -322,11 +416,67 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
 
     @Override
     public List<DeliveryNote> findByChlidrens(List<Agent> chlidrens, String startTime, String endTime) {
-            List<Integer> cids = new ArrayList<>();
-            for(Agent agent : chlidrens){
-                cids.add(agent.getId());
-            }
-        return deliveryNoteDao.findByChlidrens(cids,startTime,endTime);
+        List<Integer> cids = new ArrayList<>();
+        for (Agent agent : chlidrens) {
+            cids.add(agent.getId());
+        }
+        return deliveryNoteDao.findByChlidrens(cids, startTime, endTime);
+    }
+
+    @Override
+    @Transactional
+    public void confirmPay(Integer id) {
+        DeliveryNote note = get(id);
+        if(note==null)throw new ApplicationException("订单不存在!");
+        if(note.getPaymentStatus()==PaymentStatus.PAID){
+            throw new ApplicationException("订单已经支付!");
+        }
+        note.setPaymentStatus(PaymentStatus.PAID);//设置为已经支付
+        //
+        updateBuyTime(note);//更新支付时间
+        //返利
+        List<AccountsRecord> accountsRecords = rewardVoucher(note);
+        //保存
+        merge(note);
+        //保存记录
+        accountsRecordDao.saveList(accountsRecords);
+    }
+
+    @Override
+    @Transactional
+    public String confirmPayByWx(String body) {
+        Map<String, String> xml = XmlUtil.xmlToMap(body);
+        String out_trade_no = xml.get("out_trade_no");
+        DeliveryNote note =  get("orderNo",out_trade_no);
+        confirmPay(note.getId());//设置为支付
+        //返回支付结果
+        Map<String, Object> map = new HashMap();
+        map.put("return_code", "SUCCESS");
+        map.put("return_msg", "OK");
+        String result = XmlUtil.mapToXml(map);
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public void confirmPayByAccounts(Integer nid, Integer uid) {
+        DeliveryNote note = get(nid);
+        Agent agent = agentDao.get(uid);
+        if(note==null)throw new ApplicationException("订单不存在!");
+        if(note.getPaymentStatus()==PaymentStatus.PAID){
+            throw new ApplicationException("订单已经支付!");
+        }
+        //减少代金券
+        AccountsRecord accountsRecord = accountsHandler.deductAccountAndRecord(AccountsType.VOUCHER,agent,agent,note.getAmount(),"消费，支付订单"+note.getOrderNo()+"消费");
+        note.setPaymentStatus(PaymentStatus.PAID);//设置为已经支付
+        updateBuyTime(note);//更新支付时间
+        //返利
+        List<AccountsRecord> accountsRecords = rewardVoucher(note);
+        accountsRecords.add(accountsRecord);
+        //保存
+        merge(note);
+        //保存记录
+        accountsRecordDao.saveList(accountsRecords);
     }
 
     @Override
@@ -410,6 +560,9 @@ public class DeliveryNoteHandlerImpl extends BaseHandlerImpl<DeliveryNote> imple
 
 
     private DeliveryNoteDao deliveryNoteDao;
+
+    @Autowired
+    private AgentHandler agentHandler;
 
     @Autowired
     private GoodsHandler goodsHandler;

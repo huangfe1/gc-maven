@@ -144,15 +144,15 @@
 
 
                                 <!--活动图片-->
-                                <div class="form-group">
-                                    <label for="actImgFile" class="col-sm-2 control-label">活动图片</label>
-                                    <div class="col-sm-4">
-                                        <input type="file" class="form-control" id="img" tabIndex="12"
-                                               name="actImgFile" accept="image/png,image/jpeg,image/gif" placeholder="活动图片">
-                                        <span class="help-block">图片尺寸:604 × 289px 体积小于50kb</span>
-                                    </div>
-                                    <div class="col-md-4 col-xs-4 text-error"></div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label for="actImgFile" class="col-sm-2 control-label">活动图片</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<input type="file" class="form-control" id="img" tabIndex="12"--%>
+                                               <%--name="actImgFile" accept="image/png,image/jpeg,image/gif" placeholder="活动图片">--%>
+                                        <%--<span class="help-block">图片尺寸:604 × 289px 体积小于50kb</span>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="col-md-4 col-xs-4 text-error"></div>--%>
+                                <%--</div>--%>
 
 								<!--产品详情页-->
 								<div class="form-group">
@@ -194,6 +194,8 @@
 									</div>
 									<div class="col-md-4 col-xs-4 text-error"></div>
 								</div>
+
+
 								<div class="form-group" style="display: none">
 									<label for="pointFactor" class="col-sm-2 control-label">积分系数</label>
 									<div class="col-sm-4">
@@ -205,11 +207,12 @@
 								</div>
 
 								<!-- 返利模式 -->
-								<div class="form-group">
+								<div class="form-group" style="display: none">
 									<label for="pointFactor" class="col-sm-2 control-label">模式</label>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" id="editPointFactor" tabIndex="13"
-											   name="voucher" value="${parameter.entity.voucher}"
+											   <%--name="voucher" value="${parameter.entity.voucher}"--%>
+											   name="voucher" value="1_1_1_1"
 											   placeholder="如21_22_23 一代返21 二代返22 三代返回23">
 									</div>
 									<div class="col-md-4 col-xs-4 text-error"></div>
@@ -278,7 +281,7 @@
 
 
 								<!--是否是搞活动-->
-								<div class="form-group">
+								<div class="form-group" style="display: none">
 									<label for="startTime" class="col-sm-2 control-label">是否搞活动</label>
 									<div class=" col-sm-6">
 										<div class="checkbox">
@@ -288,7 +291,8 @@
 											</c:if>
 														   name="activityCheckBox">活动
 												<input type="hidden" name="activity"
-													   value="${parameter.entity.activity ? 1 : 0}">
+													   <%--value="${parameter.entity.activity ? 1 : 0}">--%>
+													   value="0">
 											</label>
 										</div>
 									</div>
@@ -297,7 +301,7 @@
 
 								<%--<!--活动开始时间-->--%>
 
-								<div class="form-group">
+								<div class="form-group" style="display: none">
 									<label for="startTime" class="col-sm-2 control-label">活动时间</label>
 									<div class="input-daterange input-group" id="datepicker">
 										<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -381,12 +385,13 @@
 									<thead>
 									<tr>
 										<th>名称</th>
-										<th>单价</th>
+										<th>批发价</th>
 										<th>返利</th>
                                         <c:if test="${parameter.entity.benchmark}">
                                             <th>日销</th>
                                         </c:if>
-
+										<th>客户积分</th>
+										<th>促销政策</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -400,12 +405,13 @@
 													<input  type="hidden" 	name="levelId"  value="${l.id}">
 
 												</td>
-												<td><input   type="number" name="levelPrice" tabindex="${s.count+18}"  value="${levelP.price}" ></td>
+												<td><input   type="number" placeholder="大区_省代_分公司_业务员" name="levelPrice" tabindex="${s.count+18}"  value="${levelP.price}" ></td>
 												<td><input   type="text" name="voucherStrs" tabindex="${s.count+19}" value="${levelP.voucherStr}"></td>
                                                 <c:if test="${parameter.entity.benchmark}">
                                                     <td><input   type="number" name="buyAmounts" tabindex="${s.count+20}" value="${levelP.buyAmount}"></td>
                                                 </c:if>
-
+												<td><input   type="text" name="pointss" tabindex="${s.count+21}" value="${levelP.points}"></td>
+												<td><input   type="text" name="policies" tabindex="${s.count+22}" value="${levelP.policy}"></td>
 											</tr>
 										</c:if>
 

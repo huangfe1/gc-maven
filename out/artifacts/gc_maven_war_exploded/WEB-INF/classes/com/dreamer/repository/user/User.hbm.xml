@@ -159,6 +159,8 @@
                 </column>
             </property>
 
+            <property name="payWay" type="java.lang.String"/>
+
             <property generated="never" lazy="false" name="agentCode"
                       type="java.lang.String" unique="true">
                 <column length="16" name="agent_code">
@@ -178,6 +180,10 @@
                     <comment>营业执照</comment>
                 </column>
             </property>
+
+            <property name="info" type="java.lang.String"/>
+
+            <property name="taxCode" type="java.lang.String"/>
 
             <property name="buyTime" type="date">
                 <column name="buyTime">

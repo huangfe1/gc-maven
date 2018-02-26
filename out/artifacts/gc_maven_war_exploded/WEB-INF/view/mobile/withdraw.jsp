@@ -178,10 +178,10 @@
             <a href="">
                 当前余额<span class="balance">${balance}</span>
                 ,
-                <span id="all" style="color: #5D6286">全部提现</span>
+                <span id="all" style="color: #5D6286">可提现<fmt:formatNumber value="${balance*0.9}"/></span>
             </a>
 
-            <div>   <input   type="checkbox"  id="isAdvance"> <span style="color: #5D6286"> 转成预存款</span></div>
+            <%--<div>   <input   type="checkbox"  id="isAdvance"> <span style="color: #5D6286"> 转成预存款</span></div>--%>
 
 
 
@@ -200,7 +200,9 @@
         e.preventDefault();
         e.stopPropagation();
         var bal = $(".balance").html();
-        $(".amount").val(bal);
+        var tem = bal*0.9;
+        tem = tem.toFixed(2);
+        $(".amount").val(tem);
     })
 
     //验证金额
@@ -251,17 +253,24 @@
         var url = "<c:url value="/mobile/withdraw.json"/>";
         var amount = $(".amount").val();
         if(amount<=0){
-            alert("请填写金额");
+            alert("请填写金额");return;
+        }
+
+        var bal = $(".balance").html();
+        if(amount-bal*0.9>0.1){
+            alert("只能提现90%");return;
         }
 
         var isAdvance = false;
-
-       if( $("#isAdvance").is(':checked')){
-           isAdvance = true;
-       }
+//
+//       if( $("#isAdvance").is(':checked')){
+//           isAdvance = true;
+//       }
 
         var cid = $(".cid").val();
-        if(cid==null||cid=="")return;
+        if(cid==null||cid==""){
+            alert("请绑定卡!");return;
+        }
         var param = {
             "cid":cid,
             "amount":amount,

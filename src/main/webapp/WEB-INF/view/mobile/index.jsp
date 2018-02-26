@@ -18,13 +18,13 @@
     <style>
 
         .header {
-            background: #f03791;
+            background: #00BE63;
             height: 3.7em;
         }
 
         .headerLeft {
             float: left;
-            padding: 0.7em 0.9em 0;
+            padding: 0.2em 0.9em 0;
         }
 
         .headerLeft img {
@@ -311,11 +311,11 @@
         <div class="headerLeft">
             <a href=""><img src="${ctx}/resources/mallimages/logo.png" alt=""></a>
         </div>
-        <div class="headerRight">
-            <a href=""><span class="h_cart"></span></a>
-            <a href=""><span class="h_login"></span></a>
-            <a href="<c:url value='/goods/category/show'/>"><span class="h_search"></span></a>
-        </div>
+        <%--<div class="headerRight">--%>
+            <%--<a href=""><span class="h_cart"></span></a>--%>
+            <%--<a href=""><span class="h_login"></span></a>--%>
+            <%--<a href="<c:url value='/goods/category/show'/>"><span class="h_search"></span></a>--%>
+        <%--</div>--%>
     </header>
 
     <div id="focus" class="focus">
@@ -398,7 +398,7 @@
         <div class="indexListTit">
             <h2>精彩推荐</h2>
             <span>|</span>
-            <em>不定时更新 产品特卖</em>
+            <em>弹力退热贴  制造商领跑者</em>
         </div>
         <div class="channelImg">
             <ul>

@@ -35,7 +35,8 @@ public class Goods implements java.io.Serializable {
     private Integer boxamount;//一箱多少盒
     private String imgFile;
     private String spec;//规格型号
-    private Double retailPrice;
+    private Double retailPrice;//零售价
+    private Double basePrice;//底价
     private String detailImg;//详情页名字
 
     private String license;//批准文号
@@ -287,6 +288,14 @@ public class Goods implements java.io.Serializable {
 
     public String getActImg() {
         return actImg;
+    }
+
+    public Double getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(Double basePrice) {
+        this.basePrice = basePrice;
     }
 
     public void setActImg(String actImg) {

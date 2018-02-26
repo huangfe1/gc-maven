@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum AgentStatus implements Enum ,Serializable{
 
-	ACTIVE("激活",0),NO_ACTIVE("未激活",1),REORGANIZE("整顿",2);
+	WAITING("等待激活",3),ACTIVE("激活",0),NO_ACTIVE("未激活",1),REORGANIZE("整顿",2);
 	
 	AgentStatus(String desc,Integer state){
 		this.desc=desc;

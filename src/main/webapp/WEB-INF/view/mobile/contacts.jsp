@@ -298,7 +298,12 @@
         <div class="num_logo">
             <img src="${agent.headimgurl}" alt="">
         </div>
-        <div class="num_name">${agent.realName}&nbsp;${agent.agentCode}</div>
+        <div class="num_name">
+                ${agent.realName}&nbsp;${agent.agentCode}
+        <c:if test="${agent.agentStatus.desc eq '未激活'}">
+            <span style="color: red">(未激活)</span>
+        </c:if>
+        </div>
     </div>
     </c:forEach>
 
